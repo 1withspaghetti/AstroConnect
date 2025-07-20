@@ -2,7 +2,7 @@
 	import type { PostPreview } from '@/types/post';
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '@/components/ui/button';
-	import Images from '@lucide/svelte/icons/Images';
+	import Images from '@lucide/svelte/icons/images';
 
 	let { post }: { post: PostPreview } = $props();
 </script>
