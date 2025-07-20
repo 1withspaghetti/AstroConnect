@@ -72,3 +72,7 @@ const researchOpportunities = [
 ];
 
 export default researchOpportunities;
+
+const tags = researchOpportunities.flatMap((item) => item.tags);
+
+export const uniqueTags = Array.from(new Set(tags)).sort((a, b) => a.localeCompare(b));

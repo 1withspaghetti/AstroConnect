@@ -2,7 +2,6 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import { Button } from '@/components/ui/button';
-	import type { PageProps } from './$types';
 
 	type ResearchItem = {
 		id: number;
@@ -17,14 +16,14 @@
 	let { items }: { items: ResearchItem[] } = $props();
 </script>
 
-<div class="mb-4 flex flex-col gap-4">
+<div class="mb-4 flex flex-col gap-4 px-8">
 	{#each items as item}
 		<div class="bg-card text-card-foreground flex rounded-xl border shadow-sm">
 			{#if item.coverImage}
 				<img
 					src={item.coverImage}
 					alt={item.title}
-					class="w-48 rounded-l-xl object-cover object-center"
+					class="w-24 rounded-l-xl object-cover object-center sm:w-48"
 				/>
 			{/if}
 			<div class="flex flex-1 flex-col gap-4 py-4">
