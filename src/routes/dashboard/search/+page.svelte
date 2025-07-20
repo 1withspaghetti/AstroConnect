@@ -34,9 +34,9 @@
 	<div class="-translate-y-5 px-8">
 		<SearchForm />
 	</div>
-	<div class="max-w-4xl mx-auto mb-4 flex flex-col gap-4 px-8">
+	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-8">
 		{#each data.posts as post}
-			<PostCard post={post} />
+			<PostCard {post} />
 		{/each}
 	</div>
 

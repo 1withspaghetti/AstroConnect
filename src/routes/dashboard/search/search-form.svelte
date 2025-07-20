@@ -20,7 +20,11 @@
 		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
 	);
 
-	let fullExperienceList = $derived(defaultExperienceLevels.concat(experience.filter(custom=>!defaultExperienceLevels.includes(custom))));
+	let fullExperienceList = $derived(
+		defaultExperienceLevels.concat(
+			experience.filter((custom) => !defaultExperienceLevels.includes(custom))
+		)
+	);
 
 	const orderOptions = [
 		{ value: 'asc', label: 'Ascending' },
@@ -36,11 +40,11 @@
 <form
 	method="POST"
 	use:enhance
-	class="w-full flex flex-col items-center justify-center gap-2"
+	class="flex w-full flex-col items-center justify-center gap-2"
 	aria-label="Search Form"
 >
 	<div
-		class="max-w-2xl border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
+		class="border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full max-w-2xl min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
 	>
 		<Search class="text-muted-foreground h-10 w-10 p-3" />
 		<Input
@@ -53,7 +57,7 @@
 		/>
 	</div>
 
-	<div class="mt-2 flex items-center justify-center gap-4 flex-wrap">
+	<div class="mt-2 flex flex-wrap items-center justify-center gap-4">
 		<div class="flex items-center gap-2">
 			<Label>Tags:</Label>
 			<MultiselectCombobox
@@ -100,7 +104,5 @@
 		</div>
 	</div>
 
-	<Label class="mt-2 italic">
-		6 results
-	</Label>
+	<Label class="mt-2 italic">6 results</Label>
 </form>
