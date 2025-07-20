@@ -52,11 +52,11 @@
 <form
 	method="POST"
 	use:enhance
-	class="w-full flex-col items-start justify-center gap-2"
+	class="w-full flex flex-col items-center justify-center gap-2"
 	aria-label="Search Form"
 >
 	<div
-		class="border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
+		class="max-w-2xl border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
 	>
 		<Search class="text-muted-foreground h-10 w-10 p-3" />
 		<Input
@@ -69,84 +69,92 @@
 		/>
 	</div>
 
-	<div class="mt-2 flex items-center justify-center gap-2">
-		<Label>Tags:</Label>
-		<Popover.Root bind:open={tagsOpen}>
-			<Popover.Trigger bind:ref={tagTriggerRef}>
-				{#snippet child({ props })}
-					<Button
-						variant="outline"
-						class="w-[200px]s justify-between"
-						{...props}
-						role="combobox"
-						aria-expanded={tagsOpen}
-					>
-						<span class="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap"
-							>{tags.length > 0 ? tags.join(', ') : 'Search Tags'}</span
+	<div class="mt-2 flex items-center justify-center gap-4 flex-wrap">
+		<div class="flex items-center gap-2">
+			<Label>Tags:</Label>
+			<Popover.Root bind:open={tagsOpen}>
+				<Popover.Trigger bind:ref={tagTriggerRef}>
+					{#snippet child({ props })}
+						<Button
+							variant="outline"
+							class="w-[200px]s justify-between"
+							{...props}
+							role="combobox"
+							aria-expanded={tagsOpen}
 						>
-						<ChevronsUpDownIcon class="ml-2 size-4 shrink-0 opacity-50" />
-					</Button>
-				{/snippet}
-			</Popover.Trigger>
-			<Popover.Content class="w-[200px] p-0">
-				<Command.Root>
-					<Command.Input bind:value={tagSearch} placeholder="Search tags..." />
-					<Command.List>
-						<Command.Empty>No Existing Tags Found</Command.Empty>
-						<Command.Group>
-							{#each fullTagList as tag}
-								<Command.Item
-									value={tag}
-									onSelect={() => {
-										tags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
-										closeAndFocusTrigger();
-									}}
-								>
-									<CheckIcon class={cn('mr-2 size-4', !tags.includes(tag) && 'text-transparent')} />
-									{tag}
-								</Command.Item>
-							{/each}
-						</Command.Group>
-						<Command.Group forceMount>
-							{#if tagSearch && !fullTagList.includes(tagSearch)}
-								<Command.Item
-									value={tagSearch}
-									onSelect={() => {
-										tags = [...tags, tagSearch];
-										closeAndFocusTrigger();
-									}}
-									forceMount
-								>
-									<CheckIcon class="mr-2 size-4 text-transparent" />
-									Add "{tagSearch}"
-								</Command.Item>
-							{/if}
-						</Command.Group>
-					</Command.List>
-				</Command.Root>
-			</Popover.Content>
-		</Popover.Root>
+							<span class="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap"
+								>{tags.length > 0 ? tags.join(', ') : 'Search Tags'}</span
+							>
+							<ChevronsUpDownIcon class="ml-2 size-4 shrink-0 opacity-50" />
+						</Button>
+					{/snippet}
+				</Popover.Trigger>
+				<Popover.Content class="w-[200px] p-0">
+					<Command.Root>
+						<Command.Input bind:value={tagSearch} placeholder="Search tags..." />
+						<Command.List>
+							<Command.Empty>No Existing Tags Found</Command.Empty>
+							<Command.Group>
+								{#each fullTagList as tag}
+									<Command.Item
+										value={tag}
+										onSelect={() => {
+											tags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
+											closeAndFocusTrigger();
+										}}
+									>
+										<CheckIcon class={cn('mr-2 size-4', !tags.includes(tag) && 'text-transparent')} />
+										{tag}
+									</Command.Item>
+								{/each}
+							</Command.Group>
+							<Command.Group forceMount>
+								{#if tagSearch && !fullTagList.includes(tagSearch)}
+									<Command.Item
+										value={tagSearch}
+										onSelect={() => {
+											tags = [...tags, tagSearch];
+											closeAndFocusTrigger();
+										}}
+										forceMount
+									>
+										<CheckIcon class="mr-2 size-4 text-transparent" />
+										Add "{tagSearch}"
+									</Command.Item>
+								{/if}
+							</Command.Group>
+						</Command.List>
+					</Command.Root>
+				</Popover.Content>
+			</Popover.Root>
+		</div>
 
-		<Label class="ml-4">Sort By:</Label>
-		<Select.Root bind:value={orderBy} type="single">
-			<Select.Trigger>
-				{orderByOptions.find((f) => f.value === orderBy)?.label ?? 'Select an option'}
-			</Select.Trigger>
-			<Select.Content>
-				{#each orderByOptions as option}
-					<Select.Item value={option.value} label={option.label} />
-				{/each}
-			</Select.Content>
-		</Select.Root>
-		<Select.Root bind:value={order} type="single">
-			<Select.Trigger>
-				{orderOptions.find((f) => f.value === order)?.label ?? 'Select an option'}
-			</Select.Trigger>
-			<Select.Content>
-				{#each orderOptions as option}
-					<Select.Item value={option.value} label={option.label} />
-				{/each}
-			</Select.Content>
-		</Select.Root>
+		<div class="flex items-center gap-2">
+			<Label>Sort By:</Label>
+			<Select.Root bind:value={orderBy} type="single">
+				<Select.Trigger>
+					{orderByOptions.find((f) => f.value === orderBy)?.label ?? 'Select an option'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each orderByOptions as option}
+						<Select.Item value={option.value} label={option.label} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
+			<Select.Root bind:value={order} type="single">
+				<Select.Trigger>
+					{orderOptions.find((f) => f.value === order)?.label ?? 'Select an option'}
+				</Select.Trigger>
+				<Select.Content>
+					{#each orderOptions as option}
+						<Select.Item value={option.value} label={option.label} />
+					{/each}
+				</Select.Content>
+			</Select.Root>
+		</div>
 	</div>
+
+	<Label class="mt-2 italic">
+		6 results
+	</Label>
 </form>

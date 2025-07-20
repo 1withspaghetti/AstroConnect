@@ -30,7 +30,7 @@
 			>
 		</div>
 	</div>
-	<div class="mb-8 -translate-y-1/4 px-8">
+	<div class="-translate-y-5 px-8">
 		<SearchForm />
 	</div>
 	<ResearchList items={data.researchOpportunities} />
