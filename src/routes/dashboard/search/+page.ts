@@ -1,8 +1,8 @@
 import type { PageLoad } from './$types';
-import researchOpportunities from './fake_data';
+import posts from './fake_data';
 
 export const load = (async () => {
 	return {
-		researchOpportunities
+		posts
 	};
 }) satisfies PageLoad;

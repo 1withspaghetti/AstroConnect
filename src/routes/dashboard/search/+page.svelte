@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import SearchForm from './search-form.svelte';
-	import ResearchList from './research-list.svelte';
+	import PostCard from '@/components/PostCard.svelte';
+	import * as Pagination from '$lib/components/ui/pagination';
 
 	let { data }: PageProps = $props();
 </script>
@@ -33,5 +34,35 @@
 	<div class="-translate-y-5 px-8">
 		<SearchForm />
 	</div>
-	<ResearchList items={data.researchOpportunities} />
+	<div class="max-w-4xl mx-auto mb-4 flex flex-col gap-4 px-8">
+		{#each data.posts as post}
+			<PostCard post={post} />
+		{/each}
+	</div>
+
+	<Pagination.Root count={100} perPage={10} class="mb-16">
+		{#snippet children({ pages, currentPage })}
+			<Pagination.Content>
+				<Pagination.Item>
+					<Pagination.PrevButton />
+				</Pagination.Item>
+				{#each pages as page (page.key)}
+					{#if page.type === 'ellipsis'}
+						<Pagination.Item>
+							<Pagination.Ellipsis />
+						</Pagination.Item>
+					{:else}
+						<Pagination.Item>
+							<Pagination.Link {page} isActive={currentPage === page.value}>
+								{page.value}
+							</Pagination.Link>
+						</Pagination.Item>
+					{/if}
+				{/each}
+				<Pagination.Item>
+					<Pagination.NextButton />
+				</Pagination.Item>
+			</Pagination.Content>
+		{/snippet}
+	</Pagination.Root>
 </div>

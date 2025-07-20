@@ -1,42 +1,26 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
-	import { Button } from '@/components/ui/button';
 	import { Input } from '@/components/ui/input';
 	import Search from '@lucide/svelte/icons/search';
-	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
-	import CheckIcon from '@lucide/svelte/icons/check';
-	import * as Popover from '$lib/components/ui/popover';
-	import * as Command from '$lib/components/ui/command';
-	import { cn } from '@/utils';
-	import { tick } from 'svelte';
 	import { uniqueTags } from './fake_data';
 	import { Label } from '@/components/ui/label';
 	import * as Select from '@/components/ui/select';
+	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
+	import { defaultExperienceLevels } from '@/types/post';
 
 	let search = $state(page.url.searchParams.get('query') || '');
 	let tags = $state(page.url.searchParams.get('tags')?.split(';') || []);
+	let experience = $state(page.url.searchParams.get('experience')?.split(';') || []);
 
 	let order = $state(page.url.searchParams.get('order') || 'asc');
 	let orderBy = $state(page.url.searchParams.get('orderBy') || 'createdAt');
-
-	let tagsOpen = $state(false);
-	let tagSearch = $state('');
-	let tagTriggerRef = $state<HTMLButtonElement>(null!);
 
 	let fullTagList = $derived(
 		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
 	);
 
-	// We want to refocus the trigger button when the user selects
-	// an item from the list so users can continue navigating the
-	// rest of the form with the keyboard.
-	function closeAndFocusTrigger() {
-		tagsOpen = false;
-		tick().then(() => {
-			tagTriggerRef.focus();
-		});
-	}
+	let fullExperienceList = $derived(defaultExperienceLevels.concat(experience.filter(custom=>!defaultExperienceLevels.includes(custom))));
 
 	const orderOptions = [
 		{ value: 'asc', label: 'Ascending' },
@@ -72,61 +56,23 @@
 	<div class="mt-2 flex items-center justify-center gap-4 flex-wrap">
 		<div class="flex items-center gap-2">
 			<Label>Tags:</Label>
-			<Popover.Root bind:open={tagsOpen}>
-				<Popover.Trigger bind:ref={tagTriggerRef}>
-					{#snippet child({ props })}
-						<Button
-							variant="outline"
-							class="w-[200px]s justify-between"
-							{...props}
-							role="combobox"
-							aria-expanded={tagsOpen}
-						>
-							<span class="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap"
-								>{tags.length > 0 ? tags.join(', ') : 'Search Tags'}</span
-							>
-							<ChevronsUpDownIcon class="ml-2 size-4 shrink-0 opacity-50" />
-						</Button>
-					{/snippet}
-				</Popover.Trigger>
-				<Popover.Content class="w-[200px] p-0">
-					<Command.Root>
-						<Command.Input bind:value={tagSearch} placeholder="Search tags..." />
-						<Command.List>
-							<Command.Empty>No Existing Tags Found</Command.Empty>
-							<Command.Group>
-								{#each fullTagList as tag}
-									<Command.Item
-										value={tag}
-										onSelect={() => {
-											tags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
-											closeAndFocusTrigger();
-										}}
-									>
-										<CheckIcon class={cn('mr-2 size-4', !tags.includes(tag) && 'text-transparent')} />
-										{tag}
-									</Command.Item>
-								{/each}
-							</Command.Group>
-							<Command.Group forceMount>
-								{#if tagSearch && !fullTagList.includes(tagSearch)}
-									<Command.Item
-										value={tagSearch}
-										onSelect={() => {
-											tags = [...tags, tagSearch];
-											closeAndFocusTrigger();
-										}}
-										forceMount
-									>
-										<CheckIcon class="mr-2 size-4 text-transparent" />
-										Add "{tagSearch}"
-									</Command.Item>
-								{/if}
-							</Command.Group>
-						</Command.List>
-					</Command.Root>
-				</Popover.Content>
-			</Popover.Root>
+			<MultiselectCombobox
+				bind:items={tags}
+				defaultOptions={fullTagList}
+				allowCustom
+				placeholder="Search Tags"
+				emptyText="No existing tags found"
+			/>
+		</div>
+
+		<div class="flex items-center gap-2">
+			<Label>Experience:</Label>
+			<MultiselectCombobox
+				bind:items={experience}
+				defaultOptions={fullExperienceList}
+				allowCustom
+				placeholder="Level"
+			/>
 		</div>
 
 		<div class="flex items-center gap-2">
