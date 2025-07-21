@@ -3,6 +3,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '@/components/ui/button';
 	import Images from '@lucide/svelte/icons/images';
+	import Tag from './ui/Tag.svelte';
 
 	let { post }: { post: PostPreview } = $props();
 </script>
@@ -17,7 +18,7 @@
 			/>
 			<a
 				title="View more images"
-				href="./"
+				href="/dashboard/post/{post.id}"
 				class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
 			>
 				<Images class="h-4 w-4" />
@@ -32,7 +33,9 @@
 				>{post.desc || 'No description provided.'}</Card.Description
 			>
 			<Card.Action>
-				<Button disabled={!post.open}>Apply {post.open ? '' : '(Closed)'}</Button>
+				<Button href="/dashboard/post/{post.id}" disabled={!post.open}
+					>Apply {post.open ? '' : '(Closed)'}</Button
+				>
 			</Card.Action>
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col gap-2">
@@ -52,18 +55,16 @@
 		<Card.Footer class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
 			<div class="flex flex-wrap gap-2">
 				{#each post.tags as tag}
-					<span
-						class="bg-secondary text-secondary-foreground rounded-full px-2 py-1 text-xs font-semibold"
-					>
-						{tag}
-					</span>
+					<Tag>{tag}</Tag>
 				{/each}
 			</div>
 			<div class="text-muted-foreground text-xs sm:text-right">
 				<span
 					>Posted <b title={post.createdAt}>{new Date(post.createdAt).toLocaleDateString()}</b> by {post
-						.createdBy.name} (<a href={`mailto:${post.createdBy.email}`} class="underline"
-						>{post.createdBy.email}</a
+						.createdBy.name} (<a
+						href={`mailto:${post.createdBy.email}`}
+						target="_blank"
+						class="underline">{post.createdBy.email}</a
 					>)</span
 				>
 			</div>

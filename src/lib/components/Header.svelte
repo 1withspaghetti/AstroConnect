@@ -16,7 +16,7 @@
 
 <div class="bg-background sticky top-0 z-40 border-b">
 	<div class="container mx-auto flex items-center justify-between px-4 py-4">
-		<h1 class="text-2xl font-bold">AstroConnect</h1>
+		<h1 class="text-2xl font-light tracking-wider">AstroConnect</h1>
 		<nav class="flex space-x-4">
 			<Button href="/dashboard/search" variant="default"
 				><Search /> <span class="hidden sm:inline">Search for Research</span></Button

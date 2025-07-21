@@ -2,7 +2,7 @@ export interface User {
 	id: string;
 	name: string;
 	email: string;
-	image: string;
+	pfp?: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

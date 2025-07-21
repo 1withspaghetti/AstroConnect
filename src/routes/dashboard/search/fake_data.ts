@@ -6,7 +6,9 @@ const posts: PostPreview[] = [
 		title: 'Lorem ipsum dolor sit amet',
 		desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		images: [
-			'https://images.unsplash.com/photo-1505579962197-df174377e13f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+			'https://images.unsplash.com/photo-1505579962197-df174377e13f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1719494693285-acabe80c76b6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+			'https://images.unsplash.com/photo-1708111175269-f99a812a1fe5?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
 		experience: 'Undergraduate',
 		prereq: 'Basic Astronomy Knowledge',
@@ -17,7 +19,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -39,7 +41,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -61,7 +63,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -82,7 +84,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -104,7 +106,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -126,7 +128,7 @@ const posts: PostPreview[] = [
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			image: 'https://randomuser.me/api/portraits/men/1.jpg',
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
