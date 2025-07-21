@@ -48,11 +48,16 @@
 							<Avatar.Fallback>{post.createdBy.name[0] || '?'}</Avatar.Fallback>
 						</Avatar.Root>
 						<Card.Title class="line-clamp-1">{post.createdBy.name}</Card.Title>
-						<Card.Description class="text-muted-foreground flex items-center text-sm">
-							<Mail class="mr-1 h-4 w-4" />
-							<a href={`mailto:${post.createdBy.email}`} target="_blank" class="underline"
-								>{post.createdBy.email}</a
-							>
+						<Card.Description>
+							<div class="text-muted-foreground flex items-center text-sm">
+								<Mail class="mr-1 h-4 w-4" />
+								<a href={`mailto:${post.createdBy.email}`} target="_blank" class="underline"
+									>{post.createdBy.email}</a
+								>
+							</div>
+							<div class="mt-4 text-muted-foreground">
+								{post.createdBy.bio || 'No bio provided.'}
+							</div>
 						</Card.Description>
 					</Card.Content>
 				</Card.Root>
