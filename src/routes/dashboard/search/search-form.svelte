@@ -8,13 +8,16 @@
 	import * as Select from '@/components/ui/select';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import { defaultExperienceLevels } from '@/types/post';
+	import { goto } from '$app/navigation';
+
+	let formRef = $state<HTMLFormElement>(null!);
 
 	let search = $state(page.url.searchParams.get('query') || '');
 	let tags = $state(page.url.searchParams.get('tags')?.split(';') || []);
 	let experience = $state(page.url.searchParams.get('experience')?.split(';') || []);
 
-	let order = $state(page.url.searchParams.get('order') || 'asc');
 	let orderBy = $state(page.url.searchParams.get('orderBy') || 'createdAt');
+	let order = $state(page.url.searchParams.get('order') || 'asc');
 
 	let fullTagList = $derived(
 		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
@@ -35,13 +38,31 @@
 		{ value: 'createdAt', label: 'Time of Post' },
 		{ value: 'title', label: 'Title' }
 	];
+
+	function submit() {
+		formRef?.requestSubmit();
+	}
+
+	function onsubmit(event: SubmitEvent) {
+		event.preventDefault();
+		const params = new URLSearchParams();
+
+		params.set('query', search);
+		if (tags.length > 0) params.set('tags', tags.join(';'));
+		if (experience.length > 0) params.set('experience', experience.join(';'));
+		params.set('orderBy', orderBy);
+		params.set('order', order);
+
+		goto(`?${params.toString()}`, { replaceState: true });
+	}
 </script>
 
 <form
-	method="POST"
-	use:enhance
+	bind:this={formRef}
+	method="GET"
 	class="flex w-full flex-col items-center justify-center gap-2"
 	aria-label="Search Form"
+	onsubmit={onsubmit}
 >
 	<div
 		class="border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full max-w-2xl min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
@@ -63,6 +84,7 @@
 			<MultiselectCombobox
 				bind:items={tags}
 				defaultOptions={fullTagList}
+				onChange={submit}
 				allowCustom
 				placeholder="Search Tags"
 				emptyText="No existing tags found"
@@ -74,6 +96,7 @@
 			<MultiselectCombobox
 				bind:items={experience}
 				defaultOptions={fullExperienceList}
+				onChange={submit}
 				allowCustom
 				placeholder="Level"
 			/>
@@ -81,7 +104,7 @@
 
 		<div class="flex items-center gap-2">
 			<Label>Sort By:</Label>
-			<Select.Root bind:value={orderBy} type="single">
+			<Select.Root bind:value={orderBy} onValueChange={submit} type="single">
 				<Select.Trigger>
 					{orderByOptions.find((f) => f.value === orderBy)?.label ?? 'Select an option'}
 				</Select.Trigger>
@@ -91,7 +114,7 @@
 					{/each}
 				</Select.Content>
 			</Select.Root>
-			<Select.Root bind:value={order} type="single">
+			<Select.Root bind:value={order} onValueChange={submit} type="single">
 				<Select.Trigger>
 					{orderOptions.find((f) => f.value === order)?.label ?? 'Select an option'}
 				</Select.Trigger>

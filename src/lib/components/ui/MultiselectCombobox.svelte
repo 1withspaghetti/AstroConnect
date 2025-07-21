@@ -12,6 +12,7 @@
 	type Props = {
 		items: T[];
 		defaultOptions: T[];
+		onChange?: (items: T[]) => void;
 		allowCustom?: boolean;
 		placeholder?: string;
 		emptyText?: string;
@@ -20,6 +21,7 @@
 	let {
 		items = $bindable(),
 		defaultOptions = [],
+		onChange,
 		allowCustom = false,
 		placeholder = 'Select...',
 		emptyText
@@ -59,7 +61,7 @@
 	</Popover.Trigger>
 	<Popover.Content class="w-[200px] p-0">
 		<Command.Root>
-			<Command.Input bind:value={search} placeholder="Search tags..." />
+			<Command.Input bind:value={search} {placeholder} />
 			<Command.List>
 				{#if emptyText}
 					<Command.Empty>{emptyText}</Command.Empty>
@@ -71,6 +73,7 @@
 							onSelect={() => {
 								items = items.includes(item) ? items.filter((t) => t !== item) : [...items, item];
 								closeAndFocusTrigger();
+								onChange?.(items);
 							}}
 						>
 							<CheckIcon class={cn('mr-2 size-4', !items.includes(item) && 'text-transparent')} />
@@ -86,6 +89,7 @@
 								onSelect={() => {
 									items = [...items, search];
 									closeAndFocusTrigger();
+									onChange?.(items);
 								}}
 								forceMount
 							>
