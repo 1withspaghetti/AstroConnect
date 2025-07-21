@@ -10,7 +10,7 @@ const posts: PostPreview[] = [
 			'https://images.unsplash.com/photo-1719494693285-acabe80c76b6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 			'https://images.unsplash.com/photo-1708111175269-f99a812a1fe5?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Undergraduate',
+		careerStage: 'Undergraduate',
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		open: true,
@@ -20,6 +20,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -32,7 +33,7 @@ const posts: PostPreview[] = [
 		images: [
 			'https://images.unsplash.com/photo-1719494693285-acabe80c76b6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Graduate',
+		careerStage: 'Graduate',
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
 		open: true,
@@ -42,6 +43,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -54,7 +56,7 @@ const posts: PostPreview[] = [
 		images: [
 			'https://images.unsplash.com/photo-1708111175269-f99a812a1fe5?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Post-Doctoral',
+		careerStage: 'Post-Doctoral',
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		open: true,
@@ -64,6 +66,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -75,7 +78,7 @@ const posts: PostPreview[] = [
 		images: [
 			'https://images.unsplash.com/photo-1505579962197-df174377e13f?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Undergraduate',
+		careerStage: 'Undergraduate',
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		open: true,
@@ -85,6 +88,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -97,7 +101,7 @@ const posts: PostPreview[] = [
 		images: [
 			'https://images.unsplash.com/photo-1719494693285-acabe80c76b6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Graduate',
+		careerStage: 'Graduate',
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
 		open: true,
@@ -107,6 +111,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}
@@ -119,7 +124,7 @@ const posts: PostPreview[] = [
 		images: [
 			'https://images.unsplash.com/photo-1708111175269-f99a812a1fe5?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 		],
-		experience: 'Post-Doctoral',
+		careerStage: 'Post-Doctoral',
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		open: true,
@@ -129,6 +134,7 @@ const posts: PostPreview[] = [
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}

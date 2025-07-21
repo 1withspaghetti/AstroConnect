@@ -19,10 +19,10 @@
 			<p class="mb-8 indent-4">{post.desc || 'No description provided.'}</p>
 			<div class="flex flex-wrap items-start justify-between gap-4">
 				<div>
-					{#if post.experience}
+					{#if post.careerStage}
 						<div>
-							<strong>Experience Level:</strong>
-							{post.experience}
+							<strong>Recommended Career Stage:</strong>
+							{post.careerStage}
 						</div>
 					{/if}
 					{#if post.prereq}

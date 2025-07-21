@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import { Input } from '@/components/ui/input';
 	import Search from '@lucide/svelte/icons/search';
@@ -7,14 +6,14 @@
 	import { Label } from '@/components/ui/label';
 	import * as Select from '@/components/ui/select';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
-	import { defaultExperienceLevels } from '@/types/post';
+	import { defaultCareerStageLevels } from '@/types/post';
 	import { goto } from '$app/navigation';
 
 	let formRef = $state<HTMLFormElement>(null!);
 
 	let search = $state(page.url.searchParams.get('query') || '');
 	let tags = $state(page.url.searchParams.get('tags')?.split(';') || []);
-	let experience = $state(page.url.searchParams.get('experience')?.split(';') || []);
+	let careerStage = $state(page.url.searchParams.get('careerStage')?.split(';') || []);
 
 	let orderBy = $state(page.url.searchParams.get('orderBy') || 'createdAt');
 	let order = $state(page.url.searchParams.get('order') || 'asc');
@@ -23,9 +22,9 @@
 		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
 	);
 
-	let fullExperienceList = $derived(
-		defaultExperienceLevels.concat(
-			experience.filter((custom) => !defaultExperienceLevels.includes(custom))
+	let fullCareerStageList = $derived(
+		defaultCareerStageLevels.concat(
+			careerStage.filter((custom) => !defaultCareerStageLevels.includes(custom))
 		)
 	);
 
@@ -49,7 +48,7 @@
 
 		params.set('query', search);
 		if (tags.length > 0) params.set('tags', tags.join(';'));
-		if (experience.length > 0) params.set('experience', experience.join(';'));
+		if (careerStage.length > 0) params.set('careerStage', careerStage.join(';'));
 		params.set('orderBy', orderBy);
 		params.set('order', order);
 
@@ -92,13 +91,12 @@
 		</div>
 
 		<div class="flex items-center gap-2">
-			<Label>Experience:</Label>
+			<Label>Career Stage:</Label>
 			<MultiselectCombobox
-				bind:items={experience}
-				defaultOptions={fullExperienceList}
+				bind:items={careerStage}
+				defaultOptions={fullCareerStageList}
 				onChange={submit}
 				allowCustom
-				placeholder="Level"
 			/>
 		</div>
 

@@ -2,7 +2,7 @@
 	import type { PostPreview } from '@/types/post';
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '@/components/ui/button';
-	import Images from '@lucide/svelte/icons/images';
+	import ImagesIcon from '@lucide/svelte/icons/images';
 	import Tag from './ui/Tag.svelte';
 
 	let { post }: { post: PostPreview } = $props();
@@ -21,7 +21,7 @@
 				href="/dashboard/post/{post.id}"
 				class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
 			>
-				<Images class="h-4 w-4" />
+				<ImagesIcon class="h-4 w-4" />
 				More...
 			</a>
 		</div>
@@ -39,10 +39,10 @@
 			</Card.Action>
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col gap-2">
-			{#if post.experience}
+			{#if post.careerStage}
 				<div class="text-muted-foreground line-clamp-1 text-sm">
-					<strong>Experience Level:</strong>
-					{post.experience}
+					<strong>Recommended Career Stage:</strong>
+					{post.careerStage}
 				</div>
 			{/if}
 			{#if post.prereq}
