@@ -55,7 +55,7 @@
 									>{post.createdBy.email}</a
 								>
 							</div>
-							<div class="mt-4 text-muted-foreground">
+							<div class="text-muted-foreground mt-4">
 								{post.createdBy.bio || 'No bio provided.'}
 							</div>
 						</Card.Description>

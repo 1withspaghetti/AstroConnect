@@ -61,7 +61,7 @@
 	method="GET"
 	class="flex w-full flex-col items-center justify-center gap-2"
 	aria-label="Search Form"
-	onsubmit={onsubmit}
+	{onsubmit}
 >
 	<div
 		class="border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full max-w-2xl min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
