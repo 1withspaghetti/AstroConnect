@@ -63,6 +63,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       drizzle-kit:
         specifier: ^0.30.2
         version: 0.30.6
@@ -3685,8 +3688,7 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  dayjs@1.11.13:
-    optional: true
+  dayjs@1.11.13: {}
 
   debug@4.4.1:
     dependencies:

@@ -4,8 +4,15 @@
 	import { Button } from '@/components/ui/button';
 	import ImagesIcon from '@lucide/svelte/icons/images';
 	import Tag from './ui/Tag.svelte';
+	import dayjs from '@/util/dayjs';
 
 	let { post }: { post: PostPreview } = $props();
+
+	let closed = $derived(
+		!post.open ||
+			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
+			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
+	);
 </script>
 
 <div class="bg-card text-card-foreground flex rounded-xl border shadow-sm">
@@ -28,17 +35,44 @@
 	{/if}
 	<div class="flex flex-1 flex-col gap-4 py-4">
 		<Card.Header>
-			<Card.Title class="line-clamp-2">{post.title}</Card.Title>
+			<Card.Title class="line-clamp-2"
+				><a href="/dashboard/post/{post.id}">{post.title}</a></Card.Title
+			>
 			<Card.Description class="line-clamp-3"
 				>{post.desc || 'No description provided.'}</Card.Description
 			>
 			<Card.Action>
-				<Button href="/dashboard/post/{post.id}" disabled={!post.open}
-					>Apply {post.open ? '' : '(Closed)'}</Button
-				>
+				<Button href="/dashboard/post/{post.id}" disabled={closed}>Apply</Button>
 			</Card.Action>
 		</Card.Header>
-		<Card.Content class="flex flex-1 flex-col gap-2">
+		<Card.Content class="flex flex-1 flex-col">
+			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
+				<div class="text-muted-foreground mb-2 text-sm italic">
+					Closes
+					{#if post.closesAt !== undefined}
+						in
+						<span
+							title={dayjs(post.closesAt).format('LLLL')}
+							class={dayjs(post.closesAt).isBefore(dayjs().add(1, 'day')) ? 'text-red-500' : ''}
+						>
+							{dayjs().to(post.closesAt, true)}
+						</span>
+					{/if}
+					{#if post.closesAt !== undefined && post.slotsRemaining !== undefined}
+						<span>or</span>
+					{/if}
+					{#if post.slotsRemaining !== undefined}
+						after
+						<span class={post.slotsRemaining > 5 ? '' : 'text-red-500'}>
+							{post.slotsRemaining} more application{post.slotsRemaining !== 1 ? 's' : ''}
+						</span>
+					{/if}
+				</div>
+			{:else if closed}
+				<div class="mb-2 line-clamp-1 text-sm text-red-500">
+					<strong>No longer accepting applications</strong>
+				</div>
+			{/if}
 			{#if post.careerStage}
 				<div class="text-muted-foreground line-clamp-1 text-sm">
 					<strong>Recommended Career Stage:</strong>
@@ -60,8 +94,10 @@
 			</div>
 			<div class="text-muted-foreground text-xs sm:text-right">
 				<span
-					>Posted <b title={post.createdAt}>{new Date(post.createdAt).toLocaleDateString()}</b> by {post
-						.createdBy.name} (<a
+					>Posted <b title={dayjs(post.createdAt).format('LLLL')}
+						>{dayjs(post.createdAt).fromNow()}</b
+					>
+					by {post.createdBy.name} (<a
 						href={`mailto:${post.createdBy.email}`}
 						target="_blank"
 						class="underline">{post.createdBy.email}</a

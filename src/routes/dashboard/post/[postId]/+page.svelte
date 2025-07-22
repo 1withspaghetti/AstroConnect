@@ -5,10 +5,17 @@
 	import * as Avatar from '@/components/ui/avatar';
 	import Mail from '@lucide/svelte/icons/mail';
 	import Tag from '@/components/ui/Tag.svelte';
+	import dayjs from '@/util/dayjs';
 
 	let { data }: PageProps = $props();
 
 	let post = data.post;
+
+	let closed = $derived(
+		!post.open ||
+			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
+			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
+	);
 </script>
 
 <div class="container mx-auto">
@@ -19,6 +26,33 @@
 			<p class="mb-8 indent-4">{post.desc || 'No description provided.'}</p>
 			<div class="flex flex-wrap items-start justify-between gap-4">
 				<div>
+					{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
+						<div class="mb-2 italic">
+							Closes
+							{#if post.closesAt !== undefined}
+								in
+								<span
+									title={dayjs(post.closesAt).format('LLLL')}
+									class={dayjs(post.closesAt).isBefore(dayjs().add(1, 'day')) ? 'text-red-500' : ''}
+								>
+									{dayjs().to(post.closesAt, true)}
+								</span>
+							{/if}
+							{#if post.closesAt !== undefined && post.slotsRemaining !== undefined}
+								<span>or</span>
+							{/if}
+							{#if post.slotsRemaining !== undefined}
+								after
+								<span class={post.slotsRemaining > 5 ? '' : 'text-red-500'}>
+									{post.slotsRemaining} more application{post.slotsRemaining !== 1 ? 's' : ''}
+								</span>
+							{/if}
+						</div>
+					{:else if closed}
+						<div class="mb-2 text-red-500">
+							<strong>No longer accepting applications</strong>
+						</div>
+					{/if}
 					{#if post.careerStage}
 						<div>
 							<strong>Recommended Career Stage:</strong>
@@ -37,8 +71,10 @@
 						{/each}
 					</div>
 					<div class="mt-2 text-sm">
-						Posted:
-						<span title={post.createdAt}>{new Date(post.createdAt).toLocaleString()}</span>
+						Posted
+						<span title={dayjs(post.createdAt).format('LLLL')}
+							>{dayjs(post.createdAt).fromNow()}</span
+						>
 					</div>
 				</div>
 				<Card.Root class="max-w-sm">

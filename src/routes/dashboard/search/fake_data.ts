@@ -14,6 +14,8 @@ const posts: PostPreview[] = [
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		open: true,
+		closesAt: '2025-07-22T06:59:59Z',
+		slotsRemaining: 4,
 		createdAt: '2025-07-19T12:00:00Z',
 		createdBy: {
 			id: '1',
@@ -37,6 +39,7 @@ const posts: PostPreview[] = [
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
 		open: true,
+		slotsRemaining: 10,
 		createdAt: '2025-07-17T12:00:00Z',
 		createdBy: {
 			id: '1',
@@ -60,6 +63,7 @@ const posts: PostPreview[] = [
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		open: true,
+		closesAt: '2025-07-25T06:59:59Z',
 		createdAt: '2025-07-18T12:00:00Z',
 		createdBy: {
 			id: '1',
@@ -127,7 +131,7 @@ const posts: PostPreview[] = [
 		careerStage: 'Post-Doctoral',
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
-		open: true,
+		open: false,
 		createdAt: '2025-07-18T12:00:00Z',
 		createdBy: {
 			id: '1',
