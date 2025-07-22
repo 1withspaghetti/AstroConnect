@@ -46,8 +46,27 @@
 			</Card.Action>
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col">
+			{#if post.careerStage}
+				<div class="text-muted-foreground line-clamp-1 text-sm">
+					<strong>Recommended Career Stage:</strong>
+					{post.careerStage}
+				</div>
+			{/if}
+			{#if post.prereq}
+				<div class="text-muted-foreground line-clamp-1 text-sm">
+					<strong>Prerequisite:</strong>
+					{post.prereq}
+				</div>
+			{/if}
+			<div class="flex flex-wrap gap-2 mt-2">
+				{#each post.tags as tag}
+					<Tag>{tag}</Tag>
+				{/each}
+			</div>
+		</Card.Content>
+		<Card.Footer class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
 			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
-				<div class="text-muted-foreground mb-2 text-sm italic">
+				<div class="text-muted-foreground mb-2 text-sm italic w-full">
 					Closes
 					{#if post.closesAt !== undefined}
 						in
@@ -69,29 +88,12 @@
 					{/if}
 				</div>
 			{:else if closed}
-				<div class="mb-2 line-clamp-1 text-sm text-red-500">
+				<div class="mb-2 line-clamp-1 text-sm text-red-500 w-full">
 					<strong>No longer accepting applications</strong>
 				</div>
+			{:else}
+				<div class="w-full"></div>
 			{/if}
-			{#if post.careerStage}
-				<div class="text-muted-foreground line-clamp-1 text-sm">
-					<strong>Recommended Career Stage:</strong>
-					{post.careerStage}
-				</div>
-			{/if}
-			{#if post.prereq}
-				<div class="text-muted-foreground line-clamp-1 text-sm">
-					<strong>Prerequisite:</strong>
-					{post.prereq}
-				</div>
-			{/if}
-		</Card.Content>
-		<Card.Footer class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
-			<div class="flex flex-wrap gap-2">
-				{#each post.tags as tag}
-					<Tag>{tag}</Tag>
-				{/each}
-			</div>
 			<div class="text-muted-foreground text-xs sm:text-right">
 				<span
 					>Posted <b title={dayjs(post.createdAt).format('LLLL')}

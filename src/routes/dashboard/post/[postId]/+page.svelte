@@ -26,6 +26,23 @@
 			<p class="mb-8 indent-4">{post.desc || 'No description provided.'}</p>
 			<div class="flex flex-wrap items-start justify-between gap-4">
 				<div>
+					{#if post.careerStage}
+						<div>
+							<strong>Recommended Career Stage:</strong>
+							{post.careerStage}
+						</div>
+					{/if}
+					{#if post.prereq}
+						<div>
+							<strong>Prerequisite:</strong>
+							{post.prereq}
+						</div>
+					{/if}
+					<div class="mt-2 mb-4 flex flex-wrap gap-2">
+						{#each post.tags as tag}
+							<Tag>{tag}</Tag>
+						{/each}
+					</div>
 					{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
 						<div class="mb-2 italic">
 							Closes
@@ -53,23 +70,6 @@
 							<strong>No longer accepting applications</strong>
 						</div>
 					{/if}
-					{#if post.careerStage}
-						<div>
-							<strong>Recommended Career Stage:</strong>
-							{post.careerStage}
-						</div>
-					{/if}
-					{#if post.prereq}
-						<div>
-							<strong>Prerequisite:</strong>
-							{post.prereq}
-						</div>
-					{/if}
-					<div class="mt-2 flex flex-wrap gap-2">
-						{#each post.tags as tag}
-							<Tag>{tag}</Tag>
-						{/each}
-					</div>
 					<div class="mt-2 text-sm">
 						Posted
 						<span title={dayjs(post.createdAt).format('LLLL')}
@@ -84,17 +84,15 @@
 							<Avatar.Fallback>{post.createdBy.name[0] || '?'}</Avatar.Fallback>
 						</Avatar.Root>
 						<Card.Title class="line-clamp-1">{post.createdBy.name}</Card.Title>
-						<Card.Description>
-							<div class="text-muted-foreground flex items-center text-sm">
-								<Mail class="mr-1 h-4 w-4" />
-								<a href={`mailto:${post.createdBy.email}`} target="_blank" class="underline"
-									>{post.createdBy.email}</a
-								>
-							</div>
-							<div class="text-muted-foreground mt-4">
-								{post.createdBy.bio || 'No bio provided.'}
-							</div>
-						</Card.Description>
+						<div class="text-muted-foreground flex items-center text-sm">
+							<Mail class="mr-1 h-4 w-4" />
+							<a href={`mailto:${post.createdBy.email}`} target="_blank" class="underline"
+								>{post.createdBy.email}</a
+							>
+						</div>
+						<div class="text-muted-foreground text-sm mt-2">
+							{post.createdBy.bio || 'No bio provided.'}
+						</div>
 					</Card.Content>
 				</Card.Root>
 			</div>
