@@ -58,7 +58,7 @@
 					{post.prereq}
 				</div>
 			{/if}
-			<div class="flex flex-wrap gap-2 mt-2">
+			<div class="mt-2 flex flex-wrap gap-2">
 				{#each post.tags as tag}
 					<Tag>{tag}</Tag>
 				{/each}
@@ -66,7 +66,7 @@
 		</Card.Content>
 		<Card.Footer class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
 			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
-				<div class="text-muted-foreground mb-2 text-sm italic w-full">
+				<div class="text-muted-foreground mb-2 w-full text-sm italic">
 					Closes
 					{#if post.closesAt !== undefined}
 						in
@@ -88,7 +88,7 @@
 					{/if}
 				</div>
 			{:else if closed}
-				<div class="mb-2 line-clamp-1 text-sm text-red-500 w-full">
+				<div class="mb-2 line-clamp-1 w-full text-sm text-red-500">
 					<strong>No longer accepting applications</strong>
 				</div>
 			{:else}

@@ -90,7 +90,7 @@
 								>{post.createdBy.email}</a
 							>
 						</div>
-						<div class="text-muted-foreground text-sm mt-2">
+						<div class="text-muted-foreground mt-2 text-sm">
 							{post.createdBy.bio || 'No bio provided.'}
 						</div>
 					</Card.Content>

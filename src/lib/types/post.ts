@@ -1,3 +1,4 @@
+import type { ApplicationForm } from './applicationForm';
 import type { User } from './user';
 
 export interface PostPreview {
@@ -13,6 +14,10 @@ export interface PostPreview {
 	slotsRemaining?: number;
 	createdAt: string;
 	createdBy: User;
+}
+
+export interface Post extends PostPreview {
+	applicationForm: ApplicationForm;
 }
 
 export const defaultCareerStageLevels = [
