@@ -7,7 +7,7 @@
 	let { data }: PageProps = $props();
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto pb-16">
 	<div class="relative w-full">
 		<div class="peer">
 			<enhanced:img

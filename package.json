@@ -52,7 +52,7 @@
 		"typescript-eslint": "^8.20.0",
 		"unplugin-icons": "^22.1.0",
 		"vite": "^7.0.4",
-		"zod": "^3.25.0"
+		"zod": "^4.0.10"
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",

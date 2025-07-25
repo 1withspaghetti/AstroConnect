@@ -1,6 +1,6 @@
-import type { PostPreview } from '@/types/post';
+import type { Post } from '@/types/post';
 
-const posts: PostPreview[] = [
+const posts: Post[] = [
 	{
 		id: 1,
 		title: 'Lorem ipsum dolor sit amet',
@@ -14,7 +14,7 @@ const posts: PostPreview[] = [
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		open: true,
-		closesAt: '2025-07-22T06:59:59Z',
+		closesAt: '2025-07-28T06:59:59Z',
 		slotsRemaining: 4,
 		createdAt: '2025-07-19T12:00:00Z',
 		createdBy: {
@@ -25,6 +25,55 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 1,
+			postId: 1,
+			questions: [
+				{
+					id: 'q1',
+					type: 1, // TEXT
+					label: 'What is your current major?',
+					required: true,
+					min: 1,
+					max: 100
+				},
+				{
+					id: 'q2',
+					type: 2, // TEXTAREA
+					label: 'Tell us about your experience with astronomy.',
+					required: true,
+					min: 10,
+					max: 1000
+				},
+				{
+					id: 'q3',
+					type: 3, // SELECT
+					label: 'What part of this research are you most interested in?',
+					options: [
+						'Observational Astronomy',
+						'Theoretical Astronomy',
+						'Planetary Science',
+						'Cosmology'
+					],
+					required: true
+				},
+				{
+					id: 'q4',
+					type: 4, // MULTISELECT
+					label: 'What skills do you bring to this research?',
+					options: ['Data Analysis', 'Programming', 'Field Work'],
+					required: true,
+					min: 1,
+					max: 3
+				},
+				{
+					id: 'q5',
+					type: 5, // FILE
+					label: 'Upload your CV',
+					required: false
+				}
+			]
 		}
 	},
 	{
@@ -49,6 +98,11 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 2,
+			postId: 2,
+			questions: []
 		}
 	},
 	{
@@ -73,6 +127,11 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 3,
+			postId: 3,
+			questions: []
 		}
 	},
 	{
@@ -95,6 +154,11 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 4,
+			postId: 4,
+			questions: []
 		}
 	},
 	{
@@ -118,6 +182,11 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 5,
+			postId: 5,
+			questions: []
 		}
 	},
 	{
@@ -141,6 +210,11 @@ const posts: PostPreview[] = [
 			isAdmin: false,
 			createdAt: new Date(),
 			updatedAt: new Date()
+		},
+		applicationForm: {
+			id: 6,
+			postId: 6,
+			questions: []
 		}
 	}
 ];

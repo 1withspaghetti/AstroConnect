@@ -3,8 +3,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '@/components/ui/button';
 	import ImagesIcon from '@lucide/svelte/icons/images';
-	import Tag from './ui/Tag.svelte';
 	import dayjs from '@/util/dayjs';
+	import { Badge } from '$lib/components/ui/badge';
 
 	let { post }: { post: PostPreview } = $props();
 
@@ -60,7 +60,7 @@
 			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">
 				{#each post.tags as tag}
-					<Tag>{tag}</Tag>
+					<Badge>{tag}</Badge>
 				{/each}
 			</div>
 		</Card.Content>
