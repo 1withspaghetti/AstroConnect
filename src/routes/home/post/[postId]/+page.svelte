@@ -5,9 +5,9 @@
 	import * as Avatar from '@/components/ui/avatar';
 	import Mail from '@lucide/svelte/icons/mail';
 	import dayjs from '@/util/dayjs';
-	import ApplyForm from './apply-form.svelte';
 	import { Separator } from '@/components/ui/separator';
 	import { Badge } from '$lib/components/ui/badge';
+	import ApplicationForm from '@/components/ApplicationForm.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -103,7 +103,7 @@
 		<Separator class="mt-1 mb-6" />
 		<div class="px-2">
 			{#if post.applicationForm}
-				<ApplyForm
+				<ApplicationForm
 					formDefinition={post.applicationForm}
 					formInputData={data.form}
 					disabled={closed}

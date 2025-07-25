@@ -2,24 +2,26 @@
 	import { ApplicationFormQuestionType, type ApplicationForm } from '@/types/applicationForm';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
-	import { getApplicationFormSchema } from './schema';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '@/components/ui/textarea';
 	import * as Select from '$lib/components/ui/select';
 	import Button from '@/components/ui/button/button.svelte';
+	import { getApplicationFormSchema } from '@/validators/applicationFormValidator';
 
 	let {
 		formDefinition,
 		formInputData,
-		disabled = false
+		disabled = false,
+		preventSubmit = false
 	}: {
 		formDefinition: ApplicationForm;
-		formInputData: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
+		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		disabled?: boolean;
+		preventSubmit?: boolean;
 	} = $props();
 
-	let form = superForm(formInputData, {
+	let form = superForm(formInputData || {}, {
 		validators: zod4Client(getApplicationFormSchema(formDefinition))
 	});
 
@@ -135,7 +137,7 @@
 		{/if}
 	{/each}
 	<div class="flex justify-center">
-		<Button type="submit" disabled={$submitting || disabled}>
+		<Button type="submit" disabled={$submitting || disabled || preventSubmit}>
 			{#if $submitting}
 				<span>Submitting...</span>
 			{:else}

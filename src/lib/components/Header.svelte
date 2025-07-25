@@ -36,8 +36,11 @@
 				<DropdownMenu.Content>
 					<DropdownMenu.Group>
 						<DropdownMenu.Item><UserPen /> Profile</DropdownMenu.Item>
-						<DropdownMenu.Item><Files /> My Posted Research</DropdownMenu.Item>
 						<DropdownMenu.Item><Bookmark /> Saved Research</DropdownMenu.Item>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item><FileUp /> Post Research</DropdownMenu.Item>
+						<DropdownMenu.Item><Files /> My Posted Research</DropdownMenu.Item>
+						<DropdownMenu.Separator />
 						<DropdownMenu.Item><Settings /> Settings</DropdownMenu.Item>
 						<DropdownMenu.Separator />
 						<DropdownMenu.Item

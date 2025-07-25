@@ -31,7 +31,7 @@
 	});
 </script>
 
-<Carousel.Root setApi={(emblaApi) => (mainApi = emblaApi)} class="bg-muted dark:bg-card">
+<Carousel.Root setApi={(emblaApi) => (mainApi = emblaApi)}>
 	<Carousel.Content class="ml-0">
 		{#each images as image}
 			<Carousel.Item class="basis-auto p-4 pl-0 first:pl-4">
@@ -42,7 +42,7 @@
 	<Carousel.Previous class="-left-4" />
 	<Carousel.Next class="-right-4" />
 </Carousel.Root>
-<Carousel.Root setApi={(emblaApi) => (previewApi = emblaApi)} class="bg-muted dark:bg-card">
+<Carousel.Root setApi={(emblaApi) => (previewApi = emblaApi)}>
 	<Carousel.Content class="ml-0">
 		{#each images as image, i}
 			<Carousel.Item class="basis-auto py-1 pr-2 pl-0 first:pl-2">

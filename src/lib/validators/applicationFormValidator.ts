@@ -88,9 +88,3 @@ function _questionDefinitionToSchema(question: ApplicationForm['questions'][numb
 
 	return schema;
 }
-
-// export type InferSchemaFromApplicationForm<T extends ApplicationForm> = z.ZodObject<{
-//     [K in ApplicationForm['questions'][number]['id']]: InferApplicationFormQuestionAnswer<
-//         Extract<ApplicationForm['questions'][number], { id: K }>
-//     >
-// }>
