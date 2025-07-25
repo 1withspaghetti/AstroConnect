@@ -25,7 +25,7 @@
 			/>
 			<a
 				title="View more images"
-				href="/dashboard/post/{post.id}"
+				href="/home/post/{post.id}"
 				class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
 			>
 				<ImagesIcon class="h-4 w-4" />
@@ -35,14 +35,12 @@
 	{/if}
 	<div class="flex flex-1 flex-col gap-4 py-4">
 		<Card.Header>
-			<Card.Title class="line-clamp-2"
-				><a href="/dashboard/post/{post.id}">{post.title}</a></Card.Title
-			>
+			<Card.Title class="line-clamp-2"><a href="/home/post/{post.id}">{post.title}</a></Card.Title>
 			<Card.Description class="line-clamp-3"
 				>{post.desc || 'No description provided.'}</Card.Description
 			>
 			<Card.Action>
-				<Button href="/dashboard/post/{post.id}" disabled={closed}>Apply</Button>
+				<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
 			</Card.Action>
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col">

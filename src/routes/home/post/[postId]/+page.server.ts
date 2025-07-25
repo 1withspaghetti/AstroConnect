@@ -1,8 +1,8 @@
 import type { PageServerLoad } from './$types.js';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import posts from '../../search/fake_data';
-import { getApplicationFormSchema } from './schema';
+import posts from '../../search/fake_data.js';
+import { getApplicationFormSchema } from './schema.js';
 import { error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params }) => {
