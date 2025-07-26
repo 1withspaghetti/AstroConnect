@@ -6,7 +6,6 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '@/components/ui/textarea';
 	import * as Select from '$lib/components/ui/select';
-	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { getApplicationFormSchema } from '@/validators/applicationFormValidator';
 	import Button from './ui/button/button.svelte';
 
@@ -138,31 +137,14 @@
 		{/if}
 	{/each}
 	<div class="flex justify-center">
-		<Tooltip.Provider>
-			<Tooltip.Root disabled={!($submitting || disabled || !allowSubmit)}>
-				<Tooltip.Trigger>
-					<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>
-						{#if $submitting}
-							<span>Submitting...</span>
-						{:else}
-							<span>Submit Application</span>
-						{/if}
-					</Button>
-				</Tooltip.Trigger>
-				<Tooltip.Content>
-					<p>
-						{#if $submitting}
-							Please wait while your application is being submitted.
-						{:else if disabled}
-							This application is not accepting submissions.
-						{:else if !allowSubmit}
-							You cannot submit the form while previewing it.
-						{:else}
-							Click to email your application to
-						{/if}
-					</p>
-				</Tooltip.Content>
-			</Tooltip.Root>
-		</Tooltip.Provider>
+		<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>
+			{#if $submitting}
+				<span>Submitting...</span>
+			{:else if disabled}
+				<span>Submissions Closed</span>
+			{:else}
+				<span>Submit</span>
+			{/if}
+		</Button>
 	</div>
 </form>
