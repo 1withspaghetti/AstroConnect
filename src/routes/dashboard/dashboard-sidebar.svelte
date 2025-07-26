@@ -4,6 +4,9 @@
 	import { page } from '$app/state';
 	import DashboardSidebarUser from './dashboard-sidebar-user.svelte';
 	import ChevronsLeft from '@lucide/svelte/icons/chevrons-left';
+	import type { PostPreview } from '@/types/post';
+
+	let { posts }: { posts: PostPreview[] } = $props();
 </script>
 
 <Sidebar.Root>
@@ -40,6 +43,23 @@
 										</a>
 									{/snippet}
 								</Sidebar.MenuButton>
+								{#if item.hasSubPosts}
+									<Sidebar.MenuSub>
+										{#each posts as post (post.id)}
+											<Sidebar.MenuSubItem>
+												<Sidebar.MenuSubButton
+													isActive={page.url.pathname.startsWith(`/dashboard/posts/${post.id}`)}
+												>
+													{#snippet child({ props })}
+														<a href={`/dashboard/posts/${post.id}`} {...props} class="line-clamp-1">
+															{post.title || 'Untitled Post'}
+														</a>
+													{/snippet}
+												</Sidebar.MenuSubButton>
+											</Sidebar.MenuSubItem>
+										{/each}
+									</Sidebar.MenuSub>
+								{/if}
 							</Sidebar.MenuItem>
 						{/each}
 					</Sidebar.Menu>

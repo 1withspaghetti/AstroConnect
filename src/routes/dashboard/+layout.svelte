@@ -5,7 +5,20 @@
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
 
-	export const navData = [
+	interface NavGroup {
+		title: string;
+		items: NavItem[];
+	}
+
+	interface NavItem {
+		href: string;
+		icon: any;
+		label: string;
+		noActive?: boolean;
+		hasSubPosts?: boolean;
+	}
+
+	export const navData: NavGroup[] = [
 		{
 			title: 'For Researchers',
 			items: [
@@ -18,7 +31,8 @@
 				{
 					href: '/dashboard/posts',
 					icon: Files,
-					label: 'My Posts'
+					label: 'My Posts',
+					hasSubPosts: true,
 				}
 			]
 		},
@@ -53,7 +67,7 @@
 	import DashboardSidebar from './dashboard-sidebar.svelte';
 	import { page } from '$app/state';
 
-	let { children }: LayoutProps = $props();
+	let { children, data }: LayoutProps = $props();
 
 	let currentNavItem = $derived(
 		navData
@@ -63,7 +77,7 @@
 </script>
 
 <Sidebar.Provider>
-	<DashboardSidebar />
+	<DashboardSidebar posts={data.posts} />
 	<Sidebar.Inset>
 		<header class="flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />
