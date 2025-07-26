@@ -3,6 +3,7 @@
 	import SearchForm from './search-form.svelte';
 	import PostCard from '@/components/PostCard.svelte';
 	import * as Pagination from '$lib/components/ui/pagination';
+	import { Button } from '@/components/ui/button';
 
 	let { data }: PageProps = $props();
 </script>
@@ -36,7 +37,11 @@
 	</div>
 	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-8">
 		{#each data.posts as post}
-			<PostCard {post} />
+			<PostCard {post} href={`/home/post/${post.id}`}>
+				{#snippet action({ closed })}
+					<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
+				{/snippet}
+			</PostCard>
 		{/each}
 	</div>
 

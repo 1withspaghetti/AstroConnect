@@ -1,12 +1,20 @@
 <script lang="ts">
 	import type { PostPreview } from '@/types/post';
 	import * as Card from '$lib/components/ui/card';
-	import { Button } from '@/components/ui/button';
 	import ImagesIcon from '@lucide/svelte/icons/images';
 	import dayjs from '@/util/dayjs';
 	import { Badge } from '$lib/components/ui/badge';
+	import type { Snippet } from 'svelte';
 
-	let { post }: { post: PostPreview } = $props();
+	let {
+		post,
+		href,
+		action
+	}: {
+		post: PostPreview;
+		href: string;
+		action?: Snippet<[{ closed: boolean }]>;
+	} = $props();
 
 	let closed = $derived(
 		!post.open ||
@@ -15,17 +23,17 @@
 	);
 </script>
 
-<div class="bg-card text-card-foreground flex rounded-xl border shadow-sm">
+<div class="bg-card text-card-foreground @container flex rounded-xl border shadow-sm">
 	{#if post.images && post.images.length > 0}
 		<div class="relative">
 			<img
 				src={post.images[0]}
 				alt={post.title}
-				class="h-full w-24 rounded-l-xl object-cover object-center sm:w-48"
+				class="h-full w-24 rounded-l-xl object-cover object-center @lg:w-48"
 			/>
 			<a
 				title="View more images"
-				href="/home/post/{post.id}"
+				{href}
 				class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
 			>
 				<ImagesIcon class="h-4 w-4" />
@@ -35,13 +43,15 @@
 	{/if}
 	<div class="flex flex-1 flex-col gap-4 py-4">
 		<Card.Header>
-			<Card.Title class="line-clamp-2"><a href="/home/post/{post.id}">{post.title}</a></Card.Title>
+			<Card.Title class="line-clamp-2 pb-1"><a {href}>{post.title}</a></Card.Title>
 			<Card.Description class="line-clamp-3"
 				>{post.desc || 'No description provided.'}</Card.Description
 			>
-			<Card.Action>
-				<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
-			</Card.Action>
+			{#if action}
+				<Card.Action>
+					{@render action?.({ closed })}
+				</Card.Action>
+			{/if}
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col">
 			{#if post.careerStage}
@@ -62,7 +72,7 @@
 				{/each}
 			</div>
 		</Card.Content>
-		<Card.Footer class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
+		<Card.Footer class="flex flex-col items-start justify-between gap-2 @lg:flex-row @lg:items-end">
 			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
 				<div class="text-muted-foreground mb-2 w-full text-sm italic">
 					Closes
@@ -92,7 +102,7 @@
 			{:else}
 				<div class="w-full"></div>
 			{/if}
-			<div class="text-muted-foreground text-xs sm:text-right">
+			<div class="text-muted-foreground text-xs @lg:text-right">
 				<span
 					>Posted <b title={dayjs(post.createdAt).format('LLLL')}
 						>{dayjs(post.createdAt).fromNow()}</b

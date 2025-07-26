@@ -32,7 +32,7 @@
 					href: '/dashboard/posts',
 					icon: Files,
 					label: 'My Posts',
-					hasSubPosts: true,
+					hasSubPosts: true
 				}
 			]
 		},

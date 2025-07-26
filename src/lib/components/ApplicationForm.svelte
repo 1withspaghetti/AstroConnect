@@ -1,24 +1,25 @@
 <script lang="ts">
 	import { ApplicationFormQuestionType, type ApplicationForm } from '@/types/applicationForm';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Textarea } from '@/components/ui/textarea';
 	import * as Select from '$lib/components/ui/select';
-	import Button from '@/components/ui/button/button.svelte';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { getApplicationFormSchema } from '@/validators/applicationFormValidator';
+	import Button from './ui/button/button.svelte';
 
 	let {
 		formDefinition,
 		formInputData,
 		disabled = false,
-		preventSubmit = false
+		allowSubmit = false
 	}: {
 		formDefinition: ApplicationForm;
 		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		disabled?: boolean;
-		preventSubmit?: boolean;
+		allowSubmit?: boolean;
 	} = $props();
 
 	let form = superForm(formInputData || {}, {
@@ -137,12 +138,31 @@
 		{/if}
 	{/each}
 	<div class="flex justify-center">
-		<Button type="submit" disabled={$submitting || disabled || preventSubmit}>
-			{#if $submitting}
-				<span>Submitting...</span>
-			{:else}
-				<span>Submit Application</span>
-			{/if}
-		</Button>
+		<Tooltip.Provider>
+			<Tooltip.Root disabled={!($submitting || disabled || !allowSubmit)}>
+				<Tooltip.Trigger>
+					<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>
+						{#if $submitting}
+							<span>Submitting...</span>
+						{:else}
+							<span>Submit Application</span>
+						{/if}
+					</Button>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					<p>
+						{#if $submitting}
+							Please wait while your application is being submitted.
+						{:else if disabled}
+							This application is not accepting submissions.
+						{:else if !allowSubmit}
+							You cannot submit the form while previewing it.
+						{:else}
+							Click to email your application to
+						{/if}
+					</p>
+				</Tooltip.Content>
+			</Tooltip.Root>
+		</Tooltip.Provider>
 	</div>
 </form>
