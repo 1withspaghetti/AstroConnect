@@ -10,16 +10,16 @@
 	type T = string;
 
 	type Props = {
-		items: T[];
+		item?: T;
 		defaultOptions: T[];
-		onChange?: (items: T[]) => void;
+		onChange?: (item: T) => void;
 		allowCustom?: boolean;
 		placeholder?: string;
 		emptyText?: string;
 	};
 
 	let {
-		items = $bindable(),
+		item = $bindable(),
 		defaultOptions = [],
 		onChange,
 		allowCustom = false,
@@ -31,7 +31,7 @@
 	let openTriggerRef = $state<HTMLButtonElement>(null!);
 	let search = $state('');
 
-	let displayText = $derived(items.length > 0 ? items.join(', ') : placeholder);
+	let displayText = $derived(item ? item : placeholder);
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
@@ -71,14 +71,12 @@
 						<Command.Item
 							value={option}
 							onSelect={() => {
-								items = items.includes(option)
-									? items.filter((t) => t !== option)
-									: [...items, option];
+								item = option;
 								closeAndFocusTrigger();
-								onChange?.(items);
+								onChange?.(item);
 							}}
 						>
-							<CheckIcon class={cn('mr-2 size-4', !items.includes(option) && 'text-transparent')} />
+							<CheckIcon class={cn('mr-2 size-4', item !== option && 'text-transparent')} />
 							{option}
 						</Command.Item>
 					{/each}
@@ -89,9 +87,9 @@
 							<Command.Item
 								value={search}
 								onSelect={() => {
-									items = [...items, search];
+									item = search;
 									closeAndFocusTrigger();
-									onChange?.(items);
+									onChange?.(item);
 								}}
 								forceMount
 							>
