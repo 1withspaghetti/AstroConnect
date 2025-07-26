@@ -30,7 +30,9 @@
 					<Sidebar.Menu>
 						{#each group.items as item (item.label)}
 							<Sidebar.MenuItem>
-								<Sidebar.MenuButton isActive={page.url.pathname.startsWith(item.href)}>
+								<Sidebar.MenuButton
+									isActive={page.url.pathname.startsWith(item.href) && !item.noActive}
+								>
 									{#snippet child({ props })}
 										<a href={item.href} {...props}>
 											<item.icon />

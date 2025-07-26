@@ -10,12 +10,13 @@
 			title: 'For Researchers',
 			items: [
 				{
-					href: '/dashboard/post',
+					href: '/dashboard/posts',
 					icon: FileUp,
-					label: 'Post Research Opportunity'
+					label: 'Post Research Opportunity',
+					noActive: true
 				},
 				{
-					href: '/dashboard/my-posts',
+					href: '/dashboard/posts',
 					icon: Files,
 					label: 'My Posts'
 				}
@@ -55,7 +56,9 @@
 	let { children }: LayoutProps = $props();
 
 	let currentNavItem = $derived(
-		navData.flatMap((group) => group.items).find((item) => page.url.pathname.startsWith(item.href))
+		navData
+			.flatMap((group) => group.items)
+			.find((item) => page.url.pathname.startsWith(item.href) && !item.noActive)
 	);
 </script>
 

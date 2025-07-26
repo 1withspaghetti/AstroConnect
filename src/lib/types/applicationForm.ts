@@ -23,11 +23,11 @@ export type ApplicationFormQuestion = {
 	  }
 	| {
 			type: ApplicationFormQuestionType.SELECT;
-			options: string[];
+			options: string; // Comma-separated list of options
 	  }
 	| {
 			type: ApplicationFormQuestionType.MULTISELECT;
-			options: string[];
+			options: string; // Comma-separated list of options
 			min?: number;
 			max?: number;
 	  }

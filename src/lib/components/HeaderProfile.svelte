@@ -25,12 +25,12 @@
 		],
 		[
 			{
-				href: '/dashboard/post',
+				href: '/dashboard/posts',
 				icon: FileUp,
 				label: 'Post Research Opportunity'
 			},
 			{
-				href: '/dashboard/my-posts',
+				href: '/dashboard/posts',
 				icon: Files,
 				label: 'My Posts'
 			}

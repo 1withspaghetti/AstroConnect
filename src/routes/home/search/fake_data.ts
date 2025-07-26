@@ -55,14 +55,14 @@ const posts: Post[] = [
 						'Theoretical Astronomy',
 						'Planetary Science',
 						'Cosmology'
-					],
+					].join(','),
 					required: true
 				},
 				{
 					id: 'q4',
 					type: 4, // MULTISELECT
 					label: 'What skills do you bring to this research?',
-					options: ['Data Analysis', 'Programming', 'Field Work'],
+					options: ['Data Analysis', 'Programming', 'Field Work'].join(','),
 					required: true,
 					min: 1,
 					max: 3

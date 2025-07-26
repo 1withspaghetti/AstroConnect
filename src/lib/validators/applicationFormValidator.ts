@@ -58,13 +58,11 @@ function _questionDefinitionToSchema(question: ApplicationForm['questions'][numb
 				);
 			break;
 		case ApplicationFormQuestionType.SELECT: // SELECT
-			schema = z
-				.literal(question.options as [string, ...string[]], 'Select one of the options')
-				.default('');
+			schema = z.literal(question.options.split(','), 'Select one of the options').default('');
 			break;
 		case ApplicationFormQuestionType.MULTISELECT: // MULTISELECT
 			schema = z
-				.array(z.enum(question.options as [string, ...string[]]))
+				.array(z.enum(question.options.split(',')))
 				.min(
 					question.min || 0,
 					'Select at least ' + (question.min || 0) + ' option' + (question.min === 1 ? '' : 's')
