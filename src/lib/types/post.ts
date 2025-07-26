@@ -1,10 +1,15 @@
 import type { ApplicationForm } from './applicationForm';
 import type { User } from './user';
 
-export interface PostPreview {
+export interface PostMinimal {
 	id: number;
 	draft: boolean;
 	title: string;
+	open: boolean;
+	createdAt: string;
+}
+
+export interface PostPreview extends PostMinimal {
 	desc?: string;
 	images: string[];
 	tags: string[];

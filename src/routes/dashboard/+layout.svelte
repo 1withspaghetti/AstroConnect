@@ -86,12 +86,14 @@
 	);
 
 	let currentPostNavItem = $derived(
-		page.url.pathname.startsWith(`/dashboard/post/`) ? data.posts.find((post) => page.url.pathname.startsWith(`/dashboard/post/${post.id}`)) : undefined
+		page.url.pathname.startsWith(`/dashboard/post/`)
+			? data.postList.find((post) => page.url.pathname.startsWith(`/dashboard/post/${post.id}`))
+			: undefined
 	);
 </script>
 
 <Sidebar.Provider>
-	<DashboardSidebar posts={data.posts} />
+	<DashboardSidebar posts={data.postList} />
 	<Sidebar.Inset>
 		<header class="flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />
@@ -119,7 +121,10 @@
 						{/if}
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
-							<Breadcrumb.Link href={`/dashboard/post/${currentPostNavItem.id}`} class="line-clamp-1 max-w-sm">
+							<Breadcrumb.Link
+								href={`/dashboard/post/${currentPostNavItem.id}`}
+								class="line-clamp-1 max-w-sm"
+							>
 								{currentPostNavItem.title || 'Untitled Post'}
 							</Breadcrumb.Link>
 						</Breadcrumb.Item>

@@ -4,9 +4,9 @@
 	import { page } from '$app/state';
 	import DashboardSidebarUser from './dashboard-sidebar-user.svelte';
 	import ChevronsLeft from '@lucide/svelte/icons/chevrons-left';
-	import type { PostPreview } from '@/types/post';
+	import type { PostMinimal } from '@/types/post';
 
-	let { posts }: { posts: PostPreview[] } = $props();
+	let { posts }: { posts: PostMinimal[] } = $props();
 
 	let draftPosts = $derived(posts.filter((post) => post.draft));
 	let publishedPosts = $derived(posts.filter((post) => !post.draft));
@@ -55,7 +55,11 @@
 													isActive={page.url.pathname.startsWith(`/dashboard/post/${post.id}`)}
 													href={`/dashboard/post/${post.id}`}
 												>
-													<span class="line-clamp-1 {post.draft || !post.open ? 'text-muted-foreground' : ''}">{post.title || 'Untitled Post'}</span>
+													<span
+														class="line-clamp-1 {post.draft || !post.open
+															? 'text-muted-foreground'
+															: ''}">{post.title || 'Untitled Post'}</span
+													>
 												</Sidebar.MenuSubButton>
 											</Sidebar.MenuSubItem>
 										{/each}
