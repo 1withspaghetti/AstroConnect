@@ -3,6 +3,7 @@ import type { Post } from '@/types/post';
 const posts: Post[] = [
 	{
 		id: 1,
+		draft: false,
 		title: 'Lorem ipsum dolor sit amet',
 		desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		images: [
@@ -78,6 +79,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 2,
+		draft: false,
 		title:
 			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium',
 		desc: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
@@ -107,6 +109,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 3,
+		draft: false,
 		title:
 			'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
 		desc: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
@@ -136,6 +139,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 4,
+		draft: false,
 		title: 'Lorem ipsum dolor sit amet',
 		desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		images: [
@@ -163,6 +167,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 5,
+		draft: true,
 		title:
 			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium',
 		desc: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
@@ -172,7 +177,7 @@ const posts: Post[] = [
 		careerStage: 'Graduate',
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
-		open: true,
+		open: false,
 		createdAt: '2025-07-17T12:00:00Z',
 		createdBy: {
 			id: '1',
@@ -191,6 +196,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 6,
+		draft: true,
 		title:
 			'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
 		desc: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',

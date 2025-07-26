@@ -9,6 +9,8 @@
 	import { goto } from '$app/navigation';
 	import FileUp from '@lucide/svelte/icons/file-up';
 	import Search from '@lucide/svelte/icons/search';
+	import Plus from '@lucide/svelte/icons/plus';
+	import Eye from '@lucide/svelte/icons/eye';
 
 	const navData = [
 		[
@@ -18,20 +20,20 @@
 				label: 'Search Research'
 			},
 			{
-				href: '/dashboard/saved',
+				href: '/home/search',
 				icon: Bookmark,
 				label: 'Bookmarked'
 			}
 		],
 		[
 			{
-				href: '/dashboard/posts',
-				icon: FileUp,
+				href: '/dashboard/drafts',
+				icon: Plus,
 				label: 'Post Research Opportunity'
 			},
 			{
-				href: '/dashboard/posts',
-				icon: Files,
+				href: '/dashboard/published',
+				icon: Eye,
 				label: 'My Posts'
 			}
 		],

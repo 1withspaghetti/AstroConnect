@@ -7,6 +7,9 @@
 	import type { PostPreview } from '@/types/post';
 
 	let { posts }: { posts: PostPreview[] } = $props();
+
+	let draftPosts = $derived(posts.filter((post) => post.draft));
+	let publishedPosts = $derived(posts.filter((post) => !post.draft));
 </script>
 
 <Sidebar.Root>
@@ -45,16 +48,14 @@
 								</Sidebar.MenuButton>
 								{#if item.hasSubPosts}
 									<Sidebar.MenuSub>
-										{#each posts as post (post.id)}
+										{@const subPosts = item.subPostsAreDrafts ? draftPosts : publishedPosts}
+										{#each subPosts as post (post.id)}
 											<Sidebar.MenuSubItem>
 												<Sidebar.MenuSubButton
-													isActive={page.url.pathname.startsWith(`/dashboard/posts/${post.id}`)}
+													isActive={page.url.pathname.startsWith(`/dashboard/post/${post.id}`)}
+													href={`/dashboard/post/${post.id}`}
 												>
-													{#snippet child({ props })}
-														<a href={`/dashboard/posts/${post.id}`} {...props} class="line-clamp-1">
-															{post.title || 'Untitled Post'}
-														</a>
-													{/snippet}
+													<span class="line-clamp-1 {post.draft || !post.open ? 'text-muted-foreground' : ''}">{post.title || 'Untitled Post'}</span>
 												</Sidebar.MenuSubButton>
 											</Sidebar.MenuSubItem>
 										{/each}

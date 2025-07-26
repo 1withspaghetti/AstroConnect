@@ -12,7 +12,7 @@
 			<Button href="/home/search" variant="default"
 				><Search /> <span class="hidden sm:inline">Search for Research</span></Button
 			>
-			<Button href="/dashboard/post" variant="outline"
+			<Button href="/dashboard/drafts" variant="outline"
 				><FileUp /> <span class="hidden sm:inline">Post Research</span></Button
 			>
 			<HeaderProfile />

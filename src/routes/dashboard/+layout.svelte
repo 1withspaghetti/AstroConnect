@@ -1,9 +1,10 @@
 <script lang="ts" module>
 	import UserPen from '@lucide/svelte/icons/user-pen';
-	import FileUp from '@lucide/svelte/icons/file-up';
-	import Files from '@lucide/svelte/icons/files';
+	import Plus from '@lucide/svelte/icons/plus';
+	import Pen from '@lucide/svelte/icons/pen';
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
+	import Eye from '@lucide/svelte/icons/eye';
 
 	interface NavGroup {
 		title: string;
@@ -16,6 +17,7 @@
 		label: string;
 		noActive?: boolean;
 		hasSubPosts?: boolean;
+		subPostsAreDrafts?: boolean;
 	}
 
 	export const navData: NavGroup[] = [
@@ -23,16 +25,24 @@
 			title: 'For Researchers',
 			items: [
 				{
-					href: '/dashboard/posts',
-					icon: FileUp,
+					href: '/dashboard/drafts',
+					icon: Plus,
 					label: 'Post Research Opportunity',
 					noActive: true
 				},
 				{
-					href: '/dashboard/posts',
-					icon: Files,
-					label: 'My Posts',
-					hasSubPosts: true
+					href: '/dashboard/drafts',
+					icon: Pen,
+					label: 'Drafts',
+					hasSubPosts: true,
+					subPostsAreDrafts: true
+				},
+				{
+					href: '/dashboard/published',
+					icon: Eye,
+					label: 'Published',
+					hasSubPosts: true,
+					subPostsAreDrafts: false
 				}
 			]
 		},
@@ -74,6 +84,10 @@
 			.flatMap((group) => group.items)
 			.find((item) => page.url.pathname.startsWith(item.href) && !item.noActive)
 	);
+
+	let currentPostNavItem = $derived(
+		page.url.pathname.startsWith(`/dashboard/post/`) ? data.posts.find((post) => page.url.pathname.startsWith(`/dashboard/post/${post.id}`)) : undefined
+	);
 </script>
 
 <Sidebar.Provider>
@@ -91,6 +105,23 @@
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
 							<Breadcrumb.Link href={currentNavItem.href}>{currentNavItem.label}</Breadcrumb.Link>
+						</Breadcrumb.Item>
+					{:else if currentPostNavItem}
+						<Breadcrumb.Separator />
+						{#if currentPostNavItem.draft}
+							<Breadcrumb.Item>
+								<Breadcrumb.Link href="/dashboard/drafts">Drafts</Breadcrumb.Link>
+							</Breadcrumb.Item>
+						{:else}
+							<Breadcrumb.Item>
+								<Breadcrumb.Link href="/dashboard/published">Published</Breadcrumb.Link>
+							</Breadcrumb.Item>
+						{/if}
+						<Breadcrumb.Separator />
+						<Breadcrumb.Item>
+							<Breadcrumb.Link href={`/dashboard/post/${currentPostNavItem.id}`} class="line-clamp-1 max-w-sm">
+								{currentPostNavItem.title || 'Untitled Post'}
+							</Breadcrumb.Link>
 						</Breadcrumb.Item>
 					{/if}
 				</Breadcrumb.List>

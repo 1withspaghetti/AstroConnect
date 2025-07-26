@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import { Input } from '@/components/ui/input';
 	import Search from '@lucide/svelte/icons/search';
-	import { uniqueTags } from './fake_data';
+	import { uniqueTags } from '@/fake_data';
 	import { Label } from '@/components/ui/label';
 	import * as Select from '@/components/ui/select';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';

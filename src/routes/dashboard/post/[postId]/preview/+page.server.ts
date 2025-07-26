@@ -1,9 +1,6 @@
 import type { PageServerLoad } from './$types.js';
-import { superValidate } from 'sveltekit-superforms';
-import { zod4 } from 'sveltekit-superforms/adapters';
 import posts from '@/fake_data';
 import { error } from '@sveltejs/kit';
-import { getApplicationFormSchema } from '@/validators/applicationFormValidator.js';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const postId = parseInt(params.postId);
@@ -15,7 +12,6 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 
 	return {
-		post,
-		form: await superValidate(zod4(getApplicationFormSchema(post.applicationForm)))
+		post
 	};
 };

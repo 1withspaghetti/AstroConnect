@@ -3,6 +3,7 @@ import type { User } from './user';
 
 export interface PostPreview {
 	id: number;
+	draft: boolean;
 	title: string;
 	desc?: string;
 	images: string[];
