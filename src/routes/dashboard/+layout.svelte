@@ -1,28 +1,11 @@
 <script lang="ts" module>
 	import UserPen from '@lucide/svelte/icons/user-pen';
-	import Bookmark from '@lucide/svelte/icons/bookmark';
 	import FileUp from '@lucide/svelte/icons/file-up';
 	import Files from '@lucide/svelte/icons/files';
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
-	import Search from '@lucide/svelte/icons/search';
 
 	export const navData = [
-		{
-			title: 'Home',
-			items: [
-				{
-					href: '/home/search',
-					icon: Search,
-					label: 'Browse Research Opportunities'
-				},
-				{
-					href: '/dashboard/saved',
-					icon: Bookmark,
-					label: 'Bookmarked'
-				}
-			]
-		},
 		{
 			title: 'For Researchers',
 			items: [
@@ -74,16 +57,10 @@
 	let currentNavItem = $derived(
 		navData.flatMap((group) => group.items).find((item) => page.url.pathname.startsWith(item.href))
 	);
-
-	const user = {
-		name: 'ifgc',
-		email: 'ifgc@uw.edu',
-		avatar: 'https://github.com/ifgc.png'
-	};
 </script>
 
 <Sidebar.Provider>
-	<DashboardSidebar {user} />
+	<DashboardSidebar />
 	<Sidebar.Inset>
 		<header class="flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />

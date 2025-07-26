@@ -3,19 +3,25 @@
 	import { navData } from './+layout.svelte';
 	import { page } from '$app/state';
 	import DashboardSidebarUser from './dashboard-sidebar-user.svelte';
-
-	let {
-		user
-	}: {
-		user: {
-			name: string;
-			email: string;
-			avatar: string;
-		};
-	} = $props();
+	import ChevronsLeft from '@lucide/svelte/icons/chevrons-left';
 </script>
 
 <Sidebar.Root>
+	<Sidebar.Header>
+		<Sidebar.Menu>
+			<Sidebar.MenuItem>
+				<Sidebar.MenuButton>
+					{#snippet child({ props })}
+						<a href="/home/search" {...props}>
+							<ChevronsLeft />
+							Back to Home
+						</a>
+					{/snippet}
+				</Sidebar.MenuButton>
+			</Sidebar.MenuItem>
+		</Sidebar.Menu>
+		<Sidebar.Separator />
+	</Sidebar.Header>
 	<Sidebar.Content>
 		{#each navData as group (group.title)}
 			<Sidebar.Group title={group.title}>
@@ -40,6 +46,6 @@
 		{/each}
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<DashboardSidebarUser {user} />
+		<DashboardSidebarUser />
 	</Sidebar.Footer>
 </Sidebar.Root>

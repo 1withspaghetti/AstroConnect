@@ -15,7 +15,7 @@
 			{
 				href: '/home/search',
 				icon: Search,
-				label: 'Browse Research Opportunities'
+				label: 'Search Research'
 			},
 			{
 				href: '/dashboard/saved',

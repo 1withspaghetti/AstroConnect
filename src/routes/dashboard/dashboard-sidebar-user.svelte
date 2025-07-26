@@ -1,21 +1,18 @@
 <script lang="ts">
-	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
-	import UserPen from '@lucide/svelte/icons/user-pen';
 	import { goto } from '$app/navigation';
-	let {
-		user
-	}: {
-		user: {
-			name: string;
-			email: string;
-			avatar: string;
-		};
-	} = $props();
+	import Ellipsis from '@lucide/svelte/icons/ellipsis';
+
+	const user = {
+		name: 'ifgc',
+		email: 'ifgc@uw.edu',
+		avatar: 'https://github.com/ifgc.png'
+	};
+
 	const sidebar = useSidebar();
 </script>
 
@@ -37,7 +34,7 @@
 							<span class="truncate font-medium">{user.name}</span>
 							<span class="truncate text-xs">{user.email}</span>
 						</div>
-						<ChevronsUpDownIcon class="ml-auto size-4" />
+						<Ellipsis class="ml-auto size-4" />
 					</Sidebar.MenuButton>
 				{/snippet}
 			</DropdownMenu.Trigger>
@@ -47,27 +44,7 @@
 				align="end"
 				sideOffset={4}
 			>
-				<DropdownMenu.Label class="p-0 font-normal">
-					<div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-						<Avatar.Root class="size-8 rounded-lg">
-							<Avatar.Image src={user.avatar} alt={user.name} />
-							<Avatar.Fallback class="rounded-lg">IF</Avatar.Fallback>
-						</Avatar.Root>
-						<div class="grid flex-1 text-left text-sm leading-tight">
-							<span class="truncate font-medium">{user.name}</span>
-							<span class="truncate text-xs">{user.email}</span>
-						</div>
-					</div>
-				</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Group>
-					<DropdownMenu.Item onclick={() => goto('/dashboard/profile')} class="cursor-pointer">
-						<UserPen />
-						Edit Profile
-					</DropdownMenu.Item>
-				</DropdownMenu.Group>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item onclick={() => goto('/')} class="cursor-pointer">
+				<DropdownMenu.Item onclick={() => goto('/')} variant="destructive" class="cursor-pointer">
 					<LogOutIcon />
 					Log out
 				</DropdownMenu.Item>
