@@ -11,13 +11,18 @@ export const optionSchema = z
 	.min(1, 'Option must be at least 1 character')
 	.max(100, 'Option must be at most 100 characters');
 
-const baseSchema = z.object({
+export const baseSchema = z.object({
+	id: z
+		.string()
+		.min(1, 'Min 1 character')
+		.max(300, 'Max 300 characters')
+		.regex(/[\w]+/, 'Not a valid ID'),
 	label: z.string().min(1, 'Min 1 character').max(250, 'Max 250 characters'),
 	desc: z.string().max(1000, 'Max 1000 characters').optional(),
 	required: z.boolean()
 });
 
-const textValidator = baseSchema.extend({
+export const textSchema = baseSchema.extend({
 	type: z.literal(QType.TEXT),
 	min: z.number().min(0, 'Value must be at least 0').optional(),
 	max: z
@@ -27,7 +32,7 @@ const textValidator = baseSchema.extend({
 		.optional()
 });
 
-const textareaValidator = baseSchema.extend({
+export const textareaSchema = baseSchema.extend({
 	type: z.literal(QType.TEXTAREA),
 	min: z.number().min(0, 'Value must be at least 0').optional(),
 	max: z
@@ -37,7 +42,7 @@ const textareaValidator = baseSchema.extend({
 		.optional()
 });
 
-const selectValidator = baseSchema.extend({
+export const selectSchema = baseSchema.extend({
 	type: z.literal(QType.SELECT),
 	options: z
 		.array(optionSchema)
@@ -45,7 +50,7 @@ const selectValidator = baseSchema.extend({
 		.max(SELECT_MAX_OPTIONS, 'Max 10 available options')
 });
 
-const multiselectValidator = baseSchema.extend({
+export const multiselectSchema = baseSchema.extend({
 	type: z.literal(QType.MULTISELECT),
 	options: z
 		.array(optionSchema)
@@ -59,16 +64,16 @@ const multiselectValidator = baseSchema.extend({
 		.optional()
 });
 
-const fileValidator = baseSchema.extend({
+export const fileSchema = baseSchema.extend({
 	type: z.literal(QType.FILE)
 });
 
 export const applicationEditFormFieldSchema = z.discriminatedUnion('type', [
-	textValidator,
-	textareaValidator,
-	selectValidator,
-	multiselectValidator,
-	fileValidator
+	textSchema,
+	textareaSchema,
+	selectSchema,
+	multiselectSchema,
+	fileSchema
 ]);
 
 export const applicationEditFormSchema = z.object({

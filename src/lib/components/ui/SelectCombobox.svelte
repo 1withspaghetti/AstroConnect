@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Popover from '$lib/components/ui/popover';
 	import * as Command from '$lib/components/ui/command';
-	import { Button } from '@/components/ui/button';
+	import { Button, type ButtonProps } from '@/components/ui/button';
 	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import { cn } from '@/utils';
@@ -16,6 +16,7 @@
 		allowCustom?: boolean;
 		placeholder?: string;
 		emptyText?: string;
+		buttonProps?: ButtonProps;
 	};
 
 	let {
@@ -24,7 +25,8 @@
 		onChange,
 		allowCustom = false,
 		placeholder = 'Select...',
-		emptyText
+		emptyText,
+		buttonProps
 	}: Props = $props();
 
 	let open = $state(false);
@@ -49,10 +51,11 @@
 		{#snippet child({ props })}
 			<Button
 				variant="outline"
-				class="w-[200px]s justify-between"
 				{...props}
 				role="combobox"
 				aria-expanded={open}
+				{...buttonProps}
+				class={cn('w-full justify-between', buttonProps?.class)}
 			>
 				<span class="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">{displayText}</span>
 				<ChevronsUpDownIcon class="ml-2 size-4 shrink-0 opacity-50" />

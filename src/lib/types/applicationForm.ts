@@ -1,34 +1,40 @@
-export type ApplicationFormQuestion = {
+export type BaseQuestion = {
 	id: string;
-	type: ApplicationFormQuestionType;
 	label: string;
 	desc?: string;
 	required: boolean;
-} & (
-	| {
-			type: ApplicationFormQuestionType.TEXT;
-			min?: number;
-			max?: number;
-	  }
-	| {
-			type: ApplicationFormQuestionType.TEXTAREA;
-			min?: number;
-			max?: number;
-	  }
-	| {
-			type: ApplicationFormQuestionType.SELECT;
-			options: string[];
-	  }
-	| {
-			type: ApplicationFormQuestionType.MULTISELECT;
-			options: string[];
-			min?: number;
-			max?: number;
-	  }
-	| {
-			type: ApplicationFormQuestionType.FILE;
-	  }
-);
+};
+
+export type TextQuestion = BaseQuestion & {
+	type: ApplicationFormQuestionType.TEXT;
+	min?: number;
+	max?: number;
+};
+export type TextareaQuestion = BaseQuestion & {
+	type: ApplicationFormQuestionType.TEXTAREA;
+	min?: number;
+	max?: number;
+};
+export type SelectQuestion = BaseQuestion & {
+	type: ApplicationFormQuestionType.SELECT;
+	options: string[];
+};
+export type MultiSelectQuestion = BaseQuestion & {
+	type: ApplicationFormQuestionType.MULTISELECT;
+	options: string[];
+	min?: number;
+	max?: number;
+};
+export type FileQuestion = BaseQuestion & {
+	type: ApplicationFormQuestionType.FILE;
+};
+
+export type ApplicationFormQuestion =
+	| TextQuestion
+	| TextareaQuestion
+	| SelectQuestion
+	| MultiSelectQuestion
+	| FileQuestion;
 
 export enum ApplicationFormQuestionType {
 	TEXT = 1,
