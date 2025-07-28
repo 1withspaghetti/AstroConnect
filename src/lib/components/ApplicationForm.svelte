@@ -86,7 +86,7 @@
 								{$formData[question.id] ? $formData[question.id] : 'Select...'}
 							</Select.Trigger>
 							<Select.Content>
-								{#each question.options.split(',') as option}
+								{#each question.options as option}
 									<Select.Item value={option} label={option} />
 								{/each}
 							</Select.Content>
@@ -120,7 +120,7 @@
 									: 'Select Multiple...'}
 							</Select.Trigger>
 							<Select.Content>
-								{#each question.options.split(',') as option}
+								{#each question.options as option}
 									<Select.Item value={option} label={option} />
 								{/each}
 							</Select.Content>

@@ -1,9 +1,9 @@
 import { ApplicationFormQuestionType, type ApplicationForm } from '@/types/applicationForm';
 import { z } from 'zod/v4';
 
-const TEXT_MAX_LENGTH = 1000;
-const TEXTAREA_MAX_LENGTH = 5000;
-const SELECT_MAX_OPTIONS = 10;
+export const TEXT_MAX_LENGTH = 1000;
+export const TEXTAREA_MAX_LENGTH = 10000;
+export const SELECT_MAX_OPTIONS = 10;
 
 export function getApplicationFormSchema(form: ApplicationForm) {
 	return z.object(
@@ -58,11 +58,11 @@ function _questionDefinitionToSchema(question: ApplicationForm['questions'][numb
 				);
 			break;
 		case ApplicationFormQuestionType.SELECT: // SELECT
-			schema = z.literal(question.options.split(','), 'Select one of the options').default('');
+			schema = z.literal(question.options, 'Select one of the options').default('');
 			break;
 		case ApplicationFormQuestionType.MULTISELECT: // MULTISELECT
 			schema = z
-				.array(z.enum(question.options.split(',')))
+				.array(z.enum(question.options))
 				.min(
 					question.min || 0,
 					'Select at least ' + (question.min || 0) + ' option' + (question.min === 1 ? '' : 's')
