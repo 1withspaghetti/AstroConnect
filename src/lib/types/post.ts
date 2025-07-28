@@ -1,4 +1,4 @@
-import type { ApplicationForm } from './applicationForm';
+import type { ApplicationForm, ApplicationFormQuestion } from './applicationForm';
 import type { User } from './user';
 
 export interface PostMinimal {
@@ -23,7 +23,7 @@ export interface PostPreview extends PostMinimal {
 }
 
 export interface Post extends PostPreview {
-	applicationForm: ApplicationForm;
+	questions: ApplicationFormQuestion[];
 }
 
 export const defaultCareerStageLevels = [

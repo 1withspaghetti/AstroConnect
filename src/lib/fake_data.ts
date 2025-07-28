@@ -27,55 +27,51 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 1,
-			postId: 1,
-			questions: [
-				{
-					id: 'q1',
-					type: 1, // TEXT
-					label: 'What is your current major?',
-					required: true,
-					min: 1,
-					max: 100
-				},
-				{
-					id: 'q2',
-					type: 2, // TEXTAREA
-					label: 'Tell us about your experience with astronomy.',
-					required: true,
-					min: 10,
-					max: 1000
-				},
-				{
-					id: 'q3',
-					type: 3, // SELECT
-					label: 'What part of this research are you most interested in?',
-					options: [
-						'Observational Astronomy',
-						'Theoretical Astronomy',
-						'Planetary Science',
-						'Cosmology'
-					].join(','),
-					required: true
-				},
-				{
-					id: 'q4',
-					type: 4, // MULTISELECT
-					label: 'What skills do you bring to this research?',
-					options: ['Data Analysis', 'Programming', 'Field Work'].join(','),
-					required: true,
-					min: 1,
-					max: 3
-				},
-				{
-					id: 'q5',
-					type: 5, // FILE
-					label: 'Upload your CV',
-					required: false
-				}
-			]
-		}
+		questions: [
+			{
+				id: 'q1',
+				type: 1, // TEXT
+				label: 'What is your current major?',
+				required: true,
+				min: 1,
+				max: 100
+			},
+			{
+				id: 'q2',
+				type: 2, // TEXTAREA
+				label: 'Tell us about your experience with astronomy.',
+				required: true,
+				min: 10,
+				max: 1000
+			},
+			{
+				id: 'q3',
+				type: 3, // SELECT
+				label: 'What part of this research are you most interested in?',
+				options: [
+					'Observational Astronomy',
+					'Theoretical Astronomy',
+					'Planetary Science',
+					'Cosmology'
+				],
+				required: true
+			},
+			{
+				id: 'q4',
+				type: 4, // MULTISELECT
+				label: 'What skills do you bring to this research?',
+				options: ['Data Analysis', 'Programming', 'Field Work'],
+				required: true,
+				min: 1,
+				max: 3
+			},
+			{
+				id: 'q5',
+				type: 5, // FILE
+				label: 'Upload your CV',
+				required: false
+			}
+		]
 	},
 	{
 		id: 2,
@@ -101,11 +97,7 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 2,
-			postId: 2,
-			questions: []
-		}
+		questions: []
 	},
 	{
 		id: 3,
@@ -131,11 +123,7 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 3,
-			postId: 3,
-			questions: []
-		}
+		questions: []
 	},
 	{
 		id: 4,
@@ -159,11 +147,7 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 4,
-			postId: 4,
-			questions: []
-		}
+		questions: []
 	},
 	{
 		id: 5,
@@ -188,11 +172,7 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 5,
-			postId: 5,
-			questions: []
-		}
+		questions: []
 	},
 	{
 		id: 6,
@@ -217,11 +197,7 @@ const posts: Post[] = [
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
-		applicationForm: {
-			id: 6,
-			postId: 6,
-			questions: []
-		}
+		questions: []
 	}
 ];
 

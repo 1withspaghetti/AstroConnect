@@ -1,9 +1,3 @@
-export interface ApplicationForm {
-	id: number;
-	postId: number;
-	questions: ApplicationFormQuestion[];
-}
-
 export type ApplicationFormQuestion = {
 	id: string;
 	type: ApplicationFormQuestionType;
