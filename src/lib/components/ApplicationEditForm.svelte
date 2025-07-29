@@ -1,11 +1,5 @@
 <script lang="ts">
-	import {
-		fieldProxy,
-		superForm,
-		type FieldProxy,
-		type Infer,
-		type SuperValidated
-	} from 'sveltekit-superforms/client';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -15,18 +9,21 @@
 	import {
 		ApplicationFormQuestionType as QType,
 		applicationFormQuestionTypes,
-		type ApplicationFormQuestion,
 		type SelectQuestion,
 		type MultiSelectQuestion,
 		type TextQuestion,
-		type TextareaQuestion
+		type TextareaQuestion,
+		type ApplicationFormQuestion
 	} from '@/types/applicationForm';
 	import ChevronUp from '@lucide/svelte/icons/chevron-up';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import Copy from '@lucide/svelte/icons/copy';
+	import Trash from '@lucide/svelte/icons/trash';
 	import Textarea from './ui/textarea/textarea.svelte';
 	import { Checkbox } from './ui/checkbox';
 	import { flip } from 'svelte/animate';
 	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
+	import Plus from '@lucide/svelte/icons/plus';
 
 	let {
 		formInputData
@@ -42,9 +39,9 @@
 			formData.update(
 				() => {
 					return {
-						questions: $formData.questions.map((q) => ({
+						questions: $formData.questions.map((q, i) => ({
 							...q,
-							id: getQuestionID(q.label)
+							id: getQuestionID(q.label, i)
 						}))
 					};
 				},
@@ -55,16 +52,26 @@
 
 	const { form: formData, enhance, submitting, tainted } = form;
 
-	function getQuestionID(label: string, preventDuplicates = false): string {
+	function getQuestionID(label: string, ignoreSelf?: number): string {
 		let id = label
 			.replace(/\s+/g, '_')
 			.replace(/[^\w]+/g, '')
 			.toLowerCase();
-		if (preventDuplicates) {
-			const isDuplicate = $formData.questions.some((q) => getQuestionID(q.label) === id);
-			if (isDuplicate) return getQuestionID(`${label} c`, true);
+		while ($formData.questions.some((q, i) => q.id === id && i !== ignoreSelf)) {
+			id += '_c';
 		}
 		return id;
+	}
+
+	function createQuestion() {
+		const newQuestion = {
+			id: getQuestionID(`New Question`),
+			label: `New Question`,
+			desc: '',
+			required: true,
+			type: QType.TEXT
+		} as TextQuestion;
+		formData.update(() => ({ questions: [...$formData.questions, newQuestion] }), { taint: true });
 	}
 
 	function moveUp(index: number) {
@@ -82,14 +89,33 @@
 			formData.update(() => ({ questions }), { taint: true });
 		}
 	}
+
+	function duplicate(index: number) {
+		const question = $formData.questions[index];
+		const newQuestion = { ...question, id: getQuestionID(question.label) };
+		formData.update(
+			() => ({
+				questions: [
+					...$formData.questions.slice(0, index + 1),
+					newQuestion,
+					...$formData.questions.slice(index + 1)
+				]
+			}),
+			{ taint: true }
+		);
+	}
+
+	function remove(index: number) {
+		formData.update(() => ({ questions: $formData.questions.filter((_, i) => i !== index) }), {
+			taint: true
+		});
+	}
 </script>
 
-<form method="POST" use:enhance class="flex flex-col gap-8">
-	<Form.Fieldset {form} name="questions" class="space-y-4">
+<form method="POST" use:enhance class="flex flex-col">
+	<Form.Fieldset {form} name="questions" class="space-y-8">
 		<Form.Legend class="sr-only">Application Questions</Form.Legend>
 		{#each $formData.questions as _, i (_.id)}
-			{@const question = fieldProxy(form, `questions[${i}]`) as FieldProxy<ApplicationFormQuestion>}
-
 			<div animate:flip={{ duration: 300 }} class="flex items-start gap-2">
 				<div class="flex flex-col items-center justify-center">
 					<Button
@@ -99,6 +125,7 @@
 						disabled={i === 0}
 						onclick={() => moveUp(i)}
 					>
+						<span class="sr-only">Move Up</span>
 						<ChevronUp />
 					</Button>
 					<Button
@@ -108,7 +135,21 @@
 						disabled={i === $formData.questions.length - 1}
 						onclick={() => moveDown(i)}
 					>
+						<span class="sr-only">Move Down</span>
 						<ChevronDown />
+					</Button>
+					<Button variant="ghost" size="icon" class="size-8" onclick={() => duplicate(i)}>
+						<span class="sr-only">Duplicate Question</span>
+						<Copy />
+					</Button>
+					<Button
+						variant="ghost"
+						size="icon"
+						class="text-destructive hover:text-destructive size-8"
+						onclick={() => remove(i)}
+					>
+						<span class="sr-only">Remove Question</span>
+						<Trash />
 					</Button>
 				</div>
 				<div class="flex w-full flex-col gap-2">
@@ -152,7 +193,7 @@
 						<Form.Field name="questions[{i}].required" {form}>
 							<Form.Control>
 								{#snippet children({ props })}
-									<Form.Label>Required</Form.Label>
+									<Form.Label>Required?</Form.Label>
 									<div class="flex h-9 items-center justify-center">
 										<Checkbox
 											{...props}
@@ -258,7 +299,7 @@
 						<Form.Field name="questions[{i}].desc" {form} class="w-full">
 							<Form.Control>
 								{#snippet children({ props })}
-									<Form.Label>Description</Form.Label>
+									<Form.Label>Question Description</Form.Label>
 									<Textarea {...props} bind:value={$formData.questions[i].desc} />
 								{/snippet}
 							</Form.Control>
@@ -268,6 +309,16 @@
 				</div>
 			</div>
 		{/each}
+		<Button
+			type="button"
+			variant="ghost"
+			size="sm"
+			class="bg-accent text-accent-foreground hover:bg-accent/80 h-16 w-full"
+			onclick={createQuestion}
+		>
+			<Plus />
+			<span>New Question</span>
+		</Button>
 	</Form.Fieldset>
 	<div class="mt-4 flex justify-center gap-4">
 		<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
