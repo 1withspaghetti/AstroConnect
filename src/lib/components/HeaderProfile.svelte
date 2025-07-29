@@ -11,6 +11,8 @@
 	import Search from '@lucide/svelte/icons/search';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Eye from '@lucide/svelte/icons/eye';
+	import UserAvatar from './UserAvatar.svelte';
+	import fakeData from '@/fake_data';
 
 	const navData = [
 		[
@@ -55,15 +57,14 @@
 			}
 		]
 	];
+
+	const user = fakeData[0].createdBy;
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class="cursor-pointer">
 		{#snippet child({ props })}
-			<Avatar.Root {...props}>
-				<Avatar.Image src="https://github.com/ifgc.png" alt="ifgc" />
-				<Avatar.Fallback>IF</Avatar.Fallback>
-			</Avatar.Root>
+			<UserAvatar {user} />
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
