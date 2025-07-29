@@ -1,0 +1,19 @@
+import type { PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms/client';
+import { zod4 } from 'sveltekit-superforms/adapters';
+import fakeData from '@/fake_data';
+import { settingsEditSchema } from '@/validators/settingsEditSchema';
+
+export const load = (async () => {
+	const user = fakeData[0].createdBy;
+
+	return {
+		form: await superValidate(
+			{
+				darkMode: false,
+				receivingEmail: user.email
+			},
+			zod4(settingsEditSchema)
+		)
+	};
+}) satisfies PageServerLoad;

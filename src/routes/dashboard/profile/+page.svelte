@@ -17,7 +17,6 @@
 
 	let form = superForm(data.form, {
 		validators: zod4Client(profileEditSchema),
-		dataType: 'json',
 		taintedMessage: true
 	});
 
@@ -26,8 +25,8 @@
 	const user = fakeData[0].createdBy;
 </script>
 
-<div class="flex flex-col items-center bg-gray-50 pb-16">
-	<Card.Root class="mt-32 w-full max-w-lg p-4">
+<div class="flex flex-col items-center p-4 pb-16">
+	<Card.Root class="mt-32 w-full max-w-lg">
 		<Card.Header class="pt-8">
 			<div class="flex justify-center">
 				<UserAvatar {user} class="absolute size-24 -translate-y-full" />
