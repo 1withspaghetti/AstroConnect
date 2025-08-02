@@ -3,9 +3,9 @@ import type { User } from './user';
 
 export interface PostMinimal {
 	id: number;
-	draft: boolean;
+	isDraft: boolean;
 	title: string;
-	open: boolean;
+	isOpen: boolean;
 	createdAt: string;
 }
 
@@ -15,11 +15,9 @@ export interface PostPreview extends PostMinimal {
 	tags: string[];
 	careerStage?: string;
 	prereq?: string;
-	open: boolean;
 	closesAt?: string;
 	slotsRemaining?: number;
-	createdAt: string;
-	createdBy: User;
+	owner: User;
 }
 
 export interface Post extends PostPreview {

@@ -8,8 +8,8 @@
 
 	let { posts }: { posts: PostMinimal[] } = $props();
 
-	let draftPosts = $derived(posts.filter((post) => post.draft));
-	let publishedPosts = $derived(posts.filter((post) => !post.draft));
+	let draftPosts = $derived(posts.filter((post) => post.isDraft));
+	let publishedPosts = $derived(posts.filter((post) => !post.isDraft));
 </script>
 
 <Sidebar.Root>
@@ -56,7 +56,7 @@
 													href={`/dashboard/post/${post.id}`}
 												>
 													<span
-														class="line-clamp-1 {post.draft || !post.open
+														class="line-clamp-1 {post.isDraft || !post.isOpen
 															? 'text-muted-foreground'
 															: ''}">{post.title || 'Untitled Post'}</span
 													>

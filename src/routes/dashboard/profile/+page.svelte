@@ -22,7 +22,7 @@
 
 	let { form: formData, enhance, submitting, tainted } = form;
 
-	const user = fakeData[0].createdBy;
+	const user = fakeData[0].owner;
 </script>
 
 <div class="flex flex-col items-center p-4 pb-16">
@@ -89,8 +89,8 @@
 		</Card.Footer>
 		<Card.Footer class="text-muted-foreground text-sm">
 			<p>
-				Signed Up: <span title={dayjs(data.user.createdAt).format('LLLL')}
-					>{dayjs(data.user.createdAt).format('MMMM D, YYYY')}</span
+				Signed Up: <span title={dayjs(data.user.firstLogin).format('LLLL')}
+					>{dayjs(data.user.firstLogin).format('MMMM D, YYYY')}</span
 				><br />
 				User ID: <span>{data.user.id}</span>
 			</p>

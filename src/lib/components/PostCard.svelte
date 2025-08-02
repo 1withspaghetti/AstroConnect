@@ -17,7 +17,7 @@
 	} = $props();
 
 	let closed = $derived(
-		!post.open ||
+		!post.isOpen ||
 			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
 			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
 	);
@@ -107,10 +107,10 @@
 					>Posted <b title={dayjs(post.createdAt).format('LLLL')}
 						>{dayjs(post.createdAt).fromNow()}</b
 					>
-					by {post.createdBy.name} (<a
-						href={`mailto:${post.createdBy.email}`}
+					by {post.owner.name} (<a
+						href={`mailto:${post.owner.email}`}
 						target="_blank"
-						class="underline">{post.createdBy.email}</a
+						class="underline">{post.owner.email}</a
 					>)</span
 				>
 			</div>

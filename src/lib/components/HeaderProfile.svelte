@@ -58,7 +58,7 @@
 		]
 	];
 
-	const user = fakeData[0].createdBy;
+	const user = fakeData[0].owner;
 </script>
 
 <DropdownMenu.Root>

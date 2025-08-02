@@ -5,7 +5,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import fakeData from '@/fake_data';
 
 export const load = (async () => {
-	const user = fakeData[0].createdBy;
+	const user = fakeData[0].owner;
 
 	return {
 		user,

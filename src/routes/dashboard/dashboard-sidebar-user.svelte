@@ -8,7 +8,7 @@
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import fakeData from '@/fake_data';
 
-	const user = fakeData[0].createdBy;
+	const user = fakeData[0].owner;
 
 	const sidebar = useSidebar();
 </script>

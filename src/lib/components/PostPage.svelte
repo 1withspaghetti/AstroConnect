@@ -22,7 +22,7 @@
 	} = $props();
 
 	let closed = $derived(
-		!post.open ||
+		!post.isOpen ||
 			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
 			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
 	);
@@ -88,18 +88,18 @@
 		<Card.Root class="max-w-sm">
 			<Card.Content class="flex flex-col items-center gap-2">
 				<Avatar.Root class="">
-					<Avatar.Image src={post.createdBy.pfp} alt={post.createdBy.name} />
-					<Avatar.Fallback>{post.createdBy.name[0] || '?'}</Avatar.Fallback>
+					<Avatar.Image src={post.owner.pfp} alt={post.owner.name} />
+					<Avatar.Fallback>{post.owner.name[0] || '?'}</Avatar.Fallback>
 				</Avatar.Root>
-				<Card.Title class="line-clamp-1">{post.createdBy.name}</Card.Title>
+				<Card.Title class="line-clamp-1">{post.owner.name}</Card.Title>
 				<div class="text-muted-foreground flex items-center text-sm">
 					<Mail class="mr-1 h-4 w-4" />
-					<a href={`mailto:${post.createdBy.email}`} target="_blank" class="underline"
-						>{post.createdBy.email}</a
+					<a href={`mailto:${post.owner.email}`} target="_blank" class="underline"
+						>{post.owner.email}</a
 					>
 				</div>
 				<div class="text-muted-foreground mt-2 text-sm">
-					{post.createdBy.bio || 'No bio provided.'}
+					{post.owner.bio || 'No bio provided.'}
 				</div>
 			</Card.Content>
 		</Card.Root>

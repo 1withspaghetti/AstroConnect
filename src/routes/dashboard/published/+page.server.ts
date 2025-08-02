@@ -4,6 +4,6 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async () => {
 	return {
-		posts: posts.filter((post) => !post.draft) as PostPreview[]
+		posts: posts.filter((post) => !post.isDraft) as PostPreview[]
 	};
 }) satisfies PageServerLoad;

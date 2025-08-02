@@ -5,7 +5,7 @@ import fakeData from '@/fake_data';
 import { settingsEditSchema } from '@/validators/settingsEditSchema';
 
 export const load = (async () => {
-	const user = fakeData[0].createdBy;
+	const user = fakeData[0].owner;
 
 	return {
 		form: await superValidate(

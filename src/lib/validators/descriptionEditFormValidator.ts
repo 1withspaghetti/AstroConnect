@@ -6,7 +6,7 @@ export const tagValidator = z
 	.max(100, 'Maximum length is 100 characters');
 
 export const descriptionEditFormSchema = z.object({
-	title: z.string().min(1, 'Title is required').max(100, 'Title cannot exceed 100 characters'),
+	title: z.string().min(1, 'Title is required').max(200, 'Title cannot exceed 200 characters'),
 	desc: z.string().max(10000, 'Description cannot exceed 10000 characters').optional(),
 	careerStage: tagValidator.optional(),
 	prereq: z.string().max(1000, 'Prerequisite cannot exceed 1000 characters').optional(),

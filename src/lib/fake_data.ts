@@ -3,7 +3,7 @@ import type { Post } from '@/types/post';
 const posts: Post[] = [
 	{
 		id: 1,
-		draft: false,
+		isDraft: false,
 		title: 'Lorem ipsum dolor sit amet',
 		desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		images: [
@@ -14,18 +14,19 @@ const posts: Post[] = [
 		careerStage: 'Undergraduate',
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
-		open: true,
+		isOpen: true,
 		closesAt: '2025-07-28T06:59:59Z',
 		slotsRemaining: 4,
 		createdAt: '2025-07-19T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: [
 			{
@@ -75,7 +76,7 @@ const posts: Post[] = [
 	},
 	{
 		id: 2,
-		draft: false,
+		isDraft: false,
 		title:
 			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium',
 		desc: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
@@ -85,23 +86,24 @@ const posts: Post[] = [
 		careerStage: 'Graduate',
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
-		open: true,
+		isOpen: true,
 		slotsRemaining: 10,
 		createdAt: '2025-07-17T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: []
 	},
 	{
 		id: 3,
-		draft: false,
+		isDraft: false,
 		title:
 			'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
 		desc: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
@@ -111,23 +113,24 @@ const posts: Post[] = [
 		careerStage: 'Post-Doctoral',
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
-		open: true,
+		isOpen: true,
 		closesAt: '2025-07-25T06:59:59Z',
 		createdAt: '2025-07-18T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: []
 	},
 	{
 		id: 4,
-		draft: false,
+		isDraft: false,
 		title: 'Lorem ipsum dolor sit amet',
 		desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
 		images: [
@@ -136,22 +139,23 @@ const posts: Post[] = [
 		careerStage: 'Undergraduate',
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
-		open: true,
+		isOpen: true,
 		createdAt: '2025-07-19T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: []
 	},
 	{
 		id: 5,
-		draft: true,
+		isDraft: true,
 		title:
 			'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium',
 		desc: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
@@ -161,22 +165,23 @@ const posts: Post[] = [
 		careerStage: 'Graduate',
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
-		open: false,
+		isOpen: false,
 		createdAt: '2025-07-17T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: []
 	},
 	{
 		id: 6,
-		draft: true,
+		isDraft: true,
 		title:
 			'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
 		desc: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
@@ -186,16 +191,17 @@ const posts: Post[] = [
 		careerStage: 'Post-Doctoral',
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
-		open: false,
+		isOpen: false,
 		createdAt: '2025-07-18T12:00:00Z',
-		createdBy: {
+		owner: {
 			id: '1',
 			name: 'John Doe',
 			email: 'john.doe@example.com',
 			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			isPublic: true,
 			isAdmin: false,
-			createdAt: new Date(),
-			updatedAt: new Date()
+			firstLogin: new Date(),
+			lastLogin: new Date()
 		},
 		questions: []
 	}

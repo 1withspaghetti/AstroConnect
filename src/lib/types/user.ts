@@ -4,7 +4,8 @@ export interface User {
 	email: string;
 	pfp?: string;
 	bio?: string;
+	isPublic: boolean;
 	isAdmin: boolean;
-	createdAt: Date;
-	updatedAt: Date;
+	firstLogin: string;
+	lastLogin?: string;
 }

@@ -110,7 +110,7 @@
 						</Breadcrumb.Item>
 					{:else if currentPostNavItem}
 						<Breadcrumb.Separator />
-						{#if currentPostNavItem.draft}
+						{#if currentPostNavItem.isDraft}
 							<Breadcrumb.Item>
 								<Breadcrumb.Link href="/dashboard/drafts">Drafts</Breadcrumb.Link>
 							</Breadcrumb.Item>
