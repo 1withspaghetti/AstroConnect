@@ -1,13 +1,13 @@
-import { ApplicationFormQuestionType, type ApplicationForm } from '@/types/applicationForm';
+import { ApplicationFormQuestionType, type ApplicationFormQuestion } from '@/types/applicationForm';
 import { z } from 'zod/v4';
 
 export const TEXT_MAX_LENGTH = 1000;
 export const TEXTAREA_MAX_LENGTH = 10000;
 export const SELECT_MAX_OPTIONS = 10;
 
-export function getApplicationFormSchema(form: ApplicationForm) {
+export function getApplicationFormSchema(questions: ApplicationFormQuestion[]) {
 	return z.object(
-		form.questions.reduce(
+		questions.reduce(
 			(acc, question) => {
 				acc[question.id] = _questionDefinitionToSchema(question);
 				return acc;
@@ -17,7 +17,7 @@ export function getApplicationFormSchema(form: ApplicationForm) {
 	);
 }
 
-function _questionDefinitionToSchema(question: ApplicationForm['questions'][number]) {
+function _questionDefinitionToSchema(question: ApplicationFormQuestion) {
 	let schema: z.ZodTypeAny;
 
 	switch (question.type) {

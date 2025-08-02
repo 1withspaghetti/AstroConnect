@@ -37,7 +37,10 @@
 		}
 	];
 
-	let mode = $state(localStorage.getItem('mode') || 'system');
+	let mode = $state('system');
+	$effect(() => {
+		mode = modeOptions.find((f) => f.value === localStorage.getItem('mode'))?.value || 'system';
+	});
 	$effect(() => {
 		if (mode === 'light') document.documentElement.classList.remove('dark');
 		else if (mode === 'dark') document.documentElement.classList.add('dark');

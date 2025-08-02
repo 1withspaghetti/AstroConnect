@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { ApplicationFormQuestionType, type ApplicationForm } from '@/types/applicationForm';
+	import {
+		ApplicationFormQuestionType,
+		type ApplicationFormQuestion
+	} from '@/types/applicationForm';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
@@ -10,26 +13,26 @@
 	import Button from './ui/button/button.svelte';
 
 	let {
-		formDefinition,
+		formQuestions,
 		formInputData,
 		disabled = false,
 		allowSubmit = false
 	}: {
-		formDefinition: ApplicationForm;
+		formQuestions: ApplicationFormQuestion[];
 		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		disabled?: boolean;
 		allowSubmit?: boolean;
 	} = $props();
 
 	let form = superForm(formInputData || {}, {
-		validators: zod4Client(getApplicationFormSchema(formDefinition))
+		validators: zod4Client(getApplicationFormSchema(formQuestions))
 	});
 
 	const { form: formData, enhance, submitting } = form;
 </script>
 
 <form method="POST" use:enhance class="flex flex-col gap-6">
-	{#each formDefinition.questions as question}
+	{#each formQuestions as question}
 		{#if question.type === ApplicationFormQuestionType.TEXT}
 			<Form.Field {form} name={question.id}>
 				<Form.Control>

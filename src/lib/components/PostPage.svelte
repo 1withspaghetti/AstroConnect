@@ -108,9 +108,9 @@
 	<h2 class="text-2xl font-bold">Apply</h2>
 	<Separator class="mt-1 mb-6" />
 	<div class="px-2">
-		{#if post.applicationForm}
+		{#if post.questions}
 			<ApplicationForm
-				formDefinition={post.applicationForm}
+				formQuestions={post.questions}
 				{formInputData}
 				disabled={closed}
 				{allowSubmit}

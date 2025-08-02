@@ -16,6 +16,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		post,
-		form: await superValidate(zod4(getApplicationFormSchema(post.applicationForm)))
+		form: await superValidate(zod4(getApplicationFormSchema(post.questions)))
 	};
 };

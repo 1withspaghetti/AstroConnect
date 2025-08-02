@@ -1,4 +1,4 @@
-import type { ApplicationForm, ApplicationFormQuestion } from './applicationForm';
+import type { ApplicationFormQuestion } from './applicationForm';
 import type { User } from './user';
 
 export interface PostMinimal {
