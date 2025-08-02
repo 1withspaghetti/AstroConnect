@@ -4,7 +4,7 @@ import { users } from './user';
 export const posts = pgTable('posts', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	ownerId: integer()
-		.references(() => users.id)
+		.references(() => users.id, {onDelete: 'cascade'})
 		.notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
 	isDraft: boolean().default(true).notNull(),
@@ -21,7 +21,7 @@ export const posts = pgTable('posts', {
 export const postImages = pgTable('post_images', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	postId: integer()
-		.references(() => posts.id)
+		.references(() => posts.id, {onDelete: 'cascade'})
 		.notNull(),
 	url: text().notNull(),
 	order: integer().notNull().default(0)
@@ -30,7 +30,7 @@ export const postImages = pgTable('post_images', {
 export const postTags = pgTable('post_tags', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	postId: integer()
-		.references(() => posts.id)
+		.references(() => posts.id, {onDelete: 'cascade'})
 		.notNull(),
 	tag: varchar({ length: 100 }).notNull()
 });

@@ -5,10 +5,10 @@ import { posts } from './post';
 export const applications = pgTable('applications', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	postId: integer()
-		.references(() => posts.id)
+		.references(() => posts.id, {onDelete: 'cascade'})
 		.notNull(),
 	userId: integer()
-		.references(() => users.id)
+		.references(() => users.id, {onDelete: 'cascade'})
 		.notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
 	answers: jsonb().default([]).notNull()
