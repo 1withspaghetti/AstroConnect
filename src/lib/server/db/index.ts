@@ -9,11 +9,13 @@ if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
 const client = neon(env.DATABASE_URL);
 
+export const table = {
+	...userSchema,
+	...postSchema,
+	...applicationSchema
+};
+
 export const db = drizzle(client, {
-	schema: {
-		...userSchema,
-		...postSchema,
-		...applicationSchema
-	},
+	schema: table,
 	casing: 'snake_case'
 });

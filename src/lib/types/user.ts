@@ -9,6 +9,6 @@ export interface UserPreview {
 export interface User extends UserPreview {
 	isPublic: boolean;
 	isAdmin: boolean;
-	firstLogin: string;
-	lastLogin: string;
+	firstLogin: Date;
+	lastLogin: Date;
 }

@@ -6,7 +6,7 @@ export interface PostMinimal {
 	isDraft: boolean;
 	title: string;
 	isOpen: boolean;
-	createdAt: string;
+	createdAt: Date;
 }
 
 export interface PostPreview extends PostMinimal {
@@ -15,7 +15,7 @@ export interface PostPreview extends PostMinimal {
 	tags: string[];
 	careerStage?: string;
 	prereq?: string;
-	closesAt?: string;
+	closesAt?: Date;
 	slotsRemaining?: number;
 	owner: User;
 }

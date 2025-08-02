@@ -1,4 +1,3 @@
-import type { RequestEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
@@ -12,7 +11,7 @@ const DAY_IN_MS = 1000 * 60 * 60 * 24;
 export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {
-	const bytes = crypto.getRandomValues(new Uint8Array(18));
+	const bytes = crypto.getRandomValues(new Uint8Array(20));
 	const token = encodeBase64url(bytes);
 	return token;
 }
@@ -28,7 +27,11 @@ export async function createSession(token: string, userId: number) {
 	return session;
 }
 
-export async function validateSessionToken(token: string) {
+export async function validateSessionToken(token: any) {
+	if (!token || typeof token !== 'string' || token.length !== 32) {
+		return { session: null, user: null };
+	}
+
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const [result] = await db
 		.select({
@@ -78,6 +81,8 @@ export async function invalidateSession(sessionId: string) {
 export function setSessionTokenCookie(token: string, expiresAt: Date) {
 	const event = getRequestEvent();
 	event.cookies.set(sessionCookieName, token, {
+		httpOnly: true,
+		sameSite: 'strict',
 		expires: expiresAt,
 		path: '/'
 	});

@@ -15,9 +15,9 @@ const posts: Post[] = [
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		isOpen: true,
-		closesAt: '2025-07-28T06:59:59Z',
+		closesAt: new Date('2025-07-28T06:59:59Z'),
 		slotsRemaining: 4,
-		createdAt: '2025-07-19T12:00:00Z',
+		createdAt: new Date('2025-07-19T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
@@ -88,7 +88,7 @@ const posts: Post[] = [
 		tags: ['Radio', 'Difficult'],
 		isOpen: true,
 		slotsRemaining: 10,
-		createdAt: '2025-07-17T12:00:00Z',
+		createdAt: new Date('2025-07-17T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
@@ -114,8 +114,8 @@ const posts: Post[] = [
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		isOpen: true,
-		closesAt: '2025-07-25T06:59:59Z',
-		createdAt: '2025-07-18T12:00:00Z',
+		closesAt: new Date('2025-07-25T06:59:59Z'),
+		createdAt: new Date('2025-07-18T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
@@ -140,7 +140,7 @@ const posts: Post[] = [
 		prereq: 'Basic Astronomy Knowledge',
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		isOpen: true,
-		createdAt: '2025-07-19T12:00:00Z',
+		createdAt: new Date('2025-07-19T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
@@ -166,7 +166,7 @@ const posts: Post[] = [
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
 		isOpen: false,
-		createdAt: '2025-07-17T12:00:00Z',
+		createdAt: new Date('2025-07-17T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
@@ -192,7 +192,7 @@ const posts: Post[] = [
 		prereq: 'Expert Astronomy Knowledge',
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		isOpen: false,
-		createdAt: '2025-07-18T12:00:00Z',
+		createdAt: new Date('2025-07-18T12:00:00Z'),
 		owner: {
 			id: '1',
 			name: 'John Doe',
