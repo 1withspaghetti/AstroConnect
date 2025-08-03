@@ -3,10 +3,10 @@ import { users } from './user';
 
 export const sessions = pgTable('sessions', {
 	id: text().primaryKey(),
-	userId: integer()
-		.references(() => users.id, {onDelete: 'cascade'})
+	userId: integer('user_id')
+		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull(),
-	expiresAt: timestamp().notNull()
+	expiresAt: timestamp('expires_at').notNull()
 });
 
 export type Session = typeof sessions.$inferSelect;

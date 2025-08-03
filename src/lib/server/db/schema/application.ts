@@ -4,12 +4,12 @@ import { posts } from './post';
 
 export const applications = pgTable('applications', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
-	postId: integer()
-		.references(() => posts.id, {onDelete: 'cascade'})
+	postId: integer('post_id')
+		.references(() => posts.id, { onDelete: 'cascade' })
 		.notNull(),
-	userId: integer()
-		.references(() => users.id, {onDelete: 'cascade'})
+	userId: integer('user_id')
+		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull(),
-	createdAt: timestamp().defaultNow().notNull(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
 	answers: jsonb().default([]).notNull()
 });

@@ -1,6 +1,6 @@
-import { eq } from 'drizzle-orm';
+import { eq, lt } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
+import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
 import { db } from '$lib/server/db';
 import { sessions, type Session } from './db/schema/session';
 import { users } from './db/schema/user';
@@ -12,7 +12,7 @@ export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {
 	const bytes = crypto.getRandomValues(new Uint8Array(20));
-	const token = encodeBase64url(bytes);
+	const token = encodeBase32LowerCaseNoPadding(bytes);
 	return token;
 }
 
@@ -24,6 +24,11 @@ export async function createSession(token: string, userId: number) {
 		expiresAt: new Date(Date.now() + DAY_IN_MS * 30)
 	};
 	await db.insert(sessions).values(session);
+
+	// Delete old sessions for all users while we are here
+	db.delete(sessions).where(lt(sessions.expiresAt, new Date()));
+	// (We don't care about the result of this operation, just that it runs)
+
 	return session;
 }
 
@@ -82,7 +87,7 @@ export function setSessionTokenCookie(token: string, expiresAt: Date) {
 	const event = getRequestEvent();
 	event.cookies.set(sessionCookieName, token, {
 		httpOnly: true,
-		sameSite: 'strict',
+		sameSite: 'lax',
 		expires: expiresAt,
 		path: '/'
 	});

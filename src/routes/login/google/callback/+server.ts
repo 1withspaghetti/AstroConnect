@@ -6,6 +6,7 @@ import { db } from '@/server/db';
 import { users } from '@/server/db/schema/user';
 import { eq } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
+import fs from 'fs';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const code = url.searchParams.get('code');
@@ -74,5 +75,5 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const token = generateSessionToken();
 	const session = await createSession(token, userId);
 	setSessionTokenCookie(token, session.expiresAt);
-	return redirect(302, '/dashboard');
+	return redirect(302, '/home');
 };
