@@ -9,20 +9,22 @@
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import { Button } from '@/components/ui/button';
 	import UserAvatar from '@/components/UserAvatar.svelte';
-	import fakeData from '@/fake_data';
 	import { Label } from '@/components/ui/label';
 	import dayjs from 'dayjs';
+	import { toast } from 'svelte-sonner';
 
 	let { data }: PageProps = $props();
 
 	let form = superForm(data.form, {
 		validators: zod4Client(profileEditSchema),
-		taintedMessage: true
+		taintedMessage: true,
+		onUpdated: ({ form }) =>
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
 	});
 
 	let { form: formData, enhance, submitting, tainted } = form;
 
-	const user = fakeData[0].owner;
+	const user = data.user;
 </script>
 
 <div class="flex flex-col items-center p-4 pb-16">
@@ -66,34 +68,43 @@
 				</Form.Field>
 				<div class="space-y-2">
 					<Label>Email</Label>
-					<Input disabled bind:value={data.user.email} />
+					<Input disabled value={data.user.email} />
 					<div class="text-muted-foreground text-sm">
 						This cannot be changed here because it is connected to the account you used to sign up.
 					</div>
 				</div>
+				<div class="flex gap-2">
+					<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
+					<Button
+						type="reset"
+						variant="secondary"
+						disabled={!$tainted}
+						onclick={(e) => {
+							e.preventDefault();
+							form.reset();
+						}}
+					>
+						Reset
+					</Button>
+				</div>
 			</form>
 		</Card.Content>
-		<Card.Footer>
-			<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
-			<Button
-				type="reset"
-				variant="secondary"
-				disabled={!$tainted}
-				onclick={(e) => {
-					e.preventDefault();
-					form.reset();
-				}}
-			>
-				Reset
-			</Button>
-		</Card.Footer>
-		<Card.Footer class="text-muted-foreground text-sm">
-			<p>
-				Signed Up: <span title={dayjs(data.user.firstLogin).format('LLLL')}
-					>{dayjs(data.user.firstLogin).format('MMMM D, YYYY')}</span
-				><br />
-				User ID: <span>{data.user.id}</span>
-			</p>
+		<Card.Footer class="text-muted-foreground flex-wrap justify-between gap-x-2 text-sm">
+			<span>
+				<u>Signed Up:</u>
+				<span title={dayjs(user.firstLogin).format('LLLL')}
+					>{dayjs(user.firstLogin).format('MMMM D, YYYY')}</span
+				>
+			</span>
+			<span>
+				<u>Last Login:</u>
+				<span title={dayjs(user.lastLogin).format('LLLL')}
+					>{dayjs(user.lastLogin).format('MMMM D, YYYY')}</span
+				>
+			</span>
+			<span>
+				<u>User ID:</u> <span>{user.id}</span>
+			</span>
 		</Card.Footer>
 	</Card.Root>
 </div>
