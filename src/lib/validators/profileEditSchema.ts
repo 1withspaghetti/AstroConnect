@@ -6,5 +6,6 @@ export const profileEditSchema = z.object({
 		.url('Profile picture must be a valid URL')
 		.max(500, 'Profile picture URL cannot exceed 500 characters')
 		.optional(),
-	bio: z.string().max(500, 'Bio cannot exceed 500 characters').optional()
+	bio: z.string().max(500, 'Bio cannot exceed 500 characters').optional(),
+	isPublic: z.boolean()
 });

@@ -12,6 +12,7 @@
 	import { Label } from '@/components/ui/label';
 	import dayjs from 'dayjs';
 	import { toast } from 'svelte-sonner';
+	import { Switch } from '@/components/ui/switch';
 
 	let { data }: PageProps = $props();
 
@@ -29,7 +30,7 @@
 </script>
 
 <div class="flex flex-col items-center p-4 pb-16">
-	<Card.Root class="mt-32 w-full max-w-lg">
+	<Card.Root class="mt-16 w-full max-w-lg">
 		<Card.Header class="pt-8">
 			<div class="flex justify-center">
 				<UserAvatar {user} class="absolute size-24 -translate-y-full" />
@@ -74,6 +75,23 @@
 						This cannot be changed here because it is connected to the account you used to sign up.
 					</div>
 				</div>
+				<Form.Field {form} name="isPublic">
+					<Form.Control>
+						{#snippet children({ props })}
+							<div class="flex w-full flex-row items-center justify-between gap-4">
+								<div class="space-y-0.5">
+									<Form.Label>Researcher Visibility</Form.Label>
+									<Form.Description>
+										Should your profile be listed publicly as a researcher? This will allow others
+										to find and contact you for research opportunities.
+									</Form.Description>
+								</div>
+								<Switch {...props} bind:checked={$formData.isPublic} />
+							</div>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
 				<div class="flex gap-2">
 					<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
 					<Button

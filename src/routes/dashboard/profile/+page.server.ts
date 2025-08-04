@@ -33,7 +33,8 @@ export const load = (async ({ locals }) => {
 			{
 				name: user.name,
 				pfp: user.pfp || undefined,
-				bio: user.bio || undefined
+				bio: user.bio || undefined,
+				isPublic: user.isPublic
 			},
 			zod4(profileEditSchema)
 		)
@@ -51,7 +52,8 @@ export const actions: Actions = {
 			.set({
 				name: form.data.name,
 				pfp: form.data.pfp,
-				bio: form.data.bio
+				bio: form.data.bio,
+				isPublic: form.data.isPublic
 			})
 			.where(eq(users.id, locals.user!.id));
 
