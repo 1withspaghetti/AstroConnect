@@ -6,7 +6,6 @@ import { db } from '@/server/db';
 import { users } from '@/server/db/schema/user';
 import { eq } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
-import fs from 'fs';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const code = url.searchParams.get('code');

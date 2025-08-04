@@ -3,7 +3,7 @@
 		ApplicationFormQuestionType,
 		type ApplicationFormQuestion
 	} from '@/types/applicationForm';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';

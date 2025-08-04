@@ -2,7 +2,7 @@
 	import type { PageProps } from './$types';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import { superForm } from 'sveltekit-superforms/client';
+	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { Input } from '@/components/ui/input';
 	import { Button } from '@/components/ui/button';

@@ -8,10 +8,27 @@ import { eq } from 'drizzle-orm';
 import type { User } from '@/types/user';
 
 export const load = (async ({ locals }) => {
-	const user = await getUser(locals.user!.id);
+	const [user] = await db
+		.select({
+			id: users.id,
+			name: users.name,
+			pfp: users.pfp,
+			bio: users.bio,
+			email: users.email,
+			isPublic: users.isPublic,
+			isAdmin: users.isAdmin,
+			firstLogin: users.firstLogin,
+			lastLogin: users.lastLogin
+		})
+		.from(users)
+		.where(eq(users.id, locals.user!.id));
 
 	return {
-		user: user as User,
+		user: {
+			...user,
+			pfp: user.pfp || undefined, // Convert null to undefined
+			bio: user.bio || undefined // Convert null to undefined
+		} as User,
 		form: await superValidate(
 			{
 				name: user.name,
@@ -41,26 +58,3 @@ export const actions: Actions = {
 		return message(form, { type: 'success', text: 'Profile updated successfully!' });
 	}
 };
-
-async function getUser(id: number): Promise<User> {
-	const [user] = await db
-		.select({
-			id: users.id,
-			name: users.name,
-			pfp: users.pfp,
-			bio: users.bio,
-			email: users.email,
-			isPublic: users.isPublic,
-			isAdmin: users.isAdmin,
-			firstLogin: users.firstLogin,
-			lastLogin: users.lastLogin
-		})
-		.from(users)
-		.where(eq(users.id, id));
-
-	return {
-		...user,
-		pfp: user.pfp || undefined,
-		bio: user.bio || undefined
-	} as User;
-}
