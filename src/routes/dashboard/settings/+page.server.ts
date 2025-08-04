@@ -2,18 +2,21 @@ import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { settingsEditSchema } from '@/validators/settingsEditSchema';
-import { db } from '@/server/db';
-import { users } from '@/server/db/schema/user';
+import { db, table } from '@/server/db';
 import { eq } from 'drizzle-orm';
+import { error } from '@sveltejs/kit';
 
 export const load = (async ({ locals }) => {
-	const [user] = await db
-		.select({
-			sendSubmissionEmails: users.sendSubmissionEmails,
-			alternateEmail: users.alternateEmail
-		})
-		.from(users)
-		.where(eq(users.id, locals.user!.id));
+	const user = await db.query.users.findFirst({
+		columns: {
+			id: true,
+			sendSubmissionEmails: true,
+			alternateEmail: true
+		},
+		where: eq(table.users.id, locals.user!.id)
+	});
+
+	if (!user) error(404, 'User not found');
 
 	return {
 		form: await superValidate(
@@ -35,12 +38,12 @@ export const actions: Actions = {
 		console.log(form.data);
 
 		await db
-			.update(users)
+			.update(table.users)
 			.set({
 				sendSubmissionEmails: form.data.sendSubmissionEmails,
 				alternateEmail: form.data.alternateEmail || null // Store null if not provided
 			})
-			.where(eq(users.id, locals.user!.id));
+			.where(eq(table.users.id, locals.user!.id));
 
 		return message(form, { type: 'success', text: 'Settings updated successfully!' });
 	}

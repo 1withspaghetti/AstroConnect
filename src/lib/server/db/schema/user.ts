@@ -1,4 +1,8 @@
+import { relations } from 'drizzle-orm';
 import { boolean, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { posts } from './post';
+import { sessions } from './session';
+import { applications } from './application';
 
 export const users = pgTable('users', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -14,3 +18,9 @@ export const users = pgTable('users', {
 	sendSubmissionEmails: boolean('send_submission_emails').default(true).notNull(),
 	alternateEmail: varchar('alternate_email', { length: 500 })
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+	posts: many(posts),
+	sessions: many(sessions),
+	applications: many(applications)
+}));

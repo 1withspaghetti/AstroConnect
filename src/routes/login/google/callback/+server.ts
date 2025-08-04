@@ -2,8 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { decodeIdToken, type OAuth2Tokens } from 'arctic';
 import { google } from '@/server/oauth';
-import { db } from '@/server/db';
-import { users } from '@/server/db/schema/user';
+import { db, table } from '@/server/db';
 import { eq } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
 
@@ -37,35 +36,35 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	let userId: number;
 
 	// Check if the user already exists in the database
-	const existingUser = await db
-		.select({
-			id: users.id
-		})
-		.from(users)
-		.where(eq(users.googleId, googleId));
+	const existingUser = await db.query.users.findFirst({
+		columns: {
+			id: true
+		},
+		where: eq(table.users.googleId, googleId)
+	});
 
-	if (existingUser.length > 0) {
+	if (existingUser) {
 		// User already exists, update their info
 		await db
-			.update(users)
+			.update(table.users)
 			.set({
 				email,
 				lastLogin: new Date()
 			})
-			.where(eq(users.googleId, googleId));
+			.where(eq(table.users.googleId, googleId));
 
-		userId = existingUser[0].id;
+		userId = existingUser.id;
 	} else {
 		// Create a new user
 		const user = await db
-			.insert(users)
+			.insert(table.users)
 			.values({
 				googleId,
 				name,
 				email,
 				pfp
 			})
-			.returning({ id: users.id });
+			.returning({ id: table.users.id });
 
 		userId = user[0].id;
 	}

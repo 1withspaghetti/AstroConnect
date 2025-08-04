@@ -1,5 +1,7 @@
 import { boolean, integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { users } from './user';
+import { relations } from 'drizzle-orm';
+import { applications } from './application';
 
 export const posts = pgTable('posts', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -18,6 +20,16 @@ export const posts = pgTable('posts', {
 	questions: jsonb().default([]).notNull()
 });
 
+export const postsRelations = relations(posts, ({ one, many }) => ({
+	owner: one(users, {
+		fields: [posts.ownerId],
+		references: [users.id]
+	}),
+	images: many(postImages),
+	tags: many(postTags),
+	applications: many(applications)
+}));
+
 export const postImages = pgTable('post_images', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	postId: integer('post_id')
@@ -27,6 +39,13 @@ export const postImages = pgTable('post_images', {
 	order: integer().notNull().default(0)
 });
 
+export const postImagesRelations = relations(postImages, ({ one }) => ({
+	post: one(posts, {
+		fields: [postImages.postId],
+		references: [posts.id]
+	})
+}));
+
 export const postTags = pgTable('post_tags', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity(),
 	postId: integer('post_id')
@@ -34,3 +53,10 @@ export const postTags = pgTable('post_tags', {
 		.notNull(),
 	tag: varchar({ length: 100 }).notNull()
 });
+
+export const postTagsRelations = relations(postTags, ({ one }) => ({
+	post: one(posts, {
+		fields: [postTags.postId],
+		references: [posts.id]
+	})
+}));
