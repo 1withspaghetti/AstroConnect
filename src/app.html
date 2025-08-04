@@ -5,14 +5,6 @@
 		<title>AstroConnect</title>
 		<!-- <link rel="icon" href="%sveltekit.assets%/favicon.svg" /> -->
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<script>
-			let mode = localStorage.getItem('mode') || 'system';
-			let systemMode = window.matchMedia('(prefers-color-scheme: dark)');
-			document.documentElement.classList.toggle(
-				'dark',
-				mode === 'system' ? systemMode : mode === 'dark'
-			);
-		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

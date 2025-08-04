@@ -2,51 +2,29 @@
 	import type { PageProps } from './$types';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import { superForm } from 'sveltekit-superforms';
+	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { Input } from '@/components/ui/input';
 	import { Button } from '@/components/ui/button';
 	import { Label } from '@/components/ui/label';
 	import { settingsEditSchema } from '@/validators/settingsEditSchema';
 	import * as Select from '@/components/ui/select';
-	import { MediaQuery } from 'svelte/reactivity';
-
-	const isSystemDark = new MediaQuery('prefers-color-scheme: dark', true);
+	import { resetMode, setMode, userPrefersMode } from 'mode-watcher';
+	import { Switch } from '@/components/ui/switch';
+	import { Separator } from '@/components/ui/separator';
+	import { toast } from 'svelte-sonner';
 
 	let { data }: PageProps = $props();
 
 	let form = superForm(data.form, {
 		validators: zod4Client(settingsEditSchema),
-		taintedMessage: true
+		taintedMessage: true,
+		resetForm: false,
+		onUpdated: ({ form }) =>
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
 	});
 
 	let { form: formData, enhance, submitting, tainted } = form;
-
-	const modeOptions = [
-		{
-			value: 'light',
-			label: 'Light'
-		},
-		{
-			value: 'dark',
-			label: 'Dark'
-		},
-		{
-			value: 'system',
-			label: 'System'
-		}
-	];
-
-	let mode = $state('system');
-	$effect(() => {
-		mode = modeOptions.find((f) => f.value === localStorage.getItem('mode'))?.value || 'system';
-	});
-	$effect(() => {
-		if (mode === 'light') document.documentElement.classList.remove('dark');
-		else if (mode === 'dark') document.documentElement.classList.add('dark');
-		else document.documentElement.classList[isSystemDark ? 'add' : 'remove']('dark');
-		localStorage.setItem('mode', mode);
-	});
 </script>
 
 <div class="flex flex-col items-center p-4 pb-16">
@@ -58,44 +36,77 @@
 			<form method="POST" use:enhance class="flex flex-col gap-6">
 				<div class="space-y-2">
 					<Label>App Appearance</Label>
-					<Select.Root type="single" bind:value={mode}>
+					<Select.Root
+						type="single"
+						value={userPrefersMode.current}
+						onValueChange={(value) => {
+							if (value === 'system') resetMode();
+							else setMode(value as 'light' | 'dark');
+						}}
+					>
 						<Select.Trigger>
-							{modeOptions.find((f) => f.value === mode)?.label ?? 'Select an option'}
+							{userPrefersMode.current === 'system'
+								? 'System Default'
+								: userPrefersMode.current == 'dark'
+									? 'Dark Mode'
+									: 'Light Mode'}
 						</Select.Trigger>
 						<Select.Content>
-							{#each modeOptions as option}
-								<Select.Item value={option.value} label={option.label} />
-							{/each}
+							<Select.Item value="light" label="Light Mode" />
+							<Select.Item value="dark" label="Dark Mode" />
+							<Select.Item value="system" label="System Default" />
 						</Select.Content>
 					</Select.Root>
+					<div class="text-muted-foreground text-sm">
+						This is just saved on this device and will not affect other devices.
+					</div>
 				</div>
-				<Form.Field {form} name="receivingEmail">
+				<Separator class="my-4" />
+				<Form.Field {form} name="sendSubmissionEmails">
 					<Form.Control>
 						{#snippet children({ props })}
-							<Form.Label>Submission Receiving Email</Form.Label>
-							<Input {...props} bind:value={$formData.receivingEmail} />
+							<div class="flex w-full flex-row items-center justify-between gap-4">
+								<div class="space-y-0.5">
+									<Form.Label>Send Submission Emails</Form.Label>
+									<Form.Description>
+										Should emails be sent to your email when someone submits to one of your research
+										opportunities?
+									</Form.Description>
+								</div>
+								<Switch {...props} bind:checked={$formData.sendSubmissionEmails} />
+							</div>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="alternateEmail">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Alternate Receiving Email</Form.Label>
+							<Input {...props} bind:value={$formData.alternateEmail} />
 							<Form.Description>
-								A personal or alternate email where submissions to your posts will be sent.
+								A personal or alternate email where submissions to your posts will be sent. Will
+								default to your account email if left blank.
 							</Form.Description>
 						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
+				<div class="flex gap-2">
+					<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
+					<Button
+						type="reset"
+						variant="secondary"
+						disabled={!$tainted}
+						onclick={(e) => {
+							e.preventDefault();
+							form.reset();
+						}}
+					>
+						Reset
+					</Button>
+				</div>
 			</form>
 		</Card.Content>
-		<Card.Footer>
-			<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
-			<Button
-				type="reset"
-				variant="secondary"
-				disabled={!$tainted}
-				onclick={(e) => {
-					e.preventDefault();
-					form.reset();
-				}}
-			>
-				Reset
-			</Button>
-		</Card.Footer>
 	</Card.Root>
 </div>

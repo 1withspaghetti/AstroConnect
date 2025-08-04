@@ -10,5 +10,7 @@ export const users = pgTable('users', {
 	isPublic: boolean('is_public').default(false).notNull(),
 	isAdmin: boolean('is_admin').default(false).notNull(),
 	firstLogin: timestamp('first_login').defaultNow().notNull(),
-	lastLogin: timestamp('last_login').defaultNow().notNull()
+	lastLogin: timestamp('last_login').defaultNow().notNull(),
+	sendSubmissionEmails: boolean('send_submission_emails').default(true).notNull(),
+	alternateEmail: varchar('alternate_email', { length: 500 })
 });

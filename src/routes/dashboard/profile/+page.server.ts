@@ -51,8 +51,8 @@ export const actions: Actions = {
 			.update(users)
 			.set({
 				name: form.data.name,
-				pfp: form.data.pfp,
-				bio: form.data.bio,
+				pfp: form.data.pfp || null, // Store null if not provided
+				bio: form.data.bio || null, // Store null if not provided
 				isPublic: form.data.isPublic
 			})
 			.where(eq(users.id, locals.user!.id));

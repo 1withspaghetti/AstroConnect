@@ -13,7 +13,7 @@ export const posts = pgTable('posts', {
 	careerStage: varchar('career_stage', { length: 100 }).notNull(),
 	prereq: varchar({ length: 1000 }),
 	isOpen: boolean('is_open').default(true).notNull(),
-	closesAt: timestamp('closes_at').notNull(),
+	closesAt: timestamp('closes_at'),
 	maxSlots: integer('max_slots'),
 	questions: jsonb().default([]).notNull()
 });
