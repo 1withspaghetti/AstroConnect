@@ -11,12 +11,12 @@
 
 	let formRef = $state<HTMLFormElement>(null!);
 
-	let search = $state(page.url.searchParams.get('query') || '');
+	let search = $state(page.url.searchParams.get('search') || '');
 	let tags = $state(page.url.searchParams.get('tags')?.split(';') || []);
 	let careerStage = $state(page.url.searchParams.get('careerStage')?.split(';') || []);
 
-	let orderBy = $state(page.url.searchParams.get('orderBy') || 'createdAt');
-	let order = $state(page.url.searchParams.get('order') || 'asc');
+	let orderBy = $state(page.url.searchParams.get('orderBy') || 'relevance');
+	let order = $state(page.url.searchParams.get('order') || 'desc');
 
 	let fullTagList = $derived(
 		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
@@ -34,6 +34,7 @@
 	];
 
 	const orderByOptions = [
+		{ value: 'relevance', label: 'Relevance' },
 		{ value: 'createdAt', label: 'Time of Post' },
 		{ value: 'title', label: 'Title' }
 	];
@@ -46,7 +47,7 @@
 		event.preventDefault();
 		const params = new URLSearchParams();
 
-		params.set('query', search);
+		params.set('search', search);
 		if (tags.length > 0) params.set('tags', tags.join(';'));
 		if (careerStage.length > 0) params.set('careerStage', careerStage.join(';'));
 		params.set('orderBy', orderBy);
@@ -74,6 +75,7 @@
 			placeholder="Search"
 			class="h-full rounded-l-none border-none shadow-none"
 			aria-label="Search"
+			max="250"
 		/>
 	</div>
 
@@ -87,6 +89,7 @@
 				allowCustom
 				placeholder="Search Tags"
 				emptyText="No existing tags found"
+				buttonProps={{ class: 'w-[200px]' }}
 			/>
 		</div>
 
@@ -97,6 +100,7 @@
 				defaultOptions={fullCareerStageList}
 				onChange={submit}
 				allowCustom
+				buttonProps={{ class: 'w-[200px]' }}
 			/>
 		</div>
 
