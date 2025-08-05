@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { settingsEditSchema } from '@/validators/settingsEditSchema';
+import { settingsEditSchema } from '@/validators/settingsEditValidator';
 import { db, table } from '@/server/db';
 import { eq } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
@@ -18,7 +18,13 @@ export const load = (async ({ locals }) => {
 	if (!user) error(404, 'User not found');
 
 	return {
-		form: await superValidate(user, zod4(settingsEditSchema))
+		form: await superValidate(
+			{
+				sendSubmissionEmails: user.sendSubmissionEmails,
+				alternateEmail: user.alternateEmail || undefined // Use undefined if alternateEmail is null
+			},
+			zod4(settingsEditSchema)
+		)
 	};
 }) satisfies PageServerLoad;
 

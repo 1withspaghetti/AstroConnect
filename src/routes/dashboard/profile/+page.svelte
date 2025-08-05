@@ -4,7 +4,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
-	import { profileEditSchema } from '@/validators/profileEditSchema';
+	import { profileEditSchema } from '@/validators/profileEditValidator';
 	import { Input } from '@/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import { Button } from '@/components/ui/button';

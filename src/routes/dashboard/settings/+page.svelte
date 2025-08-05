@@ -2,12 +2,12 @@
 	import type { PageProps } from './$types';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { Input } from '@/components/ui/input';
 	import { Button } from '@/components/ui/button';
 	import { Label } from '@/components/ui/label';
-	import { settingsEditSchema } from '@/validators/settingsEditSchema';
+	import { settingsEditSchema } from '@/validators/settingsEditValidator';
 	import * as Select from '@/components/ui/select';
 	import { resetMode, setMode, userPrefersMode } from 'mode-watcher';
 	import { Switch } from '@/components/ui/switch';

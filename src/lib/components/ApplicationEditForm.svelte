@@ -12,8 +12,7 @@
 		type SelectQuestion,
 		type MultiSelectQuestion,
 		type TextQuestion,
-		type TextareaQuestion,
-		type ApplicationFormQuestion
+		type TextareaQuestion
 	} from '@/types/applicationForm';
 	import ChevronUp from '@lucide/svelte/icons/chevron-up';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
@@ -24,6 +23,8 @@
 	import { flip } from 'svelte/animate';
 	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
 	import Plus from '@lucide/svelte/icons/plus';
+	import { toast } from 'svelte-sonner';
+	import { tick } from 'svelte';
 
 	let {
 		formInputData
@@ -35,6 +36,7 @@
 		validators: zod4Client(applicationEditFormSchema),
 		dataType: 'json',
 		taintedMessage: true,
+		resetForm: false,
 		onSubmit: async (e) => {
 			formData.update(
 				() => {
@@ -47,7 +49,9 @@
 				},
 				{ taint: false }
 			);
-		}
+		},
+		onUpdated: ({ form }) =>
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
 	});
 
 	const { form: formData, enhance, submitting, tainted } = form;
@@ -119,6 +123,7 @@
 			<div animate:flip={{ duration: 300 }} class="flex items-start gap-2">
 				<div class="flex flex-col items-center justify-center">
 					<Button
+						type="button"
 						variant="ghost"
 						size="icon"
 						class="size-8"
@@ -129,6 +134,7 @@
 						<ChevronUp />
 					</Button>
 					<Button
+						type="button"
 						variant="ghost"
 						size="icon"
 						class="size-8"
@@ -138,11 +144,18 @@
 						<span class="sr-only">Move Down</span>
 						<ChevronDown />
 					</Button>
-					<Button variant="ghost" size="icon" class="size-8" onclick={() => duplicate(i)}>
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						class="size-8"
+						onclick={() => duplicate(i)}
+					>
 						<span class="sr-only">Duplicate Question</span>
 						<Copy />
 					</Button>
 					<Button
+						type="button"
 						variant="ghost"
 						size="icon"
 						class="text-destructive hover:text-destructive size-8"
@@ -314,7 +327,7 @@
 			variant="ghost"
 			size="sm"
 			class="bg-accent text-accent-foreground hover:bg-accent/80 h-16 w-full"
-			onclick={createQuestion}
+			onclick={() => tick().then(createQuestion)}
 		>
 			<Plus />
 			<span>New Question</span>

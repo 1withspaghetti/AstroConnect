@@ -10,6 +10,7 @@
 	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
 	import { uniqueTags } from '@/fake_data';
 	import Button from './ui/button/button.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let {
 		formInputData
@@ -20,7 +21,10 @@
 	let form = superForm(formInputData, {
 		validators: zod4Client(descriptionEditFormSchema),
 		dataType: 'json',
-		taintedMessage: true
+		taintedMessage: true,
+		resetForm: false,
+		onUpdated: ({ form }) =>
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
 	});
 
 	const { form: formData, enhance, submitting, tainted } = form;

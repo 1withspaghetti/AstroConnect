@@ -1,4 +1,4 @@
-import { profileEditSchema } from '@/validators/profileEditSchema';
+import { profileEditSchema } from '@/validators/profileEditValidator';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, message } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
@@ -30,8 +30,8 @@ export const load = (async ({ locals }) => {
 		form: await superValidate(
 			{
 				name: user.name,
-				pfp: user.pfp,
-				bio: user.bio,
+				pfp: user.pfp || undefined,
+				bio: user.bio || undefined,
 				isPublic: user.isPublic
 			},
 			zod4(profileEditSchema)
@@ -49,8 +49,8 @@ export const actions: Actions = {
 			.update(table.users)
 			.set({
 				name: form.data.name,
-				pfp: form.data.pfp,
-				bio: form.data.bio,
+				pfp: form.data.pfp || null,
+				bio: form.data.bio || '',
 				isPublic: form.data.isPublic
 			})
 			.where(eq(table.users.id, locals.user!.id));

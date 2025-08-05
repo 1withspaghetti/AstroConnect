@@ -32,7 +32,9 @@
 	<h1 class="mt-8 text-2xl font-bold">{post.title}</h1>
 	<Separator class="mt-1 mb-4" />
 
-	<ImageCarousel images={post.images} />
+	{#if post.images.length > 0}
+		<ImageCarousel images={post.images} />
+	{/if}
 	<p class="my-8 indent-4">{post.desc || 'No description provided.'}</p>
 	<div class="mb-4 flex flex-wrap items-start justify-between gap-4">
 		<div>
