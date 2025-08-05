@@ -10,13 +10,14 @@ export interface PostMinimal {
 }
 
 export interface PostPreview extends PostMinimal {
-	desc?: string;
+	desc: string;
 	images: string[];
 	tags: string[];
-	careerStage?: string;
-	prereq?: string;
-	closesAt?: Date;
-	slotsRemaining?: number;
+	careerStage: string;
+	prereq: string;
+	closesAt: Date | null;
+	maxSlots: number | null;
+	applications: number;
 	owner: UserPreview;
 }
 

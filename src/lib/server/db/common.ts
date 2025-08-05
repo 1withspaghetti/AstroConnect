@@ -1,5 +1,6 @@
 import type { PostPreview } from '@/types/post';
-import { db } from '.';
+import { db, table } from '.';
+import { desc } from 'drizzle-orm';
 
 export async function findManyPostPreviews(
 	query: Omit<Omit<Parameters<typeof db.query.posts.findMany>[0], 'columns'>, 'with'>
@@ -18,8 +19,18 @@ export async function findManyPostPreviews(
 			maxSlots: true
 		},
 		with: {
-			images: true,
-			tags: true,
+			images: {
+				columns: {
+					url: true
+				},
+				orderBy: table.postImages.order
+			},
+			tags: {
+				columns: {
+					tag: true
+				},
+				orderBy: table.postTags.tag
+			},
 			applications: {
 				columns: {
 					id: true
@@ -35,28 +46,14 @@ export async function findManyPostPreviews(
 				}
 			}
 		},
+		orderBy: desc(table.posts.createdAt),
 		...query
 	});
 
 	return posts.map((post) => ({
-		id: post.id,
-		isDraft: post.isDraft,
-		title: post.title,
-		isOpen: post.isOpen,
-		createdAt: post.createdAt,
-		desc: post.desc || undefined,
+		...post,
 		images: post.images.map((image) => image.url),
 		tags: post.tags.map((tag) => tag.tag),
-		careerStage: post.careerStage || undefined,
-		prereq: post.prereq || undefined,
-		closesAt: post.closesAt || undefined,
-		slotsRemaining: post.maxSlots ? post.maxSlots - post.applications.length : undefined,
-		owner: {
-			id: post.owner.id,
-			name: post.owner.name,
-			email: post.owner.email,
-			pfp: post.owner.pfp || undefined,
-			bio: post.owner.bio || undefined
-		}
+		applications: post.applications.length
 	}));
 }

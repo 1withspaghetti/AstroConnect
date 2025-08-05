@@ -16,13 +16,15 @@ const posts: Post[] = [
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		isOpen: true,
 		closesAt: new Date('2025-07-28T06:59:59Z'),
-		slotsRemaining: 4,
+		maxSlots: 4,
+		applications: 2,
 		createdAt: new Date('2025-07-19T12:00:00Z'),
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: [
 			{
@@ -83,13 +85,16 @@ const posts: Post[] = [
 		prereq: 'Advanced Astronomy Knowledge',
 		tags: ['Radio', 'Difficult'],
 		isOpen: true,
-		slotsRemaining: 10,
+		maxSlots: 2,
+		applications: 0,
 		createdAt: new Date('2025-07-17T12:00:00Z'),
+		closesAt: null,
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: []
 	},
@@ -108,11 +113,14 @@ const posts: Post[] = [
 		isOpen: true,
 		closesAt: new Date('2025-07-25T06:59:59Z'),
 		createdAt: new Date('2025-07-18T12:00:00Z'),
+		maxSlots: null,
+		applications: 1,
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: []
 	},
@@ -129,11 +137,15 @@ const posts: Post[] = [
 		tags: ['Telescope', 'Easy', 'Milky Way'],
 		isOpen: true,
 		createdAt: new Date('2025-07-19T12:00:00Z'),
+		maxSlots: null,
+		applications: 0,
+		closesAt: null,
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: []
 	},
@@ -151,11 +163,15 @@ const posts: Post[] = [
 		tags: ['Radio', 'Difficult'],
 		isOpen: false,
 		createdAt: new Date('2025-07-17T12:00:00Z'),
+		maxSlots: 3,
+		applications: 0,
+		closesAt: null,
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: []
 	},
@@ -173,11 +189,15 @@ const posts: Post[] = [
 		tags: ['NASA', 'Galaxy', 'Hubble Space Telescope', 'Easy'],
 		isOpen: false,
 		createdAt: new Date('2025-07-18T12:00:00Z'),
+		maxSlots: 5,
+		applications: 1,
+		closesAt: null,
 		owner: {
 			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
+			bio: 'Astronomy enthusiast and researcher with a passion for exploring the cosmos.'
 		},
 		questions: []
 	}

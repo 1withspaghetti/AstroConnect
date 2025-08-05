@@ -10,7 +10,7 @@ export const users = pgTable('users', {
 	name: varchar({ length: 200 }).notNull(),
 	email: varchar({ length: 500 }).notNull(),
 	pfp: varchar({ length: 500 }),
-	bio: varchar({ length: 500 }),
+	bio: varchar({ length: 500 }).default('').notNull(),
 	isPublic: boolean('is_public').default(false).notNull(),
 	isAdmin: boolean('is_admin').default(false).notNull(),
 	firstLogin: timestamp('first_login').defaultNow().notNull(),
