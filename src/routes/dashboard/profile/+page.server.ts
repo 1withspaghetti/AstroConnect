@@ -26,12 +26,16 @@ export const load = (async ({ locals }) => {
 	if (!user) error(404, 'User not found');
 
 	return {
-		user: user,
+		user: {
+			...user,
+			pfp: user.pfp || undefined, // Convert null to undefined
+			bio: user.bio || undefined // Convert null to undefined
+		} as User,
 		form: await superValidate(
 			{
 				name: user.name,
-				pfp: user.pfp,
-				bio: user.bio,
+				pfp: user.pfp || undefined,
+				bio: user.bio || undefined,
 				isPublic: user.isPublic
 			},
 			zod4(profileEditSchema)
@@ -49,8 +53,8 @@ export const actions: Actions = {
 			.update(table.users)
 			.set({
 				name: form.data.name,
-				pfp: form.data.pfp,
-				bio: form.data.bio,
+				pfp: form.data.pfp || null, // Store null if not provided
+				bio: form.data.bio || null, // Store null if not provided
 				isPublic: form.data.isPublic
 			})
 			.where(eq(table.users.id, locals.user!.id));

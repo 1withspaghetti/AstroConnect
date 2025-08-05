@@ -19,7 +19,7 @@
 	let closed = $derived(
 		!post.isOpen ||
 			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
-			(post.maxSlots !== null && post.maxSlots <= post.applications)
+			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
 	);
 </script>
 
@@ -73,7 +73,7 @@
 			</div>
 		</Card.Content>
 		<Card.Footer class="flex flex-col items-start justify-between gap-2 @lg:flex-row @lg:items-end">
-			{#if !closed && (post.closesAt !== undefined || post.maxSlots !== null)}
+			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
 				<div class="text-muted-foreground mb-2 w-full text-sm italic">
 					Closes
 					{#if post.closesAt !== undefined}
@@ -85,17 +85,13 @@
 							{dayjs().to(post.closesAt, true)}
 						</span>
 					{/if}
-					{#if post.closesAt !== undefined && post.maxSlots !== null}
+					{#if post.closesAt !== undefined && post.slotsRemaining !== undefined}
 						<span>or</span>
 					{/if}
-					{#if post.maxSlots !== null}
+					{#if post.slotsRemaining !== undefined}
 						after
-						<span class={post.maxSlots - post.applications > 5 ? '' : 'text-red-500'}>
-							{post.maxSlots - post.applications} more application{post.maxSlots -
-								post.applications !==
-							1
-								? 's'
-								: ''}
+						<span class={post.slotsRemaining > 5 ? '' : 'text-red-500'}>
+							{post.slotsRemaining} more application{post.slotsRemaining !== 1 ? 's' : ''}
 						</span>
 					{/if}
 				</div>

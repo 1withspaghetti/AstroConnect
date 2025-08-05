@@ -18,21 +18,15 @@
 	</div>
 	<Separator class="mt-1 mb-4" />
 	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-2">
-		{#await data.posts}
-			<p class="text-muted-foreground">Loading drafts...</p>
-		{:then posts}
-			{#each posts as post}
-				<PostCard {post} href={`/dashboard/post/${post.id}`}>
-					{#snippet action()}
-						<Button href={`/dashboard/post/${post.id}/edit/description`}>
-							<Pen />
-							Edit
-						</Button>
-					{/snippet}
-				</PostCard>
-			{/each}
-		{:catch error}
-			<p class="text-red-500">Error loading drafts: {error.message}</p>
-		{/await}
+		{#each data.posts as post}
+			<PostCard {post} href={`/dashboard/post/${post.id}`}>
+				{#snippet action()}
+					<Button href={`/dashboard/post/${post.id}/edit/description`}>
+						<Pen />
+						Edit
+					</Button>
+				{/snippet}
+			</PostCard>
+		{/each}
 	</div>
 </div>

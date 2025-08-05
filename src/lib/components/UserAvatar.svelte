@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { UserPreview } from '@/types/user';
+	import type { User } from '@/types/user';
 	import * as Avatar from './ui/avatar';
 	import { Avatar as AvatarPrimitive } from 'bits-ui';
 
-	let { user, ...restProps }: { user: UserPreview } & AvatarPrimitive.RootProps = $props();
+	let { user, ...restProps }: { user: User } & AvatarPrimitive.RootProps = $props();
 </script>
 
 <Avatar.Root {...restProps}>

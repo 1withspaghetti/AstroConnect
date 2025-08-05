@@ -5,5 +5,5 @@ export const settingsEditSchema = z.object({
 	alternateEmail: z
 		.email('Invalid Email')
 		.max(500, 'Email must be at most 500 characters long')
-		.nullable()
+		.optional()
 });
