@@ -12,7 +12,7 @@ export const posts = pgTable('posts', {
 	isDraft: boolean('is_draft').default(true).notNull(),
 	title: varchar({ length: 200 }).notNull(),
 	desc: varchar({ length: 10000 }),
-	careerStage: varchar('career_stage', { length: 100 }).notNull(),
+	careerStage: varchar('career_stage', { length: 100 }),
 	prereq: varchar({ length: 1000 }),
 	isOpen: boolean('is_open').default(true).notNull(),
 	closesAt: timestamp('closes_at'),

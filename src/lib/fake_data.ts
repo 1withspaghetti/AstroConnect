@@ -19,14 +19,10 @@ const posts: Post[] = [
 		slotsRemaining: 4,
 		createdAt: new Date('2025-07-19T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: [
 			{
@@ -90,14 +86,10 @@ const posts: Post[] = [
 		slotsRemaining: 10,
 		createdAt: new Date('2025-07-17T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: []
 	},
@@ -117,14 +109,10 @@ const posts: Post[] = [
 		closesAt: new Date('2025-07-25T06:59:59Z'),
 		createdAt: new Date('2025-07-18T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: []
 	},
@@ -142,14 +130,10 @@ const posts: Post[] = [
 		isOpen: true,
 		createdAt: new Date('2025-07-19T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: []
 	},
@@ -168,14 +152,10 @@ const posts: Post[] = [
 		isOpen: false,
 		createdAt: new Date('2025-07-17T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: []
 	},
@@ -194,14 +174,10 @@ const posts: Post[] = [
 		isOpen: false,
 		createdAt: new Date('2025-07-18T12:00:00Z'),
 		owner: {
-			id: '1',
+			id: 1,
 			name: 'John Doe',
 			email: 'john.doe@example.com',
-			pfp: 'https://randomuser.me/api/portraits/men/1.jpg',
-			isPublic: true,
-			isAdmin: false,
-			firstLogin: new Date(),
-			lastLogin: new Date()
+			pfp: 'https://randomuser.me/api/portraits/men/1.jpg'
 		},
 		questions: []
 	}

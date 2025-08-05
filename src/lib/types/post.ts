@@ -1,5 +1,5 @@
 import type { ApplicationFormQuestion } from './applicationForm';
-import type { User } from './user';
+import type { User, UserPreview } from './user';
 
 export interface PostMinimal {
 	id: number;
@@ -17,7 +17,7 @@ export interface PostPreview extends PostMinimal {
 	prereq?: string;
 	closesAt?: Date;
 	slotsRemaining?: number;
-	owner: User;
+	owner: UserPreview;
 }
 
 export interface Post extends PostPreview {
