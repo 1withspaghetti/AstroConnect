@@ -72,12 +72,14 @@ export const actions: Actions = {
 
 		await db.delete(table.postTags).where(eq(table.postTags.postId, postId));
 
-		await db.insert(table.postTags).values(
-			form.data.tags.map((tag) => ({
-				postId,
-				tag
-			}))
-		);
+		if (form.data.tags.length > 0) {
+			await db.insert(table.postTags).values(
+				form.data.tags.map((tag) => ({
+					postId,
+					tag
+				}))
+			);
+		}
 
 		return message(form, { type: 'success', text: 'Post updated successfully!' });
 	}

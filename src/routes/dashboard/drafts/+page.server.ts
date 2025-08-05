@@ -24,7 +24,7 @@ export const actions: Actions = {
 			.insert(table.posts)
 			.values({
 				ownerId: locals.user.id,
-				title: 'New Draft Post'
+				title: 'New Draft'
 			})
 			.returning({ id: table.posts.id });
 

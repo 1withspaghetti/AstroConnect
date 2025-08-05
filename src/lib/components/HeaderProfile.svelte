@@ -64,7 +64,7 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class="cursor-pointer">
 		{#snippet child({ props })}
-			<UserAvatar {user} />
+			<UserAvatar {user} {...props} />
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>

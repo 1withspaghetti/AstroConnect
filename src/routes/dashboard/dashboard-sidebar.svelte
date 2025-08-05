@@ -5,6 +5,8 @@
 	import DashboardSidebarUser from './dashboard-sidebar-user.svelte';
 	import ChevronsLeft from '@lucide/svelte/icons/chevrons-left';
 	import type { PostMinimal } from '@/types/post';
+	import { enhance } from '$app/forms';
+	import Plus from '@lucide/svelte/icons/plus';
 
 	let { posts }: { posts: PostMinimal[] } = $props();
 
@@ -34,11 +36,23 @@
 				<Sidebar.GroupLabel>{group.title}</Sidebar.GroupLabel>
 				<Sidebar.GroupContent>
 					<Sidebar.Menu>
+						{#if group.hasCreateNewPost}
+							<Sidebar.MenuItem>
+								<form use:enhance method="POST" action="/dashboard/drafts?/new">
+									<Sidebar.MenuButton>
+										{#snippet child({ props })}
+											<button type="submit" {...props}>
+												<Plus />
+												Post Research Opportunity
+											</button>
+										{/snippet}
+									</Sidebar.MenuButton>
+								</form>
+							</Sidebar.MenuItem>
+						{/if}
 						{#each group.items as item (item.label)}
 							<Sidebar.MenuItem>
-								<Sidebar.MenuButton
-									isActive={page.url.pathname.startsWith(item.href) && !item.noActive}
-								>
+								<Sidebar.MenuButton isActive={page.url.pathname.startsWith(item.href)}>
 									{#snippet child({ props })}
 										<a href={item.href} {...props}>
 											<item.icon />

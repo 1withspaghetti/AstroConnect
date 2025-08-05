@@ -1,6 +1,5 @@
 <script lang="ts" module>
 	import UserPen from '@lucide/svelte/icons/user-pen';
-	import Plus from '@lucide/svelte/icons/plus';
 	import Pen from '@lucide/svelte/icons/pen';
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
@@ -9,13 +8,13 @@
 	interface NavGroup {
 		title: string;
 		items: NavItem[];
+		hasCreateNewPost?: boolean;
 	}
 
 	interface NavItem {
 		href: string;
 		icon: any;
 		label: string;
-		noActive?: boolean;
 		hasSubPosts?: boolean;
 		subPostsAreDrafts?: boolean;
 	}
@@ -23,13 +22,8 @@
 	export const navData: NavGroup[] = [
 		{
 			title: 'For Researchers',
+			hasCreateNewPost: true,
 			items: [
-				{
-					href: '/dashboard/drafts',
-					icon: Plus,
-					label: 'Post Research Opportunity',
-					noActive: true
-				},
 				{
 					href: '/dashboard/drafts',
 					icon: Pen,
@@ -80,9 +74,7 @@
 	let { children, data }: LayoutProps = $props();
 
 	let currentNavItem = $derived(
-		navData
-			.flatMap((group) => group.items)
-			.find((item) => page.url.pathname.startsWith(item.href) && !item.noActive)
+		navData.flatMap((group) => group.items).find((item) => page.url.pathname.startsWith(item.href))
 	);
 
 	let currentPostNavItem = $derived(
