@@ -24,7 +24,7 @@
 	let closed = $derived(
 		!post.isOpen ||
 			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
-			(post.slotsRemaining !== undefined && post.slotsRemaining <= 0)
+			(post.maxSlots !== null && post.maxSlots <= post.applications)
 	);
 </script>
 
@@ -57,7 +57,7 @@
 				Posted
 				<span title={dayjs(post.createdAt).format('LLLL')}>{dayjs(post.createdAt).fromNow()}</span>
 			</div>
-			{#if !closed && (post.closesAt !== undefined || post.slotsRemaining !== undefined)}
+			{#if !closed && (post.closesAt !== undefined || post.maxSlots !== null)}
 				<div class="mb-2 italic">
 					Closes
 					{#if post.closesAt !== undefined}
@@ -69,13 +69,17 @@
 							{dayjs().to(post.closesAt, true)}
 						</span>
 					{/if}
-					{#if post.closesAt !== undefined && post.slotsRemaining !== undefined}
+					{#if post.closesAt !== undefined && post.maxSlots !== null}
 						<span>or</span>
 					{/if}
-					{#if post.slotsRemaining !== undefined}
+					{#if post.maxSlots !== null}
 						after
-						<span class={post.slotsRemaining > 5 ? '' : 'text-red-500'}>
-							{post.slotsRemaining} more application{post.slotsRemaining !== 1 ? 's' : ''}
+						<span class={post.maxSlots - post.applications > 5 ? '' : 'text-red-500'}>
+							{post.maxSlots - post.applications} more application{post.maxSlots -
+								post.applications !==
+							1
+								? 's'
+								: ''}
 						</span>
 					{/if}
 				</div>

@@ -1,3 +1,4 @@
+import type { UserPreview } from '@/types/user';
 import z from 'zod/v4';
 
 export const profileEditSchema = z.object({
@@ -5,7 +6,7 @@ export const profileEditSchema = z.object({
 	pfp: z
 		.url('Profile picture must be a valid URL')
 		.max(500, 'Profile picture URL cannot exceed 500 characters')
-		.optional(),
-	bio: z.string().max(500, 'Bio cannot exceed 500 characters').optional(),
+		.nullable(),
+	bio: z.string().max(500, 'Bio cannot exceed 500 characters'),
 	isPublic: z.boolean()
 });

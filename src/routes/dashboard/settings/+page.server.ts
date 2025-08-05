@@ -9,7 +9,6 @@ import { error } from '@sveltejs/kit';
 export const load = (async ({ locals }) => {
 	const user = await db.query.users.findFirst({
 		columns: {
-			id: true,
 			sendSubmissionEmails: true,
 			alternateEmail: true
 		},
@@ -19,13 +18,7 @@ export const load = (async ({ locals }) => {
 	if (!user) error(404, 'User not found');
 
 	return {
-		form: await superValidate(
-			{
-				sendSubmissionEmails: user.sendSubmissionEmails,
-				alternateEmail: user.alternateEmail || undefined // Convert null to undefined
-			},
-			zod4(settingsEditSchema)
-		)
+		form: await superValidate(user, zod4(settingsEditSchema))
 	};
 }) satisfies PageServerLoad;
 
