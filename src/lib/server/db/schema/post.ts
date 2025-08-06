@@ -33,10 +33,7 @@ export const posts = pgTable(
 	(table) => [
 		index('posts_search_idx').using(
 			'gin',
-			sql`(
-			setweight(to_tsvector('english', ${table.title}), 'A') ||
-          	setweight(to_tsvector('english', ${table.desc}), 'B')
-		)`
+			sql`to_tsvector('english', ${table.title} || ' ' || ${table.desc})`
 		),
 		index('posts_owner_id_idx').on(table.ownerId),
 		index('posts_created_at_idx').on(table.createdAt),
