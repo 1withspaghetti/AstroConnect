@@ -23,7 +23,7 @@ export const actions = {
 			throw error(404, `Post not found`);
 		}
 
-		return redirect(303, `/dashboard/post/${postId}/results#published`);
+		return redirect(303, `/dashboard/post/${postId}/responses#published`);
 	},
 
 	unpublish: async ({ params, locals }) => {
