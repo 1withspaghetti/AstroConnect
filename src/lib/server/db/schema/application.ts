@@ -2,6 +2,7 @@ import { integer, jsonb, pgTable, timestamp, index } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { posts } from './post';
 import { relations } from 'drizzle-orm';
+import type { ApplicationFormAnswer } from '@/types/applicationForm';
 
 export const applications = pgTable(
 	'applications',
@@ -14,7 +15,7 @@ export const applications = pgTable(
 			.references(() => users.id, { onDelete: 'cascade' })
 			.notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
-		answers: jsonb().default([]).notNull()
+		answers: jsonb().$type<ApplicationFormAnswer[]>().default([]).notNull()
 	},
 	(table) => [
 		index('applications_post_id_idx').on(table.postId),

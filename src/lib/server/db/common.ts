@@ -114,7 +114,7 @@ export async function findFirstPost(
 				images: post.images.map((image) => image.url),
 				tags: post.tags.map((tag) => tag.tag),
 				applications: post.applications.length,
-				questions: post.questions as ApplicationFormQuestion[]
+				questions: post.questions
 			}
 		: undefined;
 }

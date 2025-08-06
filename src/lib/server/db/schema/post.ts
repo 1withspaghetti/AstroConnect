@@ -11,6 +11,7 @@ import {
 import { users } from './user';
 import { relations, sql } from 'drizzle-orm';
 import { applications } from './application';
+import type { ApplicationFormQuestion } from '@/types/applicationForm';
 
 export const posts = pgTable(
 	'posts',
@@ -28,7 +29,7 @@ export const posts = pgTable(
 		isOpen: boolean('is_open').default(true).notNull(),
 		closesAt: timestamp('closes_at'),
 		maxSlots: integer('max_slots'),
-		questions: jsonb().default([]).notNull()
+		questions: jsonb().$type<ApplicationFormQuestion[]>().default([]).notNull()
 	},
 	(table) => [
 		index('posts_search_idx').using(

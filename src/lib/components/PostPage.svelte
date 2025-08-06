@@ -23,7 +23,7 @@
 
 	let closed = $derived(
 		!post.isOpen ||
-			(post.closesAt && dayjs(post.closesAt).isBefore(dayjs())) ||
+			(post.closesAt !== null && dayjs(post.closesAt).isBefore(dayjs())) ||
 			(post.maxSlots !== null && post.maxSlots <= post.applications)
 	);
 </script>
@@ -59,10 +59,10 @@
 				Posted
 				<span title={dayjs(post.createdAt).format('LLLL')}>{dayjs(post.createdAt).fromNow()}</span>
 			</div>
-			{#if !closed && (post.closesAt !== undefined || post.maxSlots !== null)}
+			{#if !closed && (post.closesAt !== null || post.maxSlots !== null)}
 				<div class="mb-2 italic">
 					Closes
-					{#if post.closesAt !== undefined}
+					{#if post.closesAt !== null}
 						in
 						<span
 							title={dayjs(post.closesAt).format('LLLL')}
@@ -71,7 +71,7 @@
 							{dayjs().to(post.closesAt, true)}
 						</span>
 					{/if}
-					{#if post.closesAt !== undefined && post.maxSlots !== null}
+					{#if post.closesAt !== null && post.maxSlots !== null}
 						<span>or</span>
 					{/if}
 					{#if post.maxSlots !== null}
@@ -114,13 +114,11 @@
 	<h2 class="text-2xl font-bold">Apply</h2>
 	<Separator class="mt-1 mb-6" />
 	<div class="px-2">
-		{#if post.questions}
-			<ApplicationForm
-				formQuestions={post.questions}
-				{formInputData}
-				disabled={closed}
-				{allowSubmit}
-			/>
-		{/if}
+		<ApplicationForm
+			formQuestions={post.questions}
+			{formInputData}
+			disabled={closed}
+			{allowSubmit}
+		/>
 	</div>
 </div>

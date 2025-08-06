@@ -138,6 +138,8 @@
 		{:else if question.type === ApplicationFormQuestionType.FILE}
 			<span>File Upload (todo)</span>
 		{/if}
+	{:else}
+		<p class="text-center">No additional questions! Go ahead and submit!</p>
 	{/each}
 	<div class="flex justify-center">
 		<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>

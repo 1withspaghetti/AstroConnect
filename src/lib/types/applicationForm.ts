@@ -44,16 +44,16 @@ export enum ApplicationFormQuestionType {
 	FILE = 5
 }
 
-export type InferApplicationFormQuestionAnswer<T extends ApplicationFormQuestion> =
-	T['type'] extends ApplicationFormQuestionType.TEXT
+export type InferApplicationFormQuestionAnswer<T extends ApplicationFormQuestionType> =
+	T extends ApplicationFormQuestionType.TEXT
 		? string
-		: T['type'] extends ApplicationFormQuestionType.TEXTAREA
+		: T extends ApplicationFormQuestionType.TEXTAREA
 			? string
-			: T['type'] extends ApplicationFormQuestionType.SELECT
+			: T extends ApplicationFormQuestionType.SELECT
 				? string
-				: T['type'] extends ApplicationFormQuestionType.MULTISELECT
+				: T extends ApplicationFormQuestionType.MULTISELECT
 					? string[]
-					: T['type'] extends ApplicationFormQuestionType.FILE
+					: T extends ApplicationFormQuestionType.FILE
 						? string // File upload ID from backend
 						: never;
 
@@ -63,4 +63,11 @@ export const applicationFormQuestionTypes = {
 	[ApplicationFormQuestionType.SELECT]: 'Dropdown Select',
 	[ApplicationFormQuestionType.MULTISELECT]: 'Multi Select',
 	[ApplicationFormQuestionType.FILE]: 'File Upload'
+};
+
+export type ApplicationFormAnswer<
+	T extends ApplicationFormQuestionType = ApplicationFormQuestionType
+> = {
+	type: T;
+	answer: InferApplicationFormQuestionAnswer<T>;
 };
