@@ -69,5 +69,17 @@ export type ApplicationFormAnswer<
 	T extends ApplicationFormQuestionType = ApplicationFormQuestionType
 > = {
 	type: T;
+	label: string;
 	answer: InferApplicationFormQuestionAnswer<T>;
 };
+
+export function stringifyApplicationFormAnswer<
+	T extends ApplicationFormQuestionType = ApplicationFormQuestionType
+>(answer: ApplicationFormAnswer<T>): string {
+	if (Array.isArray(answer.answer)) {
+		return answer.answer.join(', ');
+	} else if (answer.type === ApplicationFormQuestionType.FILE) {
+		return `Download the submitted file at ${answer.answer}`;
+	}
+	return answer.answer;
+}
