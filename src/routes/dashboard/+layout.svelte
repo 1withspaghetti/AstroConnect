@@ -85,7 +85,7 @@
 </script>
 
 <Sidebar.Provider>
-	<DashboardSidebar posts={data.postList} />
+	<DashboardSidebar posts={data.postList} user={data.user} />
 	<Sidebar.Inset>
 		<header class="flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />

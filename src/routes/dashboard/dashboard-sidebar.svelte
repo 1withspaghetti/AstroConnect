@@ -7,8 +7,9 @@
 	import type { PostMinimal } from '@/types/post';
 	import { enhance } from '$app/forms';
 	import Plus from '@lucide/svelte/icons/plus';
+	import type { UserPreview } from '@/types/user';
 
-	let { posts }: { posts: PostMinimal[] } = $props();
+	let { posts, user }: { posts: PostMinimal[]; user: UserPreview } = $props();
 
 	let draftPosts = $derived(posts.filter((post) => post.isDraft));
 	let publishedPosts = $derived(posts.filter((post) => !post.isDraft));
@@ -87,6 +88,6 @@
 		{/each}
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<DashboardSidebarUser />
+		<DashboardSidebarUser {user} />
 	</Sidebar.Footer>
 </Sidebar.Root>

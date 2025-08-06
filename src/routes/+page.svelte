@@ -2,6 +2,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '@/components/ui/button/index.js';
 	import GoogleIcon from '~icons/logos/google-icon';
+	import CircleUser from '@lucide/svelte/icons/circle-user';
 </script>
 
 <main class="relative flex min-h-screen flex-col items-center justify-center">
@@ -35,6 +36,9 @@
 			<Card.Footer class="flex-col gap-2">
 				<Button variant="default" href="/login/google" class="w-full"
 					><GoogleIcon /> Login with Google</Button
+				>
+				<Button variant="default" href="/login/demo" class="w-full"
+					><CircleUser /> Login with Demo Account</Button
 				>
 			</Card.Footer>
 		</Card.Root>

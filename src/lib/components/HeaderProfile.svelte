@@ -75,8 +75,10 @@
 				{/each}
 				<DropdownMenu.Separator />
 			{/each}
-			<DropdownMenu.Item variant="destructive" onclick={() => goto('/')} class="cursor-pointer"
-				>Logout</DropdownMenu.Item
+			<DropdownMenu.Item
+				variant="destructive"
+				onclick={() => goto('/login/logout')}
+				class="cursor-pointer">Logout</DropdownMenu.Item
 			>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>

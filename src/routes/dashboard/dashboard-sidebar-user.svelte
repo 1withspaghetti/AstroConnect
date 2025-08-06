@@ -6,9 +6,9 @@
 	import { goto } from '$app/navigation';
 	import Ellipsis from '@lucide/svelte/icons/ellipsis';
 	import UserAvatar from '@/components/UserAvatar.svelte';
-	import fakeData from '@/fake_data';
+	import type { UserPreview } from '@/types/user';
 
-	const user = fakeData[0].owner;
+	let { user }: { user: UserPreview } = $props();
 
 	const sidebar = useSidebar();
 </script>
@@ -38,7 +38,11 @@
 				align="end"
 				sideOffset={4}
 			>
-				<DropdownMenu.Item onclick={() => goto('/')} variant="destructive" class="cursor-pointer">
+				<DropdownMenu.Item
+					onclick={() => goto('/login/logout')}
+					variant="destructive"
+					class="cursor-pointer"
+				>
 					<LogOutIcon />
 					Log out
 				</DropdownMenu.Item>
