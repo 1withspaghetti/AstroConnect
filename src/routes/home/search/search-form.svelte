@@ -65,7 +65,7 @@
 	{onsubmit}
 >
 	<div
-		class="border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground flex h-10 w-full max-w-2xl min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
+		class="border-input bg-background selection:bg-primary selection:text-primary-foreground flex h-10 w-full max-w-2xl min-w-0 rounded-md border text-base shadow-xs outline-none md:text-sm"
 	>
 		<Search class="text-muted-foreground h-10 w-10 p-3" />
 		<Input
