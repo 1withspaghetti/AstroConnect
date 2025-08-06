@@ -1,11 +1,10 @@
 import type { Post, PostPreview } from '@/types/post';
 import { db, table } from '.';
 import { desc } from 'drizzle-orm';
-import type { ApplicationFormQuestion } from '@/types/applicationForm';
 
 export async function findManyPostPreviews(
 	query: Omit<Omit<Parameters<typeof db.query.posts.findMany>[0], 'columns'>, 'with'>
-): Promise<PostPreview[]> {
+): Promise<(PostPreview & Record<string, any>)[]> {
 	const posts = await db.query.posts.findMany({
 		columns: {
 			id: true,

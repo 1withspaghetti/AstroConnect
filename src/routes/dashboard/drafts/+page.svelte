@@ -34,9 +34,9 @@
 						</Button>
 					{/snippet}
 				</PostCard>
+			{:else}
+				<p class="w-full text-center text-muted-foreground">No drafts.</p>
 			{/each}
-		{:catch error}
-			<p class="text-red-500">Error loading drafts: {error.message}</p>
 		{/await}
 	</div>
 </div>

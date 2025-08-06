@@ -128,6 +128,4 @@
 			</Select.Root>
 		</div>
 	</div>
-
-	<Label class="mt-2 italic">6 results</Label>
 </form>

@@ -4,6 +4,8 @@
 	import PostCard from '@/components/PostCard.svelte';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import { Button } from '@/components/ui/button';
+	import { Skeleton } from '@/components/ui/skeleton';
+	import { Label } from '@/components/ui/label';
 
 	let { data }: PageProps = $props();
 </script>
@@ -35,39 +37,61 @@
 	<div class="-translate-y-5 px-8">
 		<SearchForm />
 	</div>
+
 	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-8">
-		{#each data.posts as post}
-			<PostCard {post} href={`/home/post/${post.id}`}>
-				{#snippet action({ closed })}
-					<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
-				{/snippet}
-			</PostCard>
-		{/each}
+		{#await data.postData}
+			<Skeleton class="mx-auto h-3.5 w-24" />
+			<Skeleton class="h-48 w-full" />
+			<Skeleton class="h-48 w-full" />
+		{:then { posts, total }}
+			<Label class="justify-center">
+				{#if total === 0}
+					No results found
+				{:else}
+					{total} result{total > 1 ? 's' : ''} found
+				{/if}
+			</Label>
+			{#each posts as post}
+				<PostCard {post} href={`/home/post/${post.id}`}>
+					{#snippet action({ closed })}
+						<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
+					{/snippet}
+				</PostCard>
+			{/each}
+		{/await}
 	</div>
 
-	<Pagination.Root count={100} perPage={10} class="mb-16">
-		{#snippet children({ pages, currentPage })}
-			<Pagination.Content>
-				<Pagination.Item>
-					<Pagination.PrevButton />
-				</Pagination.Item>
-				{#each pages as page (page.key)}
-					{#if page.type === 'ellipsis'}
+	{#await data.postData}
+		<div class="flex justify-center">
+			<Skeleton class="h-10 w-32" />
+		</div>
+	{:then { total }}
+		{#if total > 0}
+			<Pagination.Root count={total} perPage={25}>
+				{#snippet children({ pages, currentPage })}
+					<Pagination.Content>
 						<Pagination.Item>
-							<Pagination.Ellipsis />
+							<Pagination.PrevButton />
 						</Pagination.Item>
-					{:else}
+						{#each pages as page (page.key)}
+							{#if page.type === 'ellipsis'}
+								<Pagination.Item>
+									<Pagination.Ellipsis />
+								</Pagination.Item>
+							{:else}
+								<Pagination.Item>
+									<Pagination.Link {page} isActive={currentPage === page.value}>
+										{page.value}
+									</Pagination.Link>
+								</Pagination.Item>
+							{/if}
+						{/each}
 						<Pagination.Item>
-							<Pagination.Link {page} isActive={currentPage === page.value}>
-								{page.value}
-							</Pagination.Link>
+							<Pagination.NextButton />
 						</Pagination.Item>
-					{/if}
-				{/each}
-				<Pagination.Item>
-					<Pagination.NextButton />
-				</Pagination.Item>
-			</Pagination.Content>
-		{/snippet}
-	</Pagination.Root>
+					</Pagination.Content>
+				{/snippet}
+			</Pagination.Root>
+		{/if}
+	{/await}
 </div>

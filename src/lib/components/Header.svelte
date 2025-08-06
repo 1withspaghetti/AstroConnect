@@ -3,6 +3,9 @@
 	import Search from '@lucide/svelte/icons/search';
 	import FileUp from '@lucide/svelte/icons/file-up';
 	import HeaderProfile from './HeaderProfile.svelte';
+	import type { UserPreview } from '@/types/user';
+
+	const { user }: { user: UserPreview } = $props();
 </script>
 
 <div class="bg-background sticky top-0 z-40 border-b">
@@ -15,7 +18,7 @@
 			<Button href="/dashboard/drafts" variant="outline"
 				><FileUp /> <span class="hidden sm:inline">Post Research</span></Button
 			>
-			<HeaderProfile />
+			<HeaderProfile {user} />
 		</nav>
 	</div>
 </div>

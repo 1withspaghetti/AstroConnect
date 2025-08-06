@@ -141,15 +141,20 @@
 	{:else}
 		<p class="text-center">No additional questions! Go ahead and submit!</p>
 	{/each}
-	<div class="flex justify-center">
-		<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>
-			{#if $submitting}
-				<span>Submitting...</span>
-			{:else if disabled}
-				<span>Submissions Closed</span>
-			{:else}
-				<span>Submit</span>
-			{/if}
-		</Button>
+	<div>
+		<div class="flex justify-center">
+			<Button type="submit" disabled={$submitting || disabled || !allowSubmit}>
+				{#if $submitting}
+					<span>Submitting...</span>
+				{:else if disabled}
+					<span>Submissions Closed</span>
+				{:else}
+					<span>Submit</span>
+				{/if}
+			</Button>
+		</div>
+		<p class="text-muted-foreground mt-2 text-center text-sm">
+			*Note: Your profile and bio will be included with your application.
+		</p>
 	</div>
 </form>

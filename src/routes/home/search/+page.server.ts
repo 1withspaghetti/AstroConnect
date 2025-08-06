@@ -14,8 +14,7 @@ import {
 	sql,
 	type SQLWrapper
 } from 'drizzle-orm';
-import { db, table } from '@/server/db';
-import posts from '@/fake_data';
+import { table } from '@/server/db';
 
 const queryParamsValidator = z.object({
 	search: z.string().max(250).optional(),
@@ -28,9 +27,9 @@ const queryParamsValidator = z.object({
 export const load = (async ({ url, locals }) => {
 	const query = queryParamsValidator.parse(Object.fromEntries(url.searchParams.entries()));
 
-	let conditions: SQLWrapper[] = [eq(table.posts.isDraft, false)];
+	let conditions: SQLWrapper[] = [];
 	let extras: Record<string, SQL.Aliased> = {};
-	let orderBy: SQL[] = [desc(table.posts.createdAt)];
+	let orderBy: SQL[] = [];
 
 	if (query.search) {
 		conditions.push(
@@ -67,13 +66,24 @@ export const load = (async ({ url, locals }) => {
 	else if (query.orderBy === 'createdAt') orderBy.unshift(orderFn(table.posts.createdAt));
 	else if (query.orderBy === 'title') orderBy.unshift(orderFn(table.posts.title));
 
-	const posts = await findManyPostPreviews({
-		where: and(...conditions),
-		orderBy: orderBy,
-		extras: extras
-	});
+	const data = findManyPostPreviews({
+		where: and(eq(table.posts.isDraft, false), ...conditions),
+		orderBy: [...orderBy, desc(table.posts.createdAt)],
+		extras: {
+			...extras,
+			total: sql`count(*) OVER()`.as('total')
+		}
+	}).then((posts) => ({
+		posts: posts.map((post) => ({
+			...post,
+			total: undefined, // Remove total from individual posts
+			rank: undefined, // Remove rank from individual posts
+			rankCd: undefined // Remove rank_cd from individual posts
+		})),
+		total: (posts[0]?.total ?? 0) as number
+	}));
 
 	return {
-		posts
+		postData: data
 	};
 }) satisfies PageServerLoad;

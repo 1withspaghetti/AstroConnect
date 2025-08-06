@@ -4,6 +4,7 @@ import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/enco
 import { db, table } from '$lib/server/db';
 import { type Session } from './db/schema/session';
 import { getRequestEvent } from '$app/server';
+import type { SessionUser } from '@/types/user';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -56,7 +57,7 @@ export async function validateSessionToken(token: any) {
 	if (!result) {
 		return { session: null, user: null };
 	}
-	const { user, ...session } = result;
+	const { user, ...session }: { user: SessionUser } & Session = result;
 
 	const sessionExpired = Date.now() >= session.expiresAt.getTime();
 	if (sessionExpired) {
