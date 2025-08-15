@@ -5,13 +5,10 @@ import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { db, table } from '@/server/db/index.js';
 import { and, eq } from 'drizzle-orm';
+import { validateId } from '@/validators/idValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
-	const postId = parseInt(params.postId);
-
-	if (isNaN(postId)) {
-		throw error(400, `Invalid post ID: ${params.postId}`);
-	}
+	const postId = validateId(params.postId);
 
 	const post = await db.query.posts.findFirst({
 		columns: {
@@ -50,11 +47,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
-		const postId = parseInt(params.postId);
-
-		if (isNaN(postId)) {
-			throw error(400, `Invalid post ID: ${params.postId}`);
-		}
+		const postId = validateId(params.postId);
 
 		const form = await superValidate(request, zod4(descriptionEditFormSchema));
 

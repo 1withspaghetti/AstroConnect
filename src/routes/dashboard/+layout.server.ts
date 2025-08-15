@@ -3,7 +3,6 @@ import type { LayoutServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 import { db, table } from '@/server/db';
 import { desc, eq } from 'drizzle-orm';
-import { userInfo } from 'os';
 
 export const load = (async ({ locals }) => {
 	if (!locals.session || !locals.user) return redirect(302, '/login');

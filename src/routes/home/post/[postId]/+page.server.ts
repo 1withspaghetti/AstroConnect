@@ -8,13 +8,10 @@ import { db, table } from '@/server/db/index.js';
 import { and, eq } from 'drizzle-orm';
 import { sendApplicationEmail } from '@/server/email/index.js';
 import { stringifyApplicationFormAnswer } from '@/types/applicationForm.js';
+import { validateId } from '@/validators/idValidator.js';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const postId = parseInt(params.postId);
-
-	if (isNaN(postId)) {
-		throw error(400, `Invalid post ID: ${params.postId}`);
-	}
+	const postId = validateId(params.postId);
 
 	const post = await findFirstPost({
 		where: and(eq(table.posts.id, postId), eq(table.posts.isDraft, false))
@@ -32,11 +29,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
-		const postId = parseInt(params.postId);
-
-		if (isNaN(postId)) {
-			throw error(400, `Invalid post ID: ${params.postId}`);
-		}
+		const postId = validateId(params.postId);
 
 		const post = await db.query.posts.findFirst({
 			columns: {

@@ -2,7 +2,7 @@ import type { ApplicationFormQuestion } from './applicationForm';
 import type { UserProfile } from './user';
 
 export interface PostMinimal {
-	id: number;
+	id: string;
 	isDraft: boolean;
 	title: string;
 	isOpen: boolean;

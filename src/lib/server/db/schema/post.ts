@@ -6,7 +6,8 @@ import {
 	text,
 	timestamp,
 	varchar,
-	index
+	index,
+	uuid
 } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { relations, sql } from 'drizzle-orm';
@@ -16,8 +17,8 @@ import type { ApplicationFormQuestion } from '@/types/applicationForm';
 export const posts = pgTable(
 	'posts',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity(),
-		ownerId: integer('owner_id')
+		id: uuid('id').defaultRandom().primaryKey(),
+		ownerId: uuid('owner_id')
 			.references(() => users.id, { onDelete: 'cascade' })
 			.notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -57,8 +58,8 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
 export const postImages = pgTable(
 	'post_images',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity(),
-		postId: integer('post_id')
+		id: uuid('id').defaultRandom().primaryKey(),
+		postId: uuid('post_id')
 			.references(() => posts.id, { onDelete: 'cascade' })
 			.notNull(),
 		url: text().notNull(),
@@ -80,8 +81,8 @@ export const postImagesRelations = relations(postImages, ({ one }) => ({
 export const postTags = pgTable(
 	'post_tags',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity(),
-		postId: integer('post_id')
+		id: uuid('id').defaultRandom().primaryKey(),
+		postId: uuid('post_id')
 			.references(() => posts.id, { onDelete: 'cascade' })
 			.notNull(),
 		tag: varchar({ length: 100 }).notNull()

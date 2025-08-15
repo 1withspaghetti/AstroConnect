@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { boolean, integer, pgTable, text, timestamp, varchar, index } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp, varchar, index, uuid } from 'drizzle-orm/pg-core';
 import { posts } from './post';
 import { sessions } from './session';
 import { applications } from './application';
@@ -7,7 +7,7 @@ import { applications } from './application';
 export const users = pgTable(
 	'users',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity(),
+		id: uuid('id').defaultRandom().primaryKey(),
 		googleId: text('google_id').notNull().unique(),
 		name: varchar({ length: 200 }).notNull(),
 		email: varchar({ length: 500 }).notNull(),

@@ -2,6 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db, table } from '@/server/db';
 import { and, eq } from 'drizzle-orm';
+import { validateId } from '@/validators/idValidator';
 
 export const load = (async ({ params }) => {
 	return redirect(301, `/dashboard/post/${params.postId}/edit/description`);
@@ -9,10 +10,7 @@ export const load = (async ({ params }) => {
 
 export const actions = {
 	publish: async ({ params, locals }) => {
-		const postId = parseInt(params.postId);
-		if (isNaN(postId)) {
-			throw error(400, `Invalid post ID: ${params.postId}`);
-		}
+		const postId = validateId(params.postId);
 
 		const res = await db
 			.update(table.posts)
@@ -27,10 +25,7 @@ export const actions = {
 	},
 
 	unpublish: async ({ params, locals }) => {
-		const postId = parseInt(params.postId);
-		if (isNaN(postId)) {
-			throw error(400, `Invalid post ID: ${params.postId}`);
-		}
+		const postId = validateId(params.postId);
 
 		const res = await db
 			.update(table.posts)
@@ -45,10 +40,7 @@ export const actions = {
 	},
 
 	delete: async ({ params, locals }) => {
-		const postId = parseInt(params.postId);
-		if (isNaN(postId)) {
-			throw error(400, `Invalid post ID: ${params.postId}`);
-		}
+		const postId = validateId(params.postId);
 
 		const res = await db
 			.delete(table.posts)

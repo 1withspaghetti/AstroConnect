@@ -1,5 +1,5 @@
 export interface UserPreview {
-	id: number;
+	id: string;
 	name: string;
 	email: string;
 	pfp: string | null;

@@ -34,9 +34,7 @@
 
 	let relativePath = $derived('/dashboard/post/' + page.params.postId);
 
-	let currentPostNavItem = $derived(
-		data.postList.find((post) => post.id === parseInt(page.params.postId))
-	);
+	let currentPostNavItem = $derived(data.postList.find((post) => post.id === page.params.postId));
 
 	let publishDialogOpen = $state(false);
 	let unpublishDialogOpen = $state(false);

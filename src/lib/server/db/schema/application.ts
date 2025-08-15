@@ -1,4 +1,4 @@
-import { integer, jsonb, pgTable, timestamp, index } from 'drizzle-orm/pg-core';
+import { jsonb, pgTable, timestamp, index, uuid } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { posts } from './post';
 import { relations } from 'drizzle-orm';
@@ -7,11 +7,11 @@ import type { ApplicationFormAnswer } from '@/types/applicationForm';
 export const applications = pgTable(
 	'applications',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity(),
-		postId: integer('post_id')
+		id: uuid('id').defaultRandom().primaryKey(),
+		postId: uuid('post_id')
 			.references(() => posts.id, { onDelete: 'cascade' })
 			.notNull(),
-		userId: integer('user_id')
+		userId: uuid('user_id')
 			.references(() => users.id, { onDelete: 'cascade' })
 			.notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
