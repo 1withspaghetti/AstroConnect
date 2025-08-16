@@ -120,6 +120,12 @@ export const actions: Actions = {
 				});
 				await s3client.send(deleteCommand);
 
+				// Update status in db
+
+				await db
+					.delete(table.applicationUploads)
+					.where(eq(table.applicationUploads.id, file.id));
+
 				// Get new url
 
 				const fileUrl = await getSignedUrl(

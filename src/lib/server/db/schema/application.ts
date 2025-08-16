@@ -42,7 +42,6 @@ export const applicationUploads = pgTable(
 		userId: uuid('user_id')
 			.references(() => users.id, { onDelete: 'cascade' })
 			.notNull(),
-		isTemp: boolean('is_temp').default(true).notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull()
 	},
 	(table) => [
