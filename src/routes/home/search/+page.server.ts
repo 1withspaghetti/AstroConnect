@@ -1,27 +1,15 @@
 import { findManyPostPreviews } from '@/server/db/common';
 import type { PageServerLoad } from './$types';
-import { z } from 'zod';
-import {
-	and,
-	arrayContains,
-	asc,
-	count,
-	desc,
-	eq,
-	gte,
-	inArray,
-	SQL,
-	sql,
-	type SQLWrapper
-} from 'drizzle-orm';
+import { z } from 'zod/v4';
+import { and, asc, desc, eq, inArray, SQL, sql, type SQLWrapper } from 'drizzle-orm';
 import { table } from '@/server/db';
 
 const queryParamsValidator = z.object({
-	search: z.string().max(250).optional(),
-	tags: z.string().max(500).optional(),
-	careerStage: z.string().max(500).optional(),
-	orderBy: z.enum(['relevance', 'createdAt', 'title']).optional(),
-	order: z.enum(['asc', 'desc']).optional()
+	search: z.string().max(250, 'Max 250 characters in search').optional(),
+	tags: z.string().max(500, 'Max 500 characters in tags').optional(),
+	careerStage: z.string().max(500, 'Max 500 characters in Career Stage').optional(),
+	orderBy: z.enum(['relevance', 'createdAt', 'title'], 'Invalid order by').optional(),
+	order: z.enum(['asc', 'desc'], 'Invalid order').optional()
 });
 
 export const load = (async ({ url, locals }) => {

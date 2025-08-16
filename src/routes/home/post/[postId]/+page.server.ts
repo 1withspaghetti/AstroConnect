@@ -7,8 +7,23 @@ import { findFirstPost } from '@/server/db/common.js';
 import { db, table } from '@/server/db/index.js';
 import { and, eq } from 'drizzle-orm';
 import { sendApplicationEmail } from '@/server/email/index.js';
-import { stringifyApplicationFormAnswer } from '@/types/applicationForm.js';
+import {
+	ApplicationFormQuestionType,
+	stringifyApplicationFormAnswer
+} from '@/types/applicationForm.js';
 import { validateId } from '@/validators/idValidator.js';
+import { s3client } from '@/server/s3.js';
+import {
+	CopyObjectCommand,
+	DeleteObjectCommand,
+	GetObjectCommand,
+	HeadObjectCommand
+} from '@aws-sdk/client-s3';
+import {
+	S3_BUCKET_APPLICATION_UPLOAD,
+	S3_BUCKET_TEMP_APPLICATION_UPLOAD
+} from '$env/static/private';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const postId = validateId(params.postId);
@@ -47,6 +62,77 @@ export const actions: Actions = {
 		const form = await superValidate(request, zod4(getApplicationFormSchema(post.questions)));
 
 		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
+
+		// Verify files
+		for (const question of post.questions.filter(
+			(q) => q.type === ApplicationFormQuestionType.FILE
+		)) {
+			const fileId = form.data[question.id];
+			if (fileId) {
+				// Verify file exists in database
+				const file = await db.query.applicationUploads.findFirst({
+					columns: {
+						id: true,
+						fileKey: true
+					},
+					where: and(
+						eq(table.applicationUploads.id, fileId),
+						eq(table.applicationUploads.userId, locals.user!.id)
+					)
+				});
+				if (!file) {
+					return message(form, {
+						type: 'error',
+						text: `File not found for question ${question.label}`
+					});
+				}
+				// Verify it has been uploaded to S3
+				const command = new HeadObjectCommand({
+					Bucket: S3_BUCKET_TEMP_APPLICATION_UPLOAD,
+					Key: file.fileKey
+				});
+				try {
+					await s3client.send(command);
+				} catch (error: any) {
+					if (error.name === 'NotFound') {
+						return message(form, {
+							type: 'error',
+							text: `File not found in S3 for question ${question.label}`
+						});
+					} else {
+						console.error(`Error checking file ${file.fileKey} in S3:`, error);
+						return message(form, {
+							type: 'error',
+							text: `Error verifying file for question ${question.label}`
+						});
+					}
+				}
+				// Move it to the permanent location
+				const copyCommand = new CopyObjectCommand({
+					CopySource: `${S3_BUCKET_TEMP_APPLICATION_UPLOAD}/${file.fileKey}`,
+					Bucket: S3_BUCKET_APPLICATION_UPLOAD,
+					Key: file.fileKey
+				});
+				await s3client.send(copyCommand);
+				const deleteCommand = new DeleteObjectCommand({
+					Bucket: S3_BUCKET_TEMP_APPLICATION_UPLOAD,
+					Key: file.fileKey
+				});
+				await s3client.send(deleteCommand);
+
+				// Get new url
+
+				const fileUrl = await getSignedUrl(
+					s3client,
+					new GetObjectCommand({
+						Bucket: S3_BUCKET_APPLICATION_UPLOAD,
+						Key: file.fileKey
+					})
+				);
+
+				form.data[question.id] = fileUrl;
+			}
+		}
 
 		let answers = post.questions.map((question) => {
 			const answer = form.data[question.id];

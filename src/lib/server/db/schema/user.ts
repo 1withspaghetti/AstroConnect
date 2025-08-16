@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm';
 import { boolean, pgTable, text, timestamp, varchar, index, uuid } from 'drizzle-orm/pg-core';
 import { posts } from './post';
 import { sessions } from './session';
-import { applications } from './application';
+import { applications, applicationUploads } from './application';
 
 export const users = pgTable(
 	'users',
@@ -30,5 +30,6 @@ export const users = pgTable(
 export const usersRelations = relations(users, ({ many }) => ({
 	posts: many(posts),
 	sessions: many(sessions),
-	applications: many(applications)
+	applications: many(applications),
+	applicationUploads: many(applicationUploads)
 }));

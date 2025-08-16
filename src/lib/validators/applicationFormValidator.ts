@@ -76,7 +76,7 @@ function _questionDefinitionToSchema(question: ApplicationFormQuestion) {
 				);
 			break;
 		case ApplicationFormQuestionType.FILE: // FILE
-			schema = z.string();
+			schema = z.uuid('Invalid file ID');
 			break;
 	}
 

@@ -11,6 +11,8 @@
 	import * as Select from '$lib/components/ui/select';
 	import { getApplicationFormSchema } from '@/validators/applicationFormValidator';
 	import Button from './ui/button/button.svelte';
+	import ApplicationFormFileUpload from './ApplicationFormFileUpload.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let {
 		formQuestions,
@@ -25,7 +27,9 @@
 	} = $props();
 
 	let form = superForm(formInputData || {}, {
-		validators: zod4Client(getApplicationFormSchema(formQuestions))
+		validators: zod4Client(getApplicationFormSchema(formQuestions)),
+		onUpdated: ({ form }) =>
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
 	});
 
 	const { form: formData, enhance, submitting } = form;
@@ -136,7 +140,23 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		{:else if question.type === ApplicationFormQuestionType.FILE}
-			<span>File Upload (todo)</span>
+			<Form.Field {form} name={question.id}>
+				<Form.Control>
+					{#snippet children({ props })}
+						<Form.Label>
+							{question.label}
+							{#if question.required}
+								<span class="text-red-500">*</span>
+							{/if}
+						</Form.Label>
+						<ApplicationFormFileUpload {...props} {disabled} bind:value={$formData[question.id]} />
+					{/snippet}
+				</Form.Control>
+				{#if question.desc}
+					<Form.Description>{question.desc}</Form.Description>
+				{/if}
+				<Form.FieldErrors />
+			</Form.Field>
 		{/if}
 	{:else}
 		<p class="text-center">No additional questions! Go ahead and submit!</p>
