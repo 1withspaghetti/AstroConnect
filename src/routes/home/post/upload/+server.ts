@@ -23,7 +23,7 @@ const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklm
 
 export const POST: RequestHandler = async ({ locals, request }) => {
 	const result = uploadRequestValidator.safeParse(await request.json());
-	if (!result.success) error(400, { message: result.error.message });
+	if (!result.success) error(400, { message: result.error.issues[0].message });
 	const { name, size } = result.data;
 
 	const fileKey = nanoid() + '-' + encodeURIComponent(name);

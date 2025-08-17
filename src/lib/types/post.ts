@@ -34,3 +34,9 @@ export const defaultCareerStageLevels = [
 	'Research/Staff Scientist Collaborator',
 	'Faculty Collaborator'
 ];
+
+export interface PostImage {
+	id: string;
+	url: string;
+	order: number;
+}

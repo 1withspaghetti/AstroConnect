@@ -23,6 +23,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				columns: {
 					tag: true
 				}
+			},
+			images: {
+				columns: {
+					id: true,
+					url: true,
+					order: true
+				}
 			}
 		}
 	});
@@ -32,6 +39,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	return {
+		postId,
+		images: post.images,
 		form: await superValidate(
 			{
 				title: post.title,

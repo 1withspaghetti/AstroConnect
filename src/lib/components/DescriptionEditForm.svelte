@@ -6,15 +6,20 @@
 	import { Input } from '$lib/components/ui/input';
 	import Textarea from './ui/textarea/textarea.svelte';
 	import SelectCombobox from './ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels } from '@/types/post';
+	import { defaultCareerStageLevels, type PostImage } from '@/types/post';
 	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
 	import { uniqueTags } from '@/fake_data';
 	import Button from './ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
+	import DescriptionEditImages from './DescriptionEditImages.svelte';
 
 	let {
+		postId,
+		images,
 		formInputData
 	}: {
+		postId: string;
+		images: PostImage[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
 	} = $props();
 
@@ -43,6 +48,7 @@
 	);
 </script>
 
+<DescriptionEditImages {postId} {images} />
 <form method="POST" use:enhance class="flex flex-col gap-6">
 	<Form.Field {form} name="title">
 		<Form.Control>

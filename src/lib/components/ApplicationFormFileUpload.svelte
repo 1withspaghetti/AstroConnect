@@ -5,6 +5,7 @@
 	import File from '@lucide/svelte/icons/file';
 	import { toast } from 'svelte-sonner';
 	import Progress from './ui/progress/progress.svelte';
+	import apiRequest from '@/util/apiClient';
 
 	type Props = HTMLInputAttributes & {
 		value?: string;
@@ -32,26 +33,13 @@
 
 		// Get S3 upload URL
 
-		const res = await fetch('/home/post/upload', {
-			method: 'POST',
-			body: JSON.stringify({
-				name: file.name,
-				size: file.size
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			}
+		const res = await apiRequest('POST', '/home/post/upload', {
+			name: file.name,
+			size: file.size
+		}).catch((error) => {
+			toast.error(`Upload failed: ${error.message}`);
+			throw error;
 		});
-
-		if (!res.ok) {
-			try {
-				const error = await res.json();
-				toast.error(`Upload failed: ${error.message}`);
-			} catch (e) {
-				toast.error('Upload failed: ' + res.statusText);
-			}
-			return;
-		}
 
 		const { uploadUrl, id }: { uploadUrl: string; id: string } = await res.json();
 

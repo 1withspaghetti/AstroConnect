@@ -122,9 +122,7 @@ export const actions: Actions = {
 
 				// Update status in db
 
-				await db
-					.delete(table.applicationUploads)
-					.where(eq(table.applicationUploads.id, file.id));
+				await db.delete(table.applicationUploads).where(eq(table.applicationUploads.id, file.id));
 
 				// Get new url
 
