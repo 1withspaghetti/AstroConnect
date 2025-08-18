@@ -6,7 +6,7 @@
 	import dayjs from '@/util/dayjs';
 	import { Separator } from '@/components/ui/separator';
 	import { Badge } from '$lib/components/ui/badge';
-	import ApplicationForm from '@/components/ApplicationForm.svelte';
+	import ApplicationForm from './ApplicationForm.svelte';
 	import type { Post } from '@/types/post';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { getApplicationFormSchema } from '@/validators/applicationFormValidator';

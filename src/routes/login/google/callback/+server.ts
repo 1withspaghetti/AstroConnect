@@ -33,7 +33,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const email = claims.email as string;
 	const pfp = claims.picture as string;
 
-	let userId: number;
+	let userId: string;
 
 	// Check if the user already exists in the database
 	const existingUser = await db.query.users.findFirst({

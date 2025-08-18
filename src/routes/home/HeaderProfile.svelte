@@ -3,12 +3,12 @@
 	import Bookmark from '@lucide/svelte/icons/bookmark';
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
-	import * as DropdownMenu from './ui/dropdown-menu';
+	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { goto } from '$app/navigation';
 	import Search from '@lucide/svelte/icons/search';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Eye from '@lucide/svelte/icons/eye';
-	import UserAvatar from './UserAvatar.svelte';
+	import UserAvatar from '@/components/UserAvatar.svelte';
 	import type { UserPreview } from '@/types/user';
 
 	const navData = [

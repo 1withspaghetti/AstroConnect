@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { buttonVariants } from './ui/button';
+	import { buttonVariants } from '@/components/ui/button';
 	import Upload from '@lucide/svelte/icons/upload';
 	import File from '@lucide/svelte/icons/file';
 	import { toast } from 'svelte-sonner';
-	import Progress from './ui/progress/progress.svelte';
+	import Progress from '@/components/ui/progress/progress.svelte';
 	import apiRequest from '@/util/apiClient';
 
 	type Props = HTMLInputAttributes & {

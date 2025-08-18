@@ -10,7 +10,7 @@
 	import { Textarea } from '@/components/ui/textarea';
 	import * as Select from '$lib/components/ui/select';
 	import { getApplicationFormSchema } from '@/validators/applicationFormValidator';
-	import Button from './ui/button/button.svelte';
+	import Button from '@/components/ui/button/button.svelte';
 	import ApplicationFormFileUpload from './ApplicationFormFileUpload.svelte';
 	import { toast } from 'svelte-sonner';
 
@@ -149,7 +149,11 @@
 								<span class="text-red-500">*</span>
 							{/if}
 						</Form.Label>
-						<ApplicationFormFileUpload {...props} {disabled} bind:value={$formData[question.id]} />
+						<ApplicationFormFileUpload
+							{...props}
+							disabled={disabled || !allowSubmit}
+							bind:value={$formData[question.id]}
+						/>
 					{/snippet}
 				</Form.Control>
 				{#if question.desc}

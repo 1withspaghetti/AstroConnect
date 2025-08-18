@@ -3,7 +3,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import Button from './ui/button/button.svelte';
+	import Button from '@/components/ui/button/button.svelte';
 	import { applicationEditFormSchema } from '@/validators/applicationEditFormValidator';
 	import * as Select from '$lib/components/ui/select';
 	import {
@@ -18,10 +18,10 @@
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import Copy from '@lucide/svelte/icons/copy';
 	import Trash from '@lucide/svelte/icons/trash';
-	import Textarea from './ui/textarea/textarea.svelte';
-	import { Checkbox } from './ui/checkbox';
+	import Textarea from '@/components/ui/textarea/textarea.svelte';
+	import { Checkbox } from '@/components/ui/checkbox';
 	import { flip } from 'svelte/animate';
-	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
+	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import Plus from '@lucide/svelte/icons/plus';
 	import { toast } from 'svelte-sonner';
 	import { tick } from 'svelte';

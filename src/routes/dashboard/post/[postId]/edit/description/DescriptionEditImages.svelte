@@ -1,19 +1,16 @@
 <script lang="ts">
 	import type { PostImage } from '@/types/post';
-	import * as Carousel from './ui/carousel';
-	import { Button, buttonVariants } from './ui/button';
+	import * as Carousel from '@/components/ui/carousel';
+	import { Button, buttonVariants } from '@/components/ui/button';
 	import ImagePlus from '@lucide/svelte/icons/image-plus';
-	import Image from '@lucide/svelte/icons/image';
-	import MoveLeft from '@lucide/svelte/icons/move-left';
-	import MoveRight from '@lucide/svelte/icons/move-right';
-	import { Progress } from './ui/progress';
+	import { Progress } from '@/components/ui/progress';
 	import { toast } from 'svelte-sonner';
 	import { invalidateAll } from '$app/navigation';
 	import Trash from '@lucide/svelte/icons/trash';
 	import apiRequest from '@/util/apiClient';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import ChevronLeft from '@lucide/svelte/icons/chevron-left';
-	import type { CarouselAPI } from './ui/carousel/context';
+	import type { CarouselAPI } from '@/components/ui/carousel/context';
 
 	let { postId, images: unorderedImages }: { postId: string; images: PostImage[] } = $props();
 

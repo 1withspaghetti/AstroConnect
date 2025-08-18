@@ -4,12 +4,12 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import Textarea from './ui/textarea/textarea.svelte';
-	import SelectCombobox from './ui/SelectCombobox.svelte';
+	import Textarea from '@/components/ui/textarea/textarea.svelte';
+	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
 	import { defaultCareerStageLevels, type PostImage } from '@/types/post';
-	import MultiselectCombobox from './ui/MultiselectCombobox.svelte';
+	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import { uniqueTags } from '@/fake_data';
-	import Button from './ui/button/button.svelte';
+	import Button from '@/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import DescriptionEditImages from './DescriptionEditImages.svelte';
 

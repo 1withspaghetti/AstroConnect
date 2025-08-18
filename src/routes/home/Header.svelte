@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from './ui/button/button.svelte';
+	import Button from '../../lib/components/ui/button/button.svelte';
 	import Search from '@lucide/svelte/icons/search';
 	import FileUp from '@lucide/svelte/icons/file-up';
 	import HeaderProfile from './HeaderProfile.svelte';

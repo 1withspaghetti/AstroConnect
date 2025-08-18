@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DescriptionEditForm from '@/components/DescriptionEditForm.svelte';
+	import DescriptionEditForm from './DescriptionEditForm.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

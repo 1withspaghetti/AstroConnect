@@ -1,6 +1,6 @@
 <script lang="ts">
+	import PostPage from '../../../../home/post/[postId]/PostPage.svelte';
 	import type { PageProps } from './$types';
-	import PostPage from '@/components/PostPage.svelte';
 
 	let { data }: PageProps = $props();
 </script>

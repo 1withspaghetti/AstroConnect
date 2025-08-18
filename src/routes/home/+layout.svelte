@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from '@/components/Header.svelte';
+	import Header from './Header.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
