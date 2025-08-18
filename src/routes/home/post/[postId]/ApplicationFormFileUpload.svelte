@@ -41,7 +41,7 @@
 			throw error;
 		});
 
-		const { uploadUrl, id }: { uploadUrl: string; id: string } = await res.json();
+		const { uploadUrl, id }: { uploadUrl: string; id: string } = res;
 
 		// Send to S3
 
