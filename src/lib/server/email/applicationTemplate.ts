@@ -13,7 +13,7 @@ export type ApplicationEmailTemplateData = {
 export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData): string =>
 	mjml2html(`
 <mjml>
-  <mj-body color="#030712" background-color="#f9fafb" font-family="sans-serif">
+  <mj-body color="#030712" background-color="#ffffff" font-family="sans-serif">
     <mj-section background-color="#ffffff" padding-bottom="20px" padding-top="20px">
       <mj-column width="100%">
         <mj-text align="center" font-size="24px" padding-left="25px" padding-right="25px" padding-bottom="18px" padding-top="18px">
@@ -21,23 +21,17 @@ export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData):
         </mj-text>
       </mj-column>
     </mj-section>
-    <mj-section background-color="#f9fafb" padding-bottom="0px" padding-top="0px">
+    <mj-section background-color="#f9fafb" padding-bottom="20px" padding-top="20px">
       <mj-column width="100%">
-        <mj-text align="center" font-size="13px" padding-left="25px" padding-right="25px" padding-bottom="12px" padding-top="28px">HELLO
-          <p style="font-size:16px;">${data.name || 'Researcher'}</p>
-        </mj-text>
-      </mj-column>
-    </mj-section>
-    <mj-section background-color="#f9fafb" padding-bottom="5px" padding-top="0">
-      <mj-column width="100%">
-        <mj-text align="center" font-size="13px" padding-left="25px" padding-right="25px" padding-bottom="28px" padding-top="12px">
+        <mj-text align="center" font-size="13px" padding-left="25px" padding-right="25px" padding-bottom="18px" padding-top="18px">
           <span style="font-size:20px; font-weight:bold">Somebody has applied to your Research!</span>
+          <br />
           <br />
           <span style="font-size:15px">Please find the application below.</span>
         </mj-text>
       </mj-column>
     </mj-section>
-    <mj-section background-color="#ffffff" padding-bottom="15px">
+    <mj-section background-color="#f9fafb" padding-bottom="15px">
       ${
 				data.applicantPfp
 					? `
