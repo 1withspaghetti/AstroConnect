@@ -26,7 +26,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	if (!result.success) error(400, { message: result.error.issues[0].message });
 	const { name, size } = result.data;
 
-	const fileKey = nanoid() + '-' + encodeURIComponent(name);
+	const fileKey = nanoid() + '-' + encodeURIComponent(name.normalize('NFC'));
 
 	// Generate signed URLs for upload and download
 	const uploadUrl = await getSignedUrl(

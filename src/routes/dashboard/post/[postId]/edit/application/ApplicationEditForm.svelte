@@ -51,7 +51,12 @@
 			);
 		},
 		onUpdated: ({ form }) =>
-			form.message && toast[form.message.type](form.message.text, { duration: 3000 })
+			form.message && toast[form.message.type](form.message.text, { duration: 3000 }),
+		onError: ({ result }) =>
+			toast.error(
+				'Error submitting: ' + (result.error.message || 'Unknown error ' + result.status),
+				{ duration: 3000 }
+			)
 	});
 
 	const { form: formData, enhance, submitting, tainted } = form;

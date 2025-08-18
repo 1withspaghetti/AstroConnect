@@ -109,7 +109,7 @@ export const actions: Actions = {
 				}
 				// Move it to the permanent location
 				const copyCommand = new CopyObjectCommand({
-					CopySource: `${S3_BUCKET_TEMP_APPLICATION_UPLOAD}/${file.fileKey}`,
+					CopySource: encodeURIComponent(`${S3_BUCKET_TEMP_APPLICATION_UPLOAD}/${file.fileKey}`),
 					Bucket: S3_BUCKET_APPLICATION_UPLOAD,
 					Key: file.fileKey
 				});
