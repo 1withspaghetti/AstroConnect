@@ -4,7 +4,6 @@ import { superValidate, message } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { db, table } from '@/server/db';
 import { eq } from 'drizzle-orm';
-import type { User } from '@/types/user';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ locals }) => {

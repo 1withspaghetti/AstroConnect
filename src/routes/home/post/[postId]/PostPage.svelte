@@ -93,11 +93,11 @@
 		</div>
 		<Card.Root class="max-w-sm">
 			<Card.Content class="flex flex-col items-center gap-2">
-				<Avatar.Root class="">
+				<Avatar.Root class="size-12">
 					<Avatar.Image src={post.owner.pfp} alt={post.owner.name} />
 					<Avatar.Fallback>{post.owner.name[0] || '?'}</Avatar.Fallback>
 				</Avatar.Root>
-				<Card.Title class="line-clamp-1">{post.owner.name}</Card.Title>
+				<Card.Title class="line-clamp-1 pb-1">{post.owner.name}</Card.Title>
 				<div class="text-muted-foreground flex items-center text-sm">
 					<Mail class="mr-1 h-4 w-4" />
 					<a href={`mailto:${post.owner.email}`} target="_blank" class="underline"

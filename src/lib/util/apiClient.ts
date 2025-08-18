@@ -6,9 +6,7 @@ export default async function apiRequest(
 ): Promise<any> {
 	const res = await fetch(url, {
 		method,
-		headers: {
-			'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json'
-		},
+		headers: data && !(data instanceof FormData) ? { 'Content-Type': 'application/json' } : {},
 		body: data ? (data instanceof FormData ? data : JSON.stringify(data)) : undefined,
 		...init
 	});

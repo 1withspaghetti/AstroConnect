@@ -8,11 +8,11 @@
 	import { Input } from '@/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import { Button } from '@/components/ui/button';
-	import UserAvatar from '@/components/UserAvatar.svelte';
 	import { Label } from '@/components/ui/label';
 	import dayjs from 'dayjs';
 	import { toast } from 'svelte-sonner';
 	import { Switch } from '@/components/ui/switch';
+	import ProfilePfpUpload from './ProfilePfpUpload.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -33,7 +33,7 @@
 	<Card.Root class="mt-16 w-full max-w-lg">
 		<Card.Header class="pt-8">
 			<div class="flex justify-center">
-				<UserAvatar {user} class="absolute size-24 -translate-y-full" />
+				<ProfilePfpUpload {user} class="absolute size-24 -translate-y-full" />
 			</div>
 			<Card.Title>Edit Profile</Card.Title>
 			<Card.Description>
