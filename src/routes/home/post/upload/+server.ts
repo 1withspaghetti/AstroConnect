@@ -4,7 +4,7 @@ import { error, json } from '@sveltejs/kit';
 import { customAlphabet } from 'nanoid';
 import { s3client } from '@/server/s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { S3_BUCKET_TEMP_APPLICATION_UPLOAD } from '$env/static/private';
+import { S3_BUCKET_TEMP_UPLOADS } from '$env/static/private';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { db, table } from '@/server/db';
 
@@ -32,7 +32,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	const uploadUrl = await getSignedUrl(
 		s3client,
 		new PutObjectCommand({
-			Bucket: S3_BUCKET_TEMP_APPLICATION_UPLOAD,
+			Bucket: S3_BUCKET_TEMP_UPLOADS,
 			Key: fileKey,
 			ContentLength: size
 		}),

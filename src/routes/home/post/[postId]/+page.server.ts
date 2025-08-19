@@ -20,8 +20,9 @@ import {
 	HeadObjectCommand
 } from '@aws-sdk/client-s3';
 import {
-	S3_BUCKET_APPLICATION_UPLOAD,
-	S3_BUCKET_TEMP_APPLICATION_UPLOAD
+	S3_BUCKET_UPLOADS,
+	S3_BUCKET_TEMP_UPLOADS,
+	S3_BUCKET_UPLOADS_PUBLIC_URL
 } from '$env/static/private';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -88,7 +89,7 @@ export const actions: Actions = {
 				}
 				// Verify it has been uploaded to S3
 				const command = new HeadObjectCommand({
-					Bucket: S3_BUCKET_TEMP_APPLICATION_UPLOAD,
+					Bucket: S3_BUCKET_TEMP_UPLOADS,
 					Key: file.fileKey
 				});
 				try {
@@ -109,13 +110,13 @@ export const actions: Actions = {
 				}
 				// Move it to the permanent location
 				const copyCommand = new CopyObjectCommand({
-					CopySource: encodeURIComponent(`${S3_BUCKET_TEMP_APPLICATION_UPLOAD}/${file.fileKey}`),
-					Bucket: S3_BUCKET_APPLICATION_UPLOAD,
-					Key: file.fileKey
+					CopySource: encodeURIComponent(`${S3_BUCKET_TEMP_UPLOADS}/${file.fileKey}`),
+					Bucket: S3_BUCKET_UPLOADS,
+					Key: `${postId}/${file.fileKey}`
 				});
 				await s3client.send(copyCommand);
 				const deleteCommand = new DeleteObjectCommand({
-					Bucket: S3_BUCKET_TEMP_APPLICATION_UPLOAD,
+					Bucket: S3_BUCKET_TEMP_UPLOADS,
 					Key: file.fileKey
 				});
 				await s3client.send(deleteCommand);
@@ -126,13 +127,10 @@ export const actions: Actions = {
 
 				// Get new url
 
-				const fileUrl = await getSignedUrl(
-					s3client,
-					new GetObjectCommand({
-						Bucket: S3_BUCKET_APPLICATION_UPLOAD,
-						Key: file.fileKey
-					})
-				);
+				const fileUrl = new URL(
+					`${postId}/${encodeURIComponent(file.fileKey)}`,
+					S3_BUCKET_UPLOADS_PUBLIC_URL
+				).toString();
 
 				form.data[question.id] = fileUrl;
 			}
