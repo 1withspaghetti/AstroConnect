@@ -20,6 +20,7 @@ const imageUploadValidator = z.object({
 });
 
 export const POST: RequestHandler = async ({ request, locals }) => {
+	const { user } = await locals.auth();
 	const formData = await request.formData();
 	const res = imageUploadValidator.safeParse(Object.fromEntries(formData.entries()));
 	if (!res.success) return error(400, res.error.issues[0].message);
@@ -31,7 +32,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	const putReq = new PutObjectCommand({
 		Bucket: S3_BUCKET_IMAGES,
-		Key: `profile/${locals.user!.id}.webp`,
+		Key: `profile/${user.id}.webp`,
 		Body: image,
 		ContentType: 'image/webp'
 	});
@@ -44,7 +45,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	}
 
 	const url = new URL(
-		`profile/${locals.user!.id}.webp?t=${Date.now()}`,
+		`profile/${user.id}.webp?t=${Date.now()}`,
 		S3_BUCKET_IMAGES_PUBLIC_URL
 	).toString();
 
@@ -53,7 +54,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		.set({
 			pfp: url
 		})
-		.where(eq(table.users.id, locals.user!.id));
+		.where(eq(table.users.id, user.id));
 
 	return json({
 		pfp: url

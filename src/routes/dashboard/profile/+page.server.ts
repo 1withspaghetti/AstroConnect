@@ -7,7 +7,8 @@ import { eq } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ locals }) => {
-	const user = await db.query.users.findFirst({
+	const { user } = await locals.auth();
+	const fullUser = await db.query.users.findFirst({
 		columns: {
 			id: true,
 			name: true,
@@ -19,19 +20,19 @@ export const load = (async ({ locals }) => {
 			firstLogin: true,
 			lastLogin: true
 		},
-		where: eq(table.users.id, locals.user!.id)
+		where: eq(table.users.id, user.id)
 	});
 
-	if (!user) error(404, 'User not found');
+	if (!fullUser) error(404, 'User not found');
 
 	return {
-		user: user,
+		user: fullUser,
 		form: await superValidate(
 			{
-				name: user.name,
-				pfp: user.pfp || undefined,
-				bio: user.bio || undefined,
-				isPublic: user.isPublic
+				name: fullUser.name,
+				pfp: fullUser.pfp || undefined,
+				bio: fullUser.bio || undefined,
+				isPublic: fullUser.isPublic
 			},
 			zod4(profileEditSchema)
 		)
@@ -40,6 +41,7 @@ export const load = (async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
+		const { user } = await locals.auth();
 		const form = await superValidate(request, zod4(profileEditSchema));
 
 		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
@@ -52,7 +54,7 @@ export const actions: Actions = {
 				bio: form.data.bio || '',
 				isPublic: form.data.isPublic
 			})
-			.where(eq(table.users.id, locals.user!.id));
+			.where(eq(table.users.id, user.id));
 
 		return message(form, { type: 'success', text: 'Profile updated successfully!' });
 	}

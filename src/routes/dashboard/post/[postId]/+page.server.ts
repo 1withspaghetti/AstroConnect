@@ -10,12 +10,13 @@ export const load = (async ({ params }) => {
 
 export const actions = {
 	publish: async ({ params, locals }) => {
+		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
 		const res = await db
 			.update(table.posts)
 			.set({ isDraft: false })
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)));
+			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
 		if (res.rowCount < 1) {
 			throw error(404, `Post not found`);
@@ -25,12 +26,13 @@ export const actions = {
 	},
 
 	unpublish: async ({ params, locals }) => {
+		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
 		const res = await db
 			.update(table.posts)
 			.set({ isDraft: true })
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)));
+			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
 		if (res.rowCount < 1) {
 			throw error(404, `Post not found`);
@@ -40,11 +42,12 @@ export const actions = {
 	},
 
 	delete: async ({ params, locals }) => {
+		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
 		const res = await db
 			.delete(table.posts)
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)));
+			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
 		if (res.rowCount < 1) {
 			throw error(404, `Post not found`);

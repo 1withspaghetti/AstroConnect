@@ -5,6 +5,7 @@ import { google } from '@/server/oauth';
 import { db, table } from '@/server/db';
 import { eq } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
+import { INITIAL_ADMIN_EMAILS } from '$env/static/private';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const code = url.searchParams.get('code');
@@ -34,11 +35,13 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const pfp = claims.picture as string;
 
 	let userId: string;
+	let isAdmin: boolean;
 
 	// Check if the user already exists in the database
 	const existingUser = await db.query.users.findFirst({
 		columns: {
-			id: true
+			id: true,
+			isAdmin: true
 		},
 		where: eq(table.users.googleId, googleId)
 	});
@@ -54,6 +57,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			.where(eq(table.users.googleId, googleId));
 
 		userId = existingUser.id;
+		isAdmin = existingUser.isAdmin;
 	} else {
 		// Create a new user
 		const user = await db
@@ -67,11 +71,14 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			.returning({ id: table.users.id });
 
 		userId = user[0].id;
+		isAdmin = INITIAL_ADMIN_EMAILS.split(',')
+			.map((email) => email.trim())
+			.includes(email);
 	}
 
 	// Create a session for the user
 	const token = generateSessionToken();
-	const session = await createSession(token, userId);
+	const session = await createSession(token, userId, isAdmin ? userId : null);
 	setSessionTokenCookie(token, session.expiresAt);
 	return redirect(302, '/home');
 };

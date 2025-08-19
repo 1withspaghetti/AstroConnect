@@ -8,6 +8,7 @@ import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 
 	const post = await db.query.posts.findFirst({
@@ -17,7 +18,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			careerStage: true,
 			prereq: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)),
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)),
 		with: {
 			tags: {
 				columns: {
@@ -56,6 +57,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
+		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
 		const form = await superValidate(request, zod4(descriptionEditFormSchema));
@@ -70,7 +72,7 @@ export const actions: Actions = {
 				careerStage: form.data.careerStage || '',
 				prereq: form.data.prereq || ''
 			})
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)));
+			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
 		await db.delete(table.postTags).where(eq(table.postTags.postId, postId));
 

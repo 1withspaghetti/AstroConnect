@@ -9,6 +9,8 @@ export const sessions = pgTable(
 		userId: uuid('user_id')
 			.references(() => users.id, { onDelete: 'cascade' })
 			.notNull(),
+		adminId: uuid('admin_id') // If the user is an admin, this will be their ID, as the userId  could be a different user they are signed in as.
+			.references(() => users.id, { onDelete: 'cascade' }),
 		expiresAt: timestamp('expires_at').notNull()
 	},
 	(table) => [index('sessions_user_id_idx').on(table.userId)]

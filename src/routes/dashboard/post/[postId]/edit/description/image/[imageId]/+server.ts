@@ -13,6 +13,7 @@ const imagePatchRequestValidator = z.strictObject({
 });
 
 export const PATCH: RequestHandler = async ({ request, params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 	const imageId = validateId(params.imageId);
 
@@ -24,7 +25,7 @@ export const PATCH: RequestHandler = async ({ request, params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id))
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 
@@ -38,6 +39,7 @@ export const PATCH: RequestHandler = async ({ request, params, locals }) => {
 };
 
 export const DELETE: RequestHandler = async ({ params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 	const imageId = validateId(params.imageId);
 
@@ -45,7 +47,7 @@ export const DELETE: RequestHandler = async ({ params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id))
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 

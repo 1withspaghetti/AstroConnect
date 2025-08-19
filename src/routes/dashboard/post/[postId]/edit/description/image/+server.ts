@@ -20,6 +20,7 @@ const imageUploadValidator = z.object({
 });
 
 export const POST: RequestHandler = async ({ request, params, locals }) => {
+	const { user } = await locals.auth();
 	const formData = await request.formData();
 	const res = imageUploadValidator.safeParse(Object.fromEntries(formData.entries()));
 	if (!res.success) return error(400, res.error.issues[0].message);
@@ -29,7 +30,7 @@ export const POST: RequestHandler = async ({ request, params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id))
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 

@@ -45,6 +45,8 @@ export const load: PageServerLoad = async ({ params }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
+		const { user } = await locals.auth();
+
 		const postId = validateId(params.postId);
 
 		const post = await db.query.posts.findFirst({
@@ -78,7 +80,7 @@ export const actions: Actions = {
 					},
 					where: and(
 						eq(table.applicationUploads.id, fileId),
-						eq(table.applicationUploads.userId, locals.user!.id)
+						eq(table.applicationUploads.userId, user.id)
 					)
 				});
 				if (!file) {
@@ -147,7 +149,7 @@ export const actions: Actions = {
 
 		await db.insert(table.applications).values({
 			postId: post.id,
-			userId: locals.user!.id, // Replace with actual user ID from session
+			userId: user.id,
 			answers
 		});
 
@@ -178,7 +180,7 @@ export const actions: Actions = {
 					bio: true,
 					pfp: true
 				},
-				where: eq(table.users.id, locals.user!.id)
+				where: eq(table.users.id, user.id)
 			});
 
 			if (!sender) {

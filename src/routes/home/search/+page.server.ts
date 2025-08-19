@@ -13,6 +13,8 @@ const queryParamsValidator = z.object({
 });
 
 export const load = (async ({ url, locals }) => {
+	await locals.auth();
+
 	const query = queryParamsValidator.parse(Object.fromEntries(url.searchParams.entries()));
 
 	let conditions: SQLWrapper[] = [];

@@ -7,21 +7,23 @@ import { eq } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
 
 export const load = (async ({ locals }) => {
-	const user = await db.query.users.findFirst({
+	const { user } = await locals.auth();
+
+	const fullUser = await db.query.users.findFirst({
 		columns: {
 			sendSubmissionEmails: true,
 			alternateEmail: true
 		},
-		where: eq(table.users.id, locals.user!.id)
+		where: eq(table.users.id, user.id)
 	});
 
-	if (!user) error(404, 'User not found');
+	if (!fullUser) error(404, 'User not found');
 
 	return {
 		form: await superValidate(
 			{
-				sendSubmissionEmails: user.sendSubmissionEmails,
-				alternateEmail: user.alternateEmail || undefined // Use undefined if alternateEmail is null
+				sendSubmissionEmails: fullUser.sendSubmissionEmails,
+				alternateEmail: fullUser.alternateEmail || undefined // Use undefined if alternateEmail is null
 			},
 			zod4(settingsEditSchema)
 		)
@@ -30,6 +32,7 @@ export const load = (async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
+		const { user } = await locals.auth();
 		const form = await superValidate(request, zod4(settingsEditSchema));
 
 		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
@@ -42,7 +45,7 @@ export const actions: Actions = {
 				sendSubmissionEmails: form.data.sendSubmissionEmails,
 				alternateEmail: form.data.alternateEmail || null // Store null if not provided
 			})
-			.where(eq(table.users.id, locals.user!.id));
+			.where(eq(table.users.id, user.id));
 
 		return message(form, { type: 'success', text: 'Settings updated successfully!' });
 	}

@@ -8,13 +8,14 @@ import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 
 	const post = await db.query.posts.findFirst({
 		columns: {
 			questions: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id))
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
 
 	if (!post) {
@@ -33,6 +34,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
+		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
 		const form = await superValidate(request, zod4(applicationEditFormSchema));
@@ -44,7 +46,7 @@ export const actions: Actions = {
 			.set({
 				questions: form.data.questions
 			})
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id)));
+			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
 		return message(form, { type: 'success', text: 'Post updated successfully!' });
 	}

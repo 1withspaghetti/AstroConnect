@@ -5,10 +5,10 @@ import { and, eq } from 'drizzle-orm';
 import { findManyPostPreviews } from '@/server/db/common';
 
 export const load = (async ({ locals }) => {
-	if (!locals.user) error(401, 'Unauthorized');
+	const { user } = await locals.auth();
 
 	const posts = findManyPostPreviews({
-		where: and(eq(table.posts.ownerId, locals.user.id), eq(table.posts.isDraft, true))
+		where: and(eq(table.posts.ownerId, user.id), eq(table.posts.isDraft, true))
 	});
 
 	return {
@@ -18,12 +18,12 @@ export const load = (async ({ locals }) => {
 
 export const actions: Actions = {
 	new: async ({ locals }) => {
-		if (!locals.user) error(401, 'Unauthorized');
+		const { user } = await locals.auth();
 
 		const [newPost] = await db
 			.insert(table.posts)
 			.values({
-				ownerId: locals.user.id,
+				ownerId: user.id,
 				title: 'New Draft'
 			})
 			.returning({ id: table.posts.id });

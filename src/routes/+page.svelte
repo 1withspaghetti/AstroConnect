@@ -37,9 +37,6 @@
 				<Button variant="default" href="/login/google" class="w-full"
 					><GoogleIcon /> Login with Google</Button
 				>
-				<Button variant="default" href="/login/demo" class="w-full"
-					><CircleUser /> Login with Demo Account</Button
-				>
 			</Card.Footer>
 		</Card.Root>
 	</div>

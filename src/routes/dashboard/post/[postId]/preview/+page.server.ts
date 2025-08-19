@@ -6,10 +6,11 @@ import { table } from '@/server/db/index.js';
 import { validateId } from '@/validators/idValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 
 	const post = await findFirstPost({
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, locals.user!.id))
+		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
 
 	if (!post) {

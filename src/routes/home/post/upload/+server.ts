@@ -22,6 +22,8 @@ const uploadRequestValidator = z.object({
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 12);
 
 export const POST: RequestHandler = async ({ locals, request }) => {
+	const { user } = await locals.auth();
+
 	const result = uploadRequestValidator.safeParse(await request.json());
 	if (!result.success) error(400, { message: result.error.issues[0].message });
 	const { name, size } = result.data;
@@ -45,7 +47,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		.insert(table.applicationUploads)
 		.values({
 			fileKey,
-			userId: locals.user!.id
+			userId: user.id
 		})
 		.returning({ id: table.applicationUploads.id });
 
