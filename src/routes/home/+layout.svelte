@@ -5,5 +5,5 @@
 	let { data, children }: LayoutProps = $props();
 </script>
 
-<Header user={data.user} />
+<Header user={data.user} isAdmin={data.isAdmin} />
 {@render children?.()}

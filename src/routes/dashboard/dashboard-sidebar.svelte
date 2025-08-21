@@ -9,7 +9,8 @@
 	import Plus from '@lucide/svelte/icons/plus';
 	import type { UserPreview } from '@/types/user';
 
-	let { posts, user }: { posts: PostMinimal[]; user: UserPreview } = $props();
+	let { posts, user, isAdmin }: { posts: PostMinimal[]; user: UserPreview; isAdmin: boolean } =
+		$props();
 
 	let draftPosts = $derived(posts.filter((post) => post.isDraft));
 	let publishedPosts = $derived(posts.filter((post) => !post.isDraft));
@@ -88,6 +89,6 @@
 		{/each}
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<DashboardSidebarUser {user} />
+		<DashboardSidebarUser {user} {isAdmin} />
 	</Sidebar.Footer>
 </Sidebar.Root>

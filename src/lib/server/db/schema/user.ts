@@ -8,9 +8,9 @@ export const users = pgTable(
 	'users',
 	{
 		id: uuid('id').defaultRandom().primaryKey(),
-		googleId: text('google_id').notNull().unique(),
+		googleId: text('google_id').unique(),
 		name: varchar({ length: 200 }).notNull(),
-		email: varchar({ length: 500 }).notNull(),
+		email: varchar({ length: 500 }).notNull().unique(),
 		pfp: varchar({ length: 500 }),
 		bio: varchar({ length: 500 }).default('').notNull(),
 		isPublic: boolean('is_public').default(false).notNull(),

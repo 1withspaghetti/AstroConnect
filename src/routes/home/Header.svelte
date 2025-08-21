@@ -5,7 +5,7 @@
 	import HeaderProfile from './HeaderProfile.svelte';
 	import type { UserPreview } from '@/types/user';
 
-	const { user }: { user: UserPreview } = $props();
+	const { user, isAdmin }: { user: UserPreview; isAdmin: boolean } = $props();
 </script>
 
 <div class="bg-background sticky top-0 z-40 border-b">
@@ -18,7 +18,7 @@
 			<Button href="/dashboard/drafts" variant="outline"
 				><FileUp /> <span class="hidden sm:inline">Post Research</span></Button
 			>
-			<HeaderProfile {user} />
+			<HeaderProfile {user} {isAdmin} />
 		</nav>
 	</div>
 </div>

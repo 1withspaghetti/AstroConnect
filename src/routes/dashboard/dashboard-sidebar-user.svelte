@@ -7,8 +7,9 @@
 	import Ellipsis from '@lucide/svelte/icons/ellipsis';
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import type { UserPreview } from '@/types/user';
+	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
 
-	let { user }: { user: UserPreview } = $props();
+	let { user, isAdmin }: { user: UserPreview; isAdmin: boolean } = $props();
 
 	const sidebar = useSidebar();
 </script>
@@ -38,6 +39,9 @@
 				align="end"
 				sideOffset={4}
 			>
+				{#if isAdmin}
+					<AdminAccountSwitcherMenuItem />
+				{/if}
 				<DropdownMenu.Item
 					onclick={() => goto('/login/logout')}
 					variant="destructive"

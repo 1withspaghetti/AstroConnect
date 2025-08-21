@@ -4,7 +4,7 @@ import { db, table } from '@/server/db';
 import { desc, eq } from 'drizzle-orm';
 
 export const load = (async ({ locals }) => {
-	const { user } = await locals.auth();
+	const { session, user } = await locals.auth();
 
 	const posts = await db.query.posts.findMany({
 		columns: {
@@ -20,6 +20,7 @@ export const load = (async ({ locals }) => {
 
 	return {
 		postList: posts as PostMinimal[],
-		user: user
+		user: user,
+		isAdmin: session.adminId !== null
 	};
 }) satisfies LayoutServerLoad;

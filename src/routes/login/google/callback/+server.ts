@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { decodeIdToken, type OAuth2Tokens } from 'arctic';
 import { google } from '@/server/oauth';
 import { db, table } from '@/server/db';
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull, or, asc, sql } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
 import { INITIAL_ADMIN_EMAILS } from '$env/static/private';
 
@@ -41,24 +41,51 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	const existingUser = await db.query.users.findFirst({
 		columns: {
 			id: true,
-			isAdmin: true
+			isAdmin: true,
+			googleId: true,
+			email: true
 		},
-		where: eq(table.users.googleId, googleId)
+		where: or(
+			eq(table.users.googleId, googleId),
+			and(eq(table.users.email, email), isNull(table.users.googleId))
+		),
+		orderBy: sql`${table.users.googleId} NULLS LAST`
 	});
 
 	if (existingUser) {
-		// User already exists, update their info
-		await db
-			.update(table.users)
-			.set({
-				email,
-				lastLogin: new Date()
-			})
-			.where(eq(table.users.googleId, googleId));
+		if (existingUser.googleId) {
+			// User already exists, update their info
+			await db
+				.update(table.users)
+				.set({
+					email,
+					lastLogin: new Date()
+				})
+				.where(eq(table.users.googleId, googleId));
 
-		userId = existingUser.id;
-		isAdmin = existingUser.isAdmin;
+			userId = existingUser.id;
+			isAdmin = existingUser.isAdmin;
+		} else {
+			// Email exists but has not been linked to a Google account
+			await db
+				.update(table.users)
+				.set({
+					googleId,
+					name,
+					email,
+					pfp,
+					lastLogin: new Date()
+				})
+				.where(eq(table.users.id, existingUser.id));
+
+			userId = existingUser.id;
+			isAdmin = existingUser.isAdmin;
+		}
 	} else {
+		isAdmin = INITIAL_ADMIN_EMAILS.split(',')
+			.map((email) => email.trim())
+			.includes(email);
+
 		// Create a new user
 		const user = await db
 			.insert(table.users)
@@ -66,14 +93,12 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 				googleId,
 				name,
 				email,
-				pfp
+				pfp,
+				isAdmin
 			})
 			.returning({ id: table.users.id });
 
 		userId = user[0].id;
-		isAdmin = INITIAL_ADMIN_EMAILS.split(',')
-			.map((email) => email.trim())
-			.includes(email);
 	}
 
 	// Create a session for the user

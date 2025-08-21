@@ -10,6 +10,7 @@
 	import Eye from '@lucide/svelte/icons/eye';
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import type { UserPreview } from '@/types/user';
+	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
 
 	const navData = [
 		[
@@ -55,7 +56,7 @@
 		]
 	];
 
-	const { user }: { user: UserPreview } = $props();
+	const { user, isAdmin }: { user: UserPreview; isAdmin: boolean } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -75,6 +76,9 @@
 				{/each}
 				<DropdownMenu.Separator />
 			{/each}
+			{#if isAdmin}
+				<AdminAccountSwitcherMenuItem />
+			{/if}
 			<DropdownMenu.Item
 				variant="destructive"
 				onclick={() => goto('/login/logout')}
