@@ -21,6 +21,7 @@ export const load = (async ({ locals }) => {
 	return {
 		postList: posts as PostMinimal[],
 		user: user,
-		isAdmin: session.adminId !== null
+		isAdmin: session.adminId !== null,
+		isImpersonating: session.adminId !== null && session.adminId !== user.id
 	};
 }) satisfies LayoutServerLoad;

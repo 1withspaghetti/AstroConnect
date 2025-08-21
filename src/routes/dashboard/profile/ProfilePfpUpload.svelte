@@ -47,7 +47,7 @@
 	<Avatar.Image src={pfp} alt={user.name} />
 	<Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
 	<label
-		class="absolute bottom-0 w-full bg-black/50 text-center text-xs text-white focus-within:bg-black/70 hover:bg-black/70"
+		class="absolute bottom-0 w-full cursor-pointer bg-black/50 text-center text-xs text-white focus-within:bg-black/70 hover:bg-black/70"
 	>
 		<ImagePlus class="my-1 inline size-4" />
 		<input

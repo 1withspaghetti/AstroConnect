@@ -88,7 +88,7 @@
 	class="cursor-pointer"
 >
 	<Users />
-	Switch Account
+	Switch Account [ADMIN]
 </DropdownMenu.Item>
 
 <Command.Dialog bind:open>

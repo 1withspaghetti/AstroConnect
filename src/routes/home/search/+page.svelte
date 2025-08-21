@@ -11,7 +11,7 @@
 </script>
 
 <div class="container mx-auto pb-16">
-	<div class="relative w-full">
+	<div class="relative w-full overflow-hidden">
 		<div class="peer">
 			<enhanced:img
 				alt="Starry Mountain Background"

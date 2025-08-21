@@ -70,6 +70,7 @@
 	import { Separator } from '@/components/ui/separator';
 	import DashboardSidebar from './dashboard-sidebar.svelte';
 	import { page } from '$app/state';
+	import AdminImpersonationHeader from '@/components/AdminImpersonationHeader.svelte';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -86,8 +87,8 @@
 
 <Sidebar.Provider>
 	<DashboardSidebar posts={data.postList} user={data.user} isAdmin={data.isAdmin} />
-	<Sidebar.Inset>
-		<header class="flex h-12 shrink-0 items-center gap-2 border-b px-4">
+	<Sidebar.Inset class="h-screen">
+		<header class="sticky top-0 z-30 flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />
 			<Separator orientation="vertical" class="mr-2 h-4" />
 			<Breadcrumb.Root>
@@ -124,7 +125,8 @@
 				</Breadcrumb.List>
 			</Breadcrumb.Root>
 		</header>
-		<main>
+		<main class="relative h-full overflow-y-auto">
+			<AdminImpersonationHeader isImpersonating={data.isImpersonating} user={data.user} />
 			{@render children?.()}
 		</main>
 	</Sidebar.Inset>
