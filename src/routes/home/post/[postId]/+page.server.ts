@@ -13,18 +13,12 @@ import {
 } from '@/types/applicationForm.js';
 import { validateId } from '@/validators/idValidator.js';
 import { s3client } from '@/server/s3.js';
-import {
-	CopyObjectCommand,
-	DeleteObjectCommand,
-	GetObjectCommand,
-	HeadObjectCommand
-} from '@aws-sdk/client-s3';
+import { CopyObjectCommand, DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import {
 	S3_BUCKET_UPLOADS,
 	S3_BUCKET_TEMP_UPLOADS,
 	S3_BUCKET_UPLOADS_PUBLIC_URL
 } from '$env/static/private';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const postId = validateId(params.postId);
@@ -32,6 +26,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	const post = await findFirstPost({
 		where: and(eq(table.posts.id, postId), eq(table.posts.isDraft, false))
 	});
+
+	console.log(post);
 
 	if (!post) {
 		throw error(404, `Post not found`);

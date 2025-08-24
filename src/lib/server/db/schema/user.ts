@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { boolean, pgTable, text, timestamp, varchar, index, uuid } from 'drizzle-orm/pg-core';
 import { posts } from './post';
 import { sessions } from './session';
@@ -13,6 +13,8 @@ export const users = pgTable(
 		email: varchar({ length: 500 }).notNull().unique(),
 		pfp: varchar({ length: 500 }),
 		bio: varchar({ length: 500 }).default('').notNull(),
+		careerStage: varchar('career_stage', { length: 100 }).default('').notNull(),
+		major: varchar({ length: 100 }).default('').notNull(),
 		isPublic: boolean('is_public').default(false).notNull(),
 		isAdmin: boolean('is_admin').default(false).notNull(),
 		firstLogin: timestamp('first_login').defaultNow().notNull(),
@@ -21,6 +23,10 @@ export const users = pgTable(
 		alternateEmail: varchar('alternate_email', { length: 500 })
 	},
 	(table) => [
+		index('users_search_idx').using(
+			'gin',
+			sql`to_tsvector('english', ${table.name} || ' ' || ${table.bio})`
+		),
 		index('users_google_id_idx').on(table.googleId),
 		index('users_email_idx').on(table.email),
 		index('users_is_public_idx').on(table.isPublic)
@@ -28,8 +34,31 @@ export const users = pgTable(
 );
 
 export const usersRelations = relations(users, ({ many }) => ({
+	tags: many(userTags),
 	posts: many(posts),
 	sessions: many(sessions),
 	applications: many(applications),
 	applicationUploads: many(applicationUploads)
+}));
+
+export const userTags = pgTable(
+	'user_tags',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: uuid('user_id')
+			.references(() => users.id, { onDelete: 'cascade' })
+			.notNull(),
+		tag: varchar({ length: 100 }).notNull()
+	},
+	(table) => [
+		index('user_tags_user_id_idx').on(table.userId),
+		index('user_tags_tag_idx').on(table.tag)
+	]
+);
+
+export const userTagsRelations = relations(userTags, ({ one }) => ({
+	user: one(users, {
+		fields: [userTags.userId],
+		references: [users.id]
+	})
 }));

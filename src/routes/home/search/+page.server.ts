@@ -61,7 +61,7 @@ export const load = (async ({ url, locals }) => {
 		orderBy: [...orderBy, desc(table.posts.createdAt)],
 		extras: {
 			...extras,
-			total: sql`count(*) OVER()`.as('total')
+			total: sql<number>`count(*) OVER()`.as('total')
 		}
 	}).then((posts) => ({
 		posts: posts.map((post) => ({
@@ -70,7 +70,7 @@ export const load = (async ({ url, locals }) => {
 			rank: undefined, // Remove rank from individual posts
 			rankCd: undefined // Remove rank_cd from individual posts
 		})),
-		total: (posts[0]?.total ?? 0) as number
+		total: posts[0]?.total ?? 0
 	}));
 
 	return {

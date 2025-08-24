@@ -8,16 +8,20 @@
 	import { Input } from '@/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import { Button } from '@/components/ui/button';
-	import { Label } from '@/components/ui/label';
 	import dayjs from 'dayjs';
 	import { toast } from 'svelte-sonner';
 	import { Switch } from '@/components/ui/switch';
 	import ProfilePfpUpload from './ProfilePfpUpload.svelte';
+	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
+	import { defaultCareerStageLevels } from '@/types/post';
+	import { uniqueTags } from '@/fake_data';
+	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 
 	let { data }: PageProps = $props();
 
 	let form = superForm(data.form, {
 		validators: zod4Client(profileEditSchema),
+		dataType: 'json',
 		taintedMessage: true,
 		resetForm: false,
 		onUpdated: ({ form }) =>
@@ -32,6 +36,19 @@
 	let { form: formData, enhance, submitting, tainted } = form;
 
 	const user = data.user;
+
+	// Ensure careerStage is always an array for consistency
+	let fullCareerStageList = $derived(
+		$formData.careerStage
+			? defaultCareerStageLevels.includes($formData.careerStage)
+				? defaultCareerStageLevels
+				: [...defaultCareerStageLevels, $formData.careerStage]
+			: defaultCareerStageLevels
+	);
+
+	let fullTagList = $derived(
+		[...new Set([...uniqueTags, ...$formData.tags])].sort((a, b) => a.localeCompare(b))
+	);
 </script>
 
 <div class="flex flex-col items-center p-4 pb-16">
@@ -63,7 +80,7 @@
 				<Form.Field {form} name="bio">
 					<Form.Control>
 						{#snippet children({ props })}
-							<Form.Label>Bio</Form.Label>
+							<Form.Label>Bio (optional)</Form.Label>
 							<Textarea {...props} bind:value={$formData.bio} />
 							<Form.Description>
 								A short description about yourself, your current research interests, or your
@@ -73,13 +90,51 @@
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
-				<div class="space-y-2">
-					<Label>Email</Label>
-					<Input disabled value={data.user.email} />
-					<div class="text-muted-foreground text-sm">
-						This cannot be changed here because it is connected to the account you used to sign up.
-					</div>
-				</div>
+				<Form.Field {form} name="careerStage">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Career Stage (optional)</Form.Label>
+							<SelectCombobox
+								bind:item={$formData.careerStage}
+								defaultOptions={fullCareerStageList}
+							/>
+							<Form.Description>
+								Where are you in your academic or professional journey?
+							</Form.Description>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="major">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Major (optional)</Form.Label>
+							<Input {...props} bind:value={$formData.major} />
+							<Form.Description>
+								If you are a student, what is your major or field of study?
+							</Form.Description>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="tags">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Tags (optional)</Form.Label>
+							<MultiselectCombobox
+								bind:items={$formData.tags}
+								defaultOptions={fullTagList}
+								allowCustom={true}
+								placeholder="Search Tags"
+								emptyText="No existing tags found"
+							/>
+							<Form.Description>
+								Topics related to your research interests, skills, or areas of expertise.
+							</Form.Description>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
 				<Form.Field {form} name="isPublic">
 					<Form.Control>
 						{#snippet children({ props })}
@@ -87,8 +142,8 @@
 								<div class="space-y-0.5">
 									<Form.Label>Researcher Visibility</Form.Label>
 									<Form.Description>
-										Should your profile be listed publicly as a researcher? This will allow others
-										to find and contact you for research opportunities.
+										Should your profile (including email) be listed publicly as a researcher? This
+										will allow others to find and contact you for research opportunities.
 									</Form.Description>
 								</div>
 								<Switch {...props} bind:checked={$formData.isPublic} />

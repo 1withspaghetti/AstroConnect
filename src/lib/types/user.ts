@@ -7,11 +7,16 @@ export interface UserPreview {
 
 export interface UserProfile extends UserPreview {
 	bio: string;
+	careerStage: string;
+	major: string;
+	tags: string[];
+	isAdmin: boolean;
 }
 
 export interface User extends UserPreview {
 	isPublic: boolean;
-	isAdmin: boolean;
+	firstLogin: Date;
+	lastLogin: Date;
 }
 
 export interface SessionUser extends UserPreview {

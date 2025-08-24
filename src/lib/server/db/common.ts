@@ -42,7 +42,18 @@ export async function findManyPostPreviews(
 					name: true,
 					email: true,
 					pfp: true,
-					bio: true
+					bio: true,
+					careerStage: true,
+					major: true,
+					isAdmin: true
+				},
+				with: {
+					tags: {
+						columns: {
+							tag: true
+						},
+						orderBy: table.userTags.tag
+					}
 				}
 			}
 		},
@@ -52,6 +63,10 @@ export async function findManyPostPreviews(
 
 	return posts.map((post) => ({
 		...post,
+		owner: {
+			...post.owner,
+			tags: post.owner.tags.map((tag) => tag.tag)
+		},
 		images: post.images.map((image) => image.url),
 		tags: post.tags.map((tag) => tag.tag),
 		applications: post.applications.length
@@ -99,7 +114,18 @@ export async function findFirstPost(
 					name: true,
 					email: true,
 					pfp: true,
-					bio: true
+					bio: true,
+					careerStage: true,
+					major: true,
+					isAdmin: true
+				},
+				with: {
+					tags: {
+						columns: {
+							tag: true
+						},
+						orderBy: table.userTags.tag
+					}
 				}
 			}
 		},
@@ -110,6 +136,10 @@ export async function findFirstPost(
 	return post
 		? {
 				...post,
+				owner: {
+					...post.owner,
+					tags: post.owner.tags.map((tag) => tag.tag)
+				},
 				images: post.images.map((image) => image.url),
 				tags: post.tags.map((tag) => tag.tag),
 				applications: post.applications.length,

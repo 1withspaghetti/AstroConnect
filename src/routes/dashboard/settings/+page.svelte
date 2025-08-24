@@ -84,6 +84,13 @@
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
+				<div class="space-y-2">
+					<Label>Email</Label>
+					<Input disabled value={data.user.email} class="disabled:bg-accent disabled:opacity-100" />
+					<div class="text-muted-foreground text-sm">
+						This cannot be changed because it is connected to the account you used to sign up.
+					</div>
+				</div>
 				<Form.Field {form} name="alternateEmail">
 					<Form.Control>
 						{#snippet children({ props })}
