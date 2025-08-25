@@ -14,23 +14,15 @@
 <div class="container mx-auto pb-16">
 	<div class="group relative w-full overflow-hidden">
 		<enhanced:img
-			alt="Starry Mountain Background"
-			class="max-h-32 w-full object-cover object-center"
-			src="$lib/assets/imgs/benjamin-voros-phIFdC6lA4E-unsplash.jpg"
+			alt="Sunset from May 15 2022 on Cerro Pachòn. An observatory on a mountain with a dramatic sunset behind it."
+			class="max-h-32 w-full object-cover object-[50%_40%]"
+			src="$lib/assets/imgs/LSST-Summit_Facility-Camera_1-May_15_2022_07_00_00_PM_1.jpg"
 			sizes="(max-width: 1920px) 100vw"
 		/>
 		<div
 			class="absolute top-0 left-0 -translate-y-full bg-black/50 px-2 py-1 text-xs text-white transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
 		>
-			Photo by <a
-				href="https://unsplash.com/@vorosbenisop?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-				class="underline">Benjamin Voros</a
-			>
-			on
-			<a
-				href="https://unsplash.com/photos/snow-mountain-under-stars-phIFdC6lA4E?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-				class="underline">Unsplash</a
-			>
+			Credit: RubinObs/NOIRLab/SLAC/NSF/DOE/AURA
 		</div>
 	</div>
 	<div class="-translate-y-5 px-8">
