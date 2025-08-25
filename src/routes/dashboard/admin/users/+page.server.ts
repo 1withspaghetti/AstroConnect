@@ -17,7 +17,9 @@ export const load = (async ({ locals, url }) => {
 	const { session } = await locals.auth();
 	if (session.adminId === null) throw error(403, 'Unauthorized');
 
-	const query = queryParamsValidator.parse(Object.fromEntries(url.searchParams.entries()));
+	const parseRes = queryParamsValidator.safeParse(Object.fromEntries(url.searchParams.entries()));
+	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
+	const query = parseRes.data;
 
 	let conditions: SQLWrapper[] = [];
 	let extras: Record<string, SQL.Aliased> = {};

@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { and, asc, desc, inArray, sql, eq, type SQL, type SQLWrapper } from 'drizzle-orm';
 import { db, table } from '@/server/db';
 import type { UserProfile } from '@/types/user';
+import { error } from '@sveltejs/kit';
 
 const queryParamsValidator = z.object({
 	search: z.string().max(250, 'Max 250 characters in search').optional(),
@@ -15,7 +16,9 @@ const queryParamsValidator = z.object({
 export const load = (async ({ locals, url }) => {
 	await locals.auth();
 
-	const query = queryParamsValidator.parse(Object.fromEntries(url.searchParams.entries()));
+	const parseRes = queryParamsValidator.safeParse(Object.fromEntries(url.searchParams.entries()));
+	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
+	const query = parseRes.data;
 
 	let conditions: SQLWrapper[] = [];
 	let extras: Record<string, SQL.Aliased> = {};

@@ -2,7 +2,8 @@ import { findManyPostPreviews } from '@/server/db/common';
 import type { PageServerLoad } from './$types';
 import { z } from 'zod/v4';
 import { and, asc, desc, eq, inArray, SQL, sql, type SQLWrapper } from 'drizzle-orm';
-import { db, table } from '@/server/db';
+import { table } from '@/server/db';
+import { error } from '@sveltejs/kit';
 
 const queryParamsValidator = z.object({
 	search: z.string().max(250, 'Max 250 characters in search').optional(),
@@ -15,7 +16,9 @@ const queryParamsValidator = z.object({
 export const load = (async ({ url, locals }) => {
 	await locals.auth();
 
-	const query = queryParamsValidator.parse(Object.fromEntries(url.searchParams.entries()));
+	const parseRes = queryParamsValidator.safeParse(Object.fromEntries(url.searchParams.entries()));
+	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
+	const query = parseRes.data;
 
 	let conditions: SQLWrapper[] = [];
 	let extras: Record<string, SQL.Aliased> = {};
