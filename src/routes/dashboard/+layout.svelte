@@ -8,6 +8,7 @@
 	interface NavGroup {
 		title: string;
 		items: NavItem[];
+		admin?: boolean;
 		hasCreateNewPost?: boolean;
 	}
 
@@ -59,6 +60,17 @@
 					label: 'Info & Contact'
 				}
 			]
+		},
+		{
+			title: 'Administration',
+			admin: true,
+			items: [
+				{
+					href: '/dashboard/admin/users',
+					icon: Users,
+					label: 'User List'
+				}
+			]
 		}
 	];
 </script>
@@ -71,6 +83,7 @@
 	import DashboardSidebar from './dashboard-sidebar.svelte';
 	import { page } from '$app/state';
 	import AdminImpersonationHeader from '@/components/AdminImpersonationHeader.svelte';
+	import Users from '@lucide/svelte/icons/users';
 
 	let { children, data }: LayoutProps = $props();
 

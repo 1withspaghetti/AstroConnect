@@ -1,8 +1,5 @@
 <script lang="ts">
 	import ImageCarousel from '$lib/components/ui/ImageCarousel.svelte';
-	import * as Card from '$lib/components/ui/card';
-	import * as Avatar from '@/components/ui/avatar';
-	import Mail from '@lucide/svelte/icons/mail';
 	import dayjs from '@/util/dayjs';
 	import { Separator } from '@/components/ui/separator';
 	import { Badge } from '$lib/components/ui/badge';
@@ -10,15 +7,18 @@
 	import type { Post } from '@/types/post';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { getApplicationFormSchema } from '@/validators/applicationFormValidator';
+	import UserCard from '@/components/UserCard.svelte';
 
 	let {
 		post,
 		formInputData,
-		allowSubmit
+		allowSubmit,
+		isAdmin
 	}: {
 		post: Post;
 		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		allowSubmit: boolean;
+		isAdmin: boolean;
 	} = $props();
 
 	let closed = $derived(
@@ -91,24 +91,7 @@
 				</div>
 			{/if}
 		</div>
-		<Card.Root class="max-w-sm">
-			<Card.Content class="flex flex-col items-center gap-2">
-				<Avatar.Root class="size-12">
-					<Avatar.Image src={post.owner.pfp} alt={post.owner.name} />
-					<Avatar.Fallback>{post.owner.name[0] || '?'}</Avatar.Fallback>
-				</Avatar.Root>
-				<Card.Title class="line-clamp-1 pb-1">{post.owner.name}</Card.Title>
-				<div class="text-muted-foreground flex items-center text-sm">
-					<Mail class="mr-1 h-4 w-4" />
-					<a href={`mailto:${post.owner.email}`} target="_blank" class="underline"
-						>{post.owner.email}</a
-					>
-				</div>
-				<div class="text-muted-foreground mt-2 text-sm">
-					{post.owner.bio || 'No bio provided.'}
-				</div>
-			</Card.Content>
-		</Card.Root>
+		<UserCard user={post.owner} {isAdmin} />
 	</div>
 
 	<h2 class="text-2xl font-bold">Apply</h2>

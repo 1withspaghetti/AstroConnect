@@ -1,12 +1,10 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import SearchForm from './search-form.svelte';
-	import PostCard from '@/components/PostCard.svelte';
 	import * as Pagination from '$lib/components/ui/pagination';
-	import { Button } from '@/components/ui/button';
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Label } from '@/components/ui/label';
-	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
+	import UserCard from '@/components/UserCard.svelte';
 
 	let { data }: PageProps = $props();
 </script>
@@ -39,12 +37,10 @@
 		<SearchForm />
 	</div>
 
-	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-4">
-		{#await data.postData}
+	<div class="mx-auto mb-4">
+		{#await data.usersData}
 			<Skeleton class="mx-auto h-3.5 w-24" />
-			<Skeleton class="h-48 w-full" />
-			<Skeleton class="h-48 w-full" />
-		{:then { posts, total }}
+		{:then { total }}
 			<Label class="justify-center">
 				{#if total === 0}
 					No results found
@@ -52,18 +48,22 @@
 					{total} result{total > 1 ? 's' : ''} found
 				{/if}
 			</Label>
-			{#each posts as post}
-				<PostCard {post} href={`/home/post/${post.id}`}>
-					{#snippet action({ closed })}
-						<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
-						<PostDropdownMenu {post} isAdmin={data.isAdmin} />
-					{/snippet}
-				</PostCard>
+		{/await}
+	</div>
+
+	<div class="mx-auto mb-4 flex max-w-6xl flex-wrap justify-center gap-4 px-4">
+		{#await data.usersData}
+			<Skeleton class="h-64 w-full max-w-xs" />
+			<Skeleton class="h-64 w-full max-w-xs" />
+			<Skeleton class="h-64 w-full max-w-xs" />
+		{:then { users }}
+			{#each users as user}
+				<UserCard {user} isAdmin={data.isAdmin} />
 			{/each}
 		{/await}
 	</div>
 
-	{#await data.postData}
+	{#await data.usersData}
 		<div class="flex justify-center">
 			<Skeleton class="h-10 w-32" />
 		</div>

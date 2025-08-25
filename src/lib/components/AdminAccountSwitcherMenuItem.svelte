@@ -10,6 +10,7 @@
 	import { z } from 'zod/v4';
 	import { Skeleton } from './ui/skeleton';
 	import { invalidateAll } from '$app/navigation';
+	import UserPen from '@lucide/svelte/icons/user-pen';
 
 	const emailValidator = z.email();
 
@@ -87,7 +88,7 @@
 	}}
 	class="cursor-pointer"
 >
-	<Users />
+	<UserPen />
 	Switch Account [ADMIN]
 </DropdownMenu.Item>
 

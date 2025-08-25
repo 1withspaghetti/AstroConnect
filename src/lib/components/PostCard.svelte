@@ -48,7 +48,7 @@
 				>{post.desc || 'No description provided.'}</Card.Description
 			>
 			{#if action}
-				<Card.Action>
+				<Card.Action class="flex items-center gap-1">
 					{@render action?.({ closed })}
 				</Card.Action>
 			{/if}

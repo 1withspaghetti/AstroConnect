@@ -35,8 +35,7 @@
 
 	const orderByOptions = [
 		{ value: 'relevance', label: 'Relevance' },
-		{ value: 'createdAt', label: 'Time of Post' },
-		{ value: 'title', label: 'Title' }
+		{ value: 'name', label: 'Name' }
 	];
 
 	function submit() {
@@ -86,6 +85,17 @@
 
 	<div class="mt-2 flex flex-wrap items-center justify-center gap-4">
 		<div class="flex items-center gap-2">
+			<Label>Career Stage:</Label>
+			<MultiselectCombobox
+				bind:items={careerStage}
+				defaultOptions={fullCareerStageList}
+				onChange={submit}
+				allowCustom
+				buttonProps={{ class: 'w-[200px]' }}
+			/>
+		</div>
+
+		<div class="flex items-center gap-2">
 			<Label>Tags:</Label>
 			<MultiselectCombobox
 				bind:items={tags}
@@ -94,17 +104,6 @@
 				allowCustom
 				placeholder="Search Tags"
 				emptyText="No existing tags found"
-				buttonProps={{ class: 'w-[200px]' }}
-			/>
-		</div>
-
-		<div class="flex items-center gap-2">
-			<Label>Career Stage:</Label>
-			<MultiselectCombobox
-				bind:items={careerStage}
-				defaultOptions={fullCareerStageList}
-				onChange={submit}
-				allowCustom
 				buttonProps={{ class: 'w-[200px]' }}
 			/>
 		</div>

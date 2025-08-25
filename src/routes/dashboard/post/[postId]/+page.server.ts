@@ -3,6 +3,9 @@ import type { PageServerLoad } from './$types';
 import { db, table } from '@/server/db';
 import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator';
+import { s3client } from '@/server/s3';
+import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
+import { S3_BUCKET_IMAGES } from '$env/static/private';
 
 export const load = (async ({ params }) => {
 	return redirect(301, `/dashboard/post/${params.postId}/edit/description`);
@@ -45,13 +48,38 @@ export const actions = {
 		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 
-		const res = await db
+		const post = await db.query.posts.findFirst({
+			columns: {
+				id: true
+			},
+			with: {
+				images: {
+					columns: {
+						id: true
+					}
+				}
+			},
+			where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		});
+
+		if (!post) throw error(404, 'Post Not Found');
+
+		const imageKeys = post.images.map((image) => ({ Key: `post/${post.id}/${image.id}.webp` }));
+		if (imageKeys.length > 0) {
+			const postImageDelRequest = new DeleteObjectsCommand({
+				Bucket: S3_BUCKET_IMAGES,
+				Delete: {
+					Objects: imageKeys
+				}
+			});
+
+			await s3client.send(postImageDelRequest);
+		}
+
+		// Finally delete from db, should cascade to posts and other schemas that depend on it
+		await db
 			.delete(table.posts)
 			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
-
-		if (res.rowCount < 1) {
-			throw error(404, `Post not found`);
-		}
 
 		return redirect(303, `/dashboard/drafts`);
 	}

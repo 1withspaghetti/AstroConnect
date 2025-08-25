@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Button from '../../lib/components/ui/button/button.svelte';
 	import Search from '@lucide/svelte/icons/search';
-	import FileUp from '@lucide/svelte/icons/file-up';
 	import HeaderProfile from './HeaderProfile.svelte';
 	import type { UserPreview } from '@/types/user';
+	import Users from '@lucide/svelte/icons/users';
 
 	const { user, isAdmin }: { user: UserPreview; isAdmin: boolean } = $props();
 </script>
@@ -15,8 +15,8 @@
 			<Button href="/home/search" variant="default"
 				><Search /> <span class="hidden sm:inline">Search for Research</span></Button
 			>
-			<Button href="/dashboard/drafts" variant="outline"
-				><FileUp /> <span class="hidden sm:inline">Post Research</span></Button
+			<Button href="/home/researchers" variant="outline"
+				><Users /> <span class="hidden sm:inline">Researchers</span></Button
 			>
 			<HeaderProfile {user} {isAdmin} />
 		</nav>

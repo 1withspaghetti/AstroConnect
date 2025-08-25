@@ -13,7 +13,7 @@ export interface UserProfile extends UserPreview {
 	isAdmin: boolean;
 }
 
-export interface User extends UserPreview {
+export interface User extends UserProfile {
 	isPublic: boolean;
 	firstLogin: Date;
 	lastLogin: Date;

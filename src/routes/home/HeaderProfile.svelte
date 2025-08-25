@@ -11,6 +11,7 @@
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import type { UserPreview } from '@/types/user';
 	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
+	import Users from '@lucide/svelte/icons/users';
 
 	const navData = [
 		[
@@ -77,6 +78,10 @@
 				<DropdownMenu.Separator />
 			{/each}
 			{#if isAdmin}
+				<DropdownMenu.Item onclick={() => goto('/dashboard/admin/users')} class="cursor-pointer">
+					<Users />
+					View User List [ADMIN]
+				</DropdownMenu.Item>
 				<AdminAccountSwitcherMenuItem />
 			{/if}
 			<DropdownMenu.Item

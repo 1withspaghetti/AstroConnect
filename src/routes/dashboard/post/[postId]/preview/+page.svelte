@@ -6,5 +6,5 @@
 </script>
 
 <main class="container mx-auto">
-	<PostPage post={data.post} allowSubmit={false} />
+	<PostPage post={data.post} allowSubmit={false} isAdmin={false} />
 </main>

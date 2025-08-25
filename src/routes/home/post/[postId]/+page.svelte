@@ -6,5 +6,5 @@
 </script>
 
 <main class="container mx-auto">
-	<PostPage post={data.post} formInputData={data.form} allowSubmit />
+	<PostPage post={data.post} formInputData={data.form} allowSubmit isAdmin={data.isAdmin} />
 </main>

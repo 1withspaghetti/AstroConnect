@@ -14,6 +14,8 @@
 
 	let draftPosts = $derived(posts.filter((post) => post.isDraft));
 	let publishedPosts = $derived(posts.filter((post) => !post.isDraft));
+
+	const viewableNavData = navData.filter((item) => (item.admin ? isAdmin : true));
 </script>
 
 <Sidebar.Root>
@@ -33,7 +35,7 @@
 		<Sidebar.Separator />
 	</Sidebar.Header>
 	<Sidebar.Content>
-		{#each navData as group (group.title)}
+		{#each viewableNavData as group (group.title)}
 			<Sidebar.Group title={group.title}>
 				<Sidebar.GroupLabel>{group.title}</Sidebar.GroupLabel>
 				<Sidebar.GroupContent>

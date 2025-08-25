@@ -27,8 +27,6 @@ export const load: PageServerLoad = async ({ params }) => {
 		where: and(eq(table.posts.id, postId), eq(table.posts.isDraft, false))
 	});
 
-	console.log(post);
-
 	if (!post) {
 		throw error(404, `Post not found`);
 	}

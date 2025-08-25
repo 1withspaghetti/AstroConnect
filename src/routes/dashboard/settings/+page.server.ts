@@ -37,8 +37,6 @@ export const actions: Actions = {
 
 		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
 
-		console.log(form.data);
-
 		await db
 			.update(table.users)
 			.set({
