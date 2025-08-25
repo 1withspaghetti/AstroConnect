@@ -36,11 +36,18 @@ export const load = (async ({ locals }) => {
 
 	if (!fullUser) error(404, 'User not found');
 
+	const userTagList = await db
+		.selectDistinct({ tag: table.userTags.tag })
+		.from(table.userTags)
+		.orderBy(table.userTags.tag)
+		.then((tags) => tags.map((tag) => tag.tag));
+
 	return {
 		user: {
 			...fullUser,
 			tags: fullUser.tags.map((t) => t.tag)
 		} as User,
+		userTagList,
 		form: await superValidate(
 			{
 				name: fullUser.name,

@@ -6,5 +6,10 @@
 </script>
 
 <div class="mx-auto w-full max-w-4xl px-4 pb-16">
-	<DescriptionEditForm postId={data.postId} images={data.images} formInputData={data.form} />
+	<DescriptionEditForm
+		postId={data.postId}
+		images={data.images}
+		postTags={data.postTags}
+		formInputData={data.form}
+	/>
 </div>

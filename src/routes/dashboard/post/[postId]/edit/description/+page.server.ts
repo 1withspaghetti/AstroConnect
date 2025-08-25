@@ -39,9 +39,16 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		throw error(404, `Post not found`);
 	}
 
+	const postTags = await db
+		.selectDistinct({ tag: table.postTags.tag })
+		.from(table.postTags)
+		.orderBy(table.postTags.tag)
+		.then((tags) => tags.map((tag) => tag.tag));
+
 	return {
 		postId,
 		images: post.images,
+		postTags,
 		form: await superValidate(
 			{
 				title: post.title,

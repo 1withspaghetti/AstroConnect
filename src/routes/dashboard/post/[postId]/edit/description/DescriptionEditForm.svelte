@@ -6,9 +6,8 @@
 	import { Input } from '$lib/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels, type PostImage } from '@/types/post';
+	import { defaultCareerStageLevels, defaultTags, type PostImage } from '@/types/post';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
-	import { uniqueTags } from '@/fake_data';
 	import Button from '@/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import DescriptionEditImages from './DescriptionEditImages.svelte';
@@ -16,10 +15,12 @@
 	let {
 		postId,
 		images,
+		postTags,
 		formInputData
 	}: {
 		postId: string;
 		images: PostImage[];
+		postTags: string[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
 	} = $props();
 
@@ -48,8 +49,10 @@
 			: defaultCareerStageLevels
 	);
 
+	let tagList = $derived(defaultTags.concat(postTags.filter((tag) => !defaultTags.includes(tag))));
+
 	let fullTagList = $derived(
-		[...new Set([...uniqueTags, ...$formData.tags])].sort((a, b) => a.localeCompare(b))
+		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
 	);
 </script>
 

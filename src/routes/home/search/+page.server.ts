@@ -2,7 +2,7 @@ import { findManyPostPreviews } from '@/server/db/common';
 import type { PageServerLoad } from './$types';
 import { z } from 'zod/v4';
 import { and, asc, desc, eq, inArray, SQL, sql, type SQLWrapper } from 'drizzle-orm';
-import { table } from '@/server/db';
+import { db, table } from '@/server/db';
 
 const queryParamsValidator = z.object({
 	search: z.string().max(250, 'Max 250 characters in search').optional(),
@@ -56,7 +56,7 @@ export const load = (async ({ url, locals }) => {
 	else if (query.orderBy === 'createdAt') orderBy.unshift(orderFn(table.posts.createdAt));
 	else if (query.orderBy === 'title') orderBy.unshift(orderFn(table.posts.title));
 
-	const data = findManyPostPreviews({
+	const postData = findManyPostPreviews({
 		where: and(eq(table.posts.isDraft, false), ...conditions),
 		orderBy: [...orderBy, desc(table.posts.createdAt)],
 		extras: {
@@ -74,6 +74,6 @@ export const load = (async ({ url, locals }) => {
 	}));
 
 	return {
-		postData: data
+		postData
 	};
 }) satisfies PageServerLoad;

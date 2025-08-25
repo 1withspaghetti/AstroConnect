@@ -7,8 +7,16 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Label } from '@/components/ui/label';
 	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
+	import { defaultTags } from '@/types/post';
 
 	let { data }: PageProps = $props();
+
+	let tagList = $state(defaultTags);
+	$effect(() => {
+		data.postTagsData.then((tags) => {
+			tagList = defaultTags.concat(tags.filter((tag) => !defaultTags.includes(tag)));
+		});
+	});
 </script>
 
 <div class="container mx-auto pb-16">
@@ -26,7 +34,7 @@
 		</div>
 	</div>
 	<div class="-translate-y-5 px-8">
-		<SearchForm />
+		<SearchForm {tagList} />
 	</div>
 
 	<div class="mx-auto mb-4 flex max-w-4xl flex-col gap-4 px-4">

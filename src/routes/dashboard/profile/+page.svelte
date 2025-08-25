@@ -13,8 +13,7 @@
 	import { Switch } from '@/components/ui/switch';
 	import ProfilePfpUpload from './ProfilePfpUpload.svelte';
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels } from '@/types/post';
-	import { uniqueTags } from '@/fake_data';
+	import { defaultCareerStageLevels, defaultTags } from '@/types/post';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 
 	let { data }: PageProps = $props();
@@ -46,8 +45,12 @@
 			: defaultCareerStageLevels
 	);
 
+	let tagList = $derived(
+		defaultTags.concat(data.userTagList.filter((tag) => !defaultTags.includes(tag)))
+	);
+
 	let fullTagList = $derived(
-		[...new Set([...uniqueTags, ...$formData.tags])].sort((a, b) => a.localeCompare(b))
+		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
 	);
 </script>
 

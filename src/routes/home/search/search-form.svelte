@@ -2,12 +2,13 @@
 	import { page } from '$app/state';
 	import { Input } from '@/components/ui/input';
 	import Search from '@lucide/svelte/icons/search';
-	import { uniqueTags } from '@/fake_data';
 	import { Label } from '@/components/ui/label';
 	import * as Select from '@/components/ui/select';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import { defaultCareerStageLevels } from '@/types/post';
 	import { goto } from '$app/navigation';
+
+	let { tagList }: { tagList: string[] } = $props();
 
 	let formRef = $state<HTMLFormElement>(null!);
 
@@ -18,9 +19,7 @@
 	let orderBy = $state(page.url.searchParams.get('orderBy') || 'relevance');
 	let order = $state(page.url.searchParams.get('order') || 'desc');
 
-	let fullTagList = $derived(
-		[...new Set([...uniqueTags, ...tags])].sort((a, b) => a.localeCompare(b))
-	);
+	let fullTagList = $derived(tags.concat(tagList.filter((tag) => !tags.includes(tag))));
 
 	let fullCareerStageList = $derived(
 		defaultCareerStageLevels.concat(
