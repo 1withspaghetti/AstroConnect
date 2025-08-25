@@ -1,6 +1,5 @@
 <script lang="ts">
 	import UserPen from '@lucide/svelte/icons/user-pen';
-	import Bookmark from '@lucide/svelte/icons/bookmark';
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
@@ -21,9 +20,9 @@
 				label: 'Search Research'
 			},
 			{
-				href: '/home/search',
-				icon: Bookmark,
-				label: 'Bookmarked'
+				href: '/home/researchers',
+				icon: Users,
+				label: 'Researchers'
 			}
 		],
 		[
