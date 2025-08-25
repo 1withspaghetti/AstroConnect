@@ -10,26 +10,24 @@
 </script>
 
 <div class="container mx-auto pb-16">
-	<div class="relative w-full overflow-hidden">
-		<div class="peer">
-			<enhanced:img
-				alt="Starry Mountain Background"
-				class="max-h-32 w-full object-cover object-center"
-				src="$lib/assets/imgs/benjamin-voros-phIFdC6lA4E-unsplash.jpg"
-				sizes="(max-width: 1920px) 100vw"
-			/>
-		</div>
+	<div class="group relative w-full overflow-hidden">
+		<enhanced:img
+			alt="A University of Washington building with a blooming cherry tree in front of it"
+			class="max-h-32 w-full object-cover object-center"
+			src="$lib/assets/imgs/lokesh-b-masania-UwkKj6461fw-unsplash.jpg"
+			sizes="(max-width: 1920px) 100vw"
+		/>
 		<div
-			class="absolute top-0 left-0 -translate-y-full bg-black/50 px-2 py-1 text-xs text-white transition-transform duration-300 peer-hover:translate-y-0"
+			class="absolute top-0 left-0 -translate-y-full bg-black/50 px-2 py-1 text-xs text-white transition-transform duration-300 group-hover:translate-y-0 focus-within:translate-y-0"
 		>
 			Photo by <a
-				href="https://unsplash.com/@vorosbenisop?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-				class="underline">Benjamin Voros</a
+				href="https://unsplash.com/@lmasania?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+				>Lokesh B Masania</a
 			>
 			on
 			<a
-				href="https://unsplash.com/photos/snow-mountain-under-stars-phIFdC6lA4E?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-				class="underline">Unsplash</a
+				href="https://unsplash.com/photos/a-tree-with-purple-flowers-in-front-of-a-building-UwkKj6461fw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+				>Unsplash</a
 			>
 		</div>
 	</div>

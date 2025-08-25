@@ -32,7 +32,7 @@
 <div class="mx-auto w-full max-w-4xl px-4 pb-16">
 	<div class="flex items-end justify-between">
 		<h1 class="mt-8 text-2xl font-bold">{post.title}</h1>
-		<PostDropdownMenu post={post} isAdmin={isAdmin} />
+		<PostDropdownMenu {post} {isAdmin} />
 	</div>
 	<Separator class="mt-1 mb-4" />
 
