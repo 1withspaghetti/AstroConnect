@@ -8,6 +8,7 @@
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import type { getApplicationFormSchema } from '@/validators/applicationFormValidator';
 	import UserCard from '@/components/UserCard.svelte';
+	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
 
 	let {
 		post,
@@ -29,7 +30,10 @@
 </script>
 
 <div class="mx-auto w-full max-w-4xl px-4 pb-16">
-	<h1 class="mt-8 text-2xl font-bold">{post.title}</h1>
+	<div class="flex items-end justify-between">
+		<h1 class="mt-8 text-2xl font-bold">{post.title}</h1>
+		<PostDropdownMenu post={post} isAdmin={isAdmin} />
+	</div>
 	<Separator class="mt-1 mb-4" />
 
 	{#if post.images.length > 0}
