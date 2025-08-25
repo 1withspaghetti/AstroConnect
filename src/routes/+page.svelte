@@ -1,9 +1,11 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
+	import Meta from '@/components/Meta.svelte';
 	import { Button } from '@/components/ui/button/index.js';
 	import GoogleIcon from '~icons/logos/google-icon';
-	import CircleUser from '@lucide/svelte/icons/circle-user';
 </script>
+
+<Meta title="Login" description="Connecting UW students to Astronomy Research Opportunities" />
 
 <main class="relative flex min-h-screen flex-col items-center justify-center">
 	<enhanced:img

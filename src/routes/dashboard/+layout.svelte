@@ -84,6 +84,7 @@
 	import { page } from '$app/state';
 	import AdminImpersonationHeader from '@/components/AdminImpersonationHeader.svelte';
 	import Users from '@lucide/svelte/icons/users';
+	import Meta from '@/components/Meta.svelte';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -97,6 +98,8 @@
 			: undefined
 	);
 </script>
+
+<Meta title="Dashboard" />
 
 <Sidebar.Provider>
 	<DashboardSidebar posts={data.postList} user={data.user} isAdmin={data.isAdmin} />

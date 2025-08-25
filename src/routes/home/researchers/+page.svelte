@@ -6,6 +6,7 @@
 	import { Label } from '@/components/ui/label';
 	import UserCard from '@/components/UserCard.svelte';
 	import { defaultTags } from '@/types/post';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -16,6 +17,11 @@
 		});
 	});
 </script>
+
+<Meta
+	title="Search Researchers"
+	description="Search for UW researchers who may be conducting astronomy research"
+/>
 
 <div class="container mx-auto pb-16">
 	<div class="group relative w-full overflow-hidden">

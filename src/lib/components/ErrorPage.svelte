@@ -5,6 +5,7 @@
 	import Button from './ui/button/button.svelte';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import Meta from './Meta.svelte';
 
 	let previousPage: string = $state(
 		page.url.pathname.startsWith('/dashboard') ? resolve('/dashboard') : resolve('/home')
@@ -22,6 +23,8 @@
 		}
 	}
 </script>
+
+<Meta title="Error" description="An error occurred while loading this page." />
 
 <div class="flex w-full flex-col items-center justify-center pt-24">
 	<Alert.Root variant="destructive" class="w-full max-w-lg [&>svg]:size-5 [&>svg]:translate-y-1.5">

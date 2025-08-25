@@ -13,6 +13,7 @@
 	import { Switch } from '@/components/ui/switch';
 	import { Separator } from '@/components/ui/separator';
 	import { toast } from 'svelte-sonner';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -31,6 +32,8 @@
 
 	let { form: formData, enhance, submitting, tainted } = form;
 </script>
+
+<Meta title="Settings" />
 
 <div class="flex flex-col items-center p-4 pb-16">
 	<Card.Root class="mt-32 w-full max-w-lg">

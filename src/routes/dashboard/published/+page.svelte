@@ -4,9 +4,12 @@
 	import { Button } from '@/components/ui/button';
 	import Pen from '@lucide/svelte/icons/pen';
 	import { Separator } from '@/components/ui/separator';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 </script>
+
+<Meta title="Published" />
 
 <div class="mx-auto max-w-4xl px-4 pb-16">
 	<div class="flex items-end justify-between">

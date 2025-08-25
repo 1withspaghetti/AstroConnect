@@ -8,6 +8,7 @@
 	import { Label } from '@/components/ui/label';
 	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
 	import { defaultTags } from '@/types/post';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -18,6 +19,8 @@
 		});
 	});
 </script>
+
+<Meta title="Search Research" description="Search for Astronomy Research Opportunities" />
 
 <div class="container mx-auto pb-16">
 	<div class="group relative w-full overflow-hidden">

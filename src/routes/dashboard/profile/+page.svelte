@@ -15,6 +15,7 @@
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
 	import { defaultCareerStageLevels, defaultTags } from '@/types/post';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -53,6 +54,8 @@
 		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
 	);
 </script>
+
+<Meta title="Profile" />
 
 <div class="flex flex-col items-center p-4 pb-16">
 	<Card.Root class="mt-16 w-full max-w-lg">

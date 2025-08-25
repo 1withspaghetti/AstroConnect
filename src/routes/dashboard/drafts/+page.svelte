@@ -6,9 +6,12 @@
 	import { Separator } from '@/components/ui/separator';
 	import Plus from '@lucide/svelte/icons/plus';
 	import { enhance } from '$app/forms';
+	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 </script>
+
+<Meta title="Drafts" />
 
 <div class="mx-auto max-w-4xl px-4 pb-16">
 	<div class="flex items-end justify-between">
