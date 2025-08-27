@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types';
 import { decodeIdToken, type OAuth2Tokens } from 'arctic';
 import { google } from '@/server/oauth';
 import { db, table } from '@/server/db';
-import { and, eq, isNull, or, asc, sql } from 'drizzle-orm';
+import { and, eq, isNull, or, sql } from 'drizzle-orm';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '@/server/auth';
-import { INITIAL_ADMIN_EMAILS } from '$env/static/private';
+import { EMAIL_SUFFIX, INITIAL_ADMIN_EMAILS } from '$env/static/private';
 
 export const GET: RequestHandler = async ({ url, cookies }) => {
 	const code = url.searchParams.get('code');
@@ -85,6 +85,13 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 		isAdmin = INITIAL_ADMIN_EMAILS.split(',')
 			.map((email) => email.trim())
 			.includes(email);
+
+		if (!email.endsWith(EMAIL_SUFFIX ?? '') && !isAdmin) {
+			return error(
+				403,
+				'You must use your University of Washington email address to create an account'
+			);
+		}
 
 		// Create a new user
 		const user = await db
