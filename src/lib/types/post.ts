@@ -41,8 +41,10 @@ export const defaultTags = [
 ];
 
 export const defaultCareerStageLevels = [
+	'Novice Undergraduate',
+	'Experienced Undergraduate',
 	'Undergraduate',
-	'Post-Bachelor',
+	'Post-Baccalaureate',
 	'Graduate',
 	'Post-Graduate',
 	'Post-Doctoral',
