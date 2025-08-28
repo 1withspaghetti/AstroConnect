@@ -36,6 +36,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 	let userId: string;
 	let isAdmin: boolean;
+	let redirectUrl: string;
 
 	// Check if the user already exists in the database
 	const existingUser = await db.query.users.findFirst({
@@ -65,6 +66,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 			userId = existingUser.id;
 			isAdmin = existingUser.isAdmin;
+			redirectUrl = '/home';
 		} else {
 			// Email exists but has not been linked to a Google account
 			await db
@@ -80,6 +82,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
 			userId = existingUser.id;
 			isAdmin = existingUser.isAdmin;
+			redirectUrl = '/dashboard/profile';
 		}
 	} else {
 		isAdmin = INITIAL_ADMIN_EMAILS.split(',')
@@ -106,11 +109,12 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			.returning({ id: table.users.id });
 
 		userId = user[0].id;
+		redirectUrl = '/profile/home';
 	}
 
 	// Create a session for the user
 	const token = generateSessionToken();
 	const session = await createSession(token, userId, isAdmin ? userId : null);
 	setSessionTokenCookie(token, session.expiresAt);
-	return redirect(302, '/home');
+	return redirect(302, redirectUrl);
 };
