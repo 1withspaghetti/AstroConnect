@@ -79,7 +79,8 @@ export function stringifyApplicationFormAnswer<
 	if (Array.isArray(answer.answer)) {
 		return answer.answer.join(', ');
 	} else if (answer.type === ApplicationFormQuestionType.FILE) {
-		return answer.answer ? `Download the submitted file at ${answer.answer}` : 'No file uploaded';
+		let filename = new URL(answer.answer).pathname.split('/').pop!();
+		return answer.answer ? `<a href="${answer.answer}">${filename}</a>` : 'No file uploaded';
 	}
 	return answer.answer;
 }
