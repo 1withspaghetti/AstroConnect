@@ -73,10 +73,10 @@
 			</div>
 		</Card.Content>
 		<Card.Footer class="flex flex-col items-start justify-between gap-2 @lg:flex-row @lg:items-end">
-			{#if !closed && (post.closesAt !== undefined || post.maxSlots !== null)}
+			{#if !closed && (post.closesAt !== null || post.maxSlots !== null)}
 				<div class="text-muted-foreground mb-2 w-full text-sm italic">
 					Closes
-					{#if post.closesAt !== undefined}
+					{#if post.closesAt !== null}
 						in
 						<span
 							title={dayjs(post.closesAt).format('LLLL')}
@@ -85,7 +85,7 @@
 							{dayjs().to(post.closesAt, true)}
 						</span>
 					{/if}
-					{#if post.closesAt !== undefined && post.maxSlots !== null}
+					{#if post.closesAt !== null && post.maxSlots !== null}
 						<span>or</span>
 					{/if}
 					{#if post.maxSlots !== null}
