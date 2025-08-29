@@ -58,7 +58,7 @@
 	let placeholder = $state<DateValue>(today(getLocalTimeZone()));
 </script>
 
-<form use:enhance method="POST" class="flex flex-wrap items-start justify-center gap-2">
+<form use:enhance method="POST" class="flex flex-wrap items-start justify-center gap-2 px-4">
 	<Form.Field {form} name="isOpen" class="mr-6">
 		<Form.Control>
 			{#snippet children({ props })}

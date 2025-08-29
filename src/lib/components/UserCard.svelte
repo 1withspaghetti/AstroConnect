@@ -16,6 +16,7 @@
 	import * as AlertDialog from './ui/alert-dialog';
 	import dayjs from '@/util/dayjs';
 	import UserPen from '@lucide/svelte/icons/user-pen';
+	import UserAvatar from './UserAvatar.svelte';
 
 	let { user, isAdmin }: { user: UserProfile | User; isAdmin: boolean } = $props();
 
@@ -76,10 +77,7 @@
 
 <Card.Root class="relative w-full max-w-xs">
 	<Card.Content class="flex flex-col items-center">
-		<Avatar.Root class="mb-2 size-12">
-			<Avatar.Image src={user.pfp} alt={user.name} />
-			<Avatar.Fallback>{user.name[0] || '?'}</Avatar.Fallback>
-		</Avatar.Root>
+		<UserAvatar {user} class="mb-2 size-12" />
 		<Card.Title class="line-clamp-1 pb-1">
 			{user.name}
 			{#if user.isAdmin}

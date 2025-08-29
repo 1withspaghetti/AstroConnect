@@ -8,5 +8,5 @@
 
 <Avatar.Root {...restProps}>
 	<Avatar.Image src={user.pfp} alt={user.name} />
-	<Avatar.Fallback>{user.name.charAt(0)}</Avatar.Fallback>
+	<Avatar.Fallback>{user.name.charAt(0) || '?'}</Avatar.Fallback>
 </Avatar.Root>

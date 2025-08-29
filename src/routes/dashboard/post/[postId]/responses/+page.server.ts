@@ -6,6 +6,7 @@ import { and, eq } from 'drizzle-orm';
 import { db, table } from '@/server/db';
 import { acceptingResponsesFormSchema } from '@/validators/acceptingResponsesFormValidator';
 import { error } from '@sveltejs/kit';
+import type { UserProfile } from '@/types/user';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { user } = await locals.auth();
@@ -13,8 +14,39 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const post = await db.query.posts.findFirst({
 		columns: {
+			id: true,
 			isOpen: true,
 			closesAt: true
+		},
+		with: {
+			applications: {
+				columns: {
+					id: true,
+					answers: true,
+					createdAt: true
+				},
+				with: {
+					user: {
+						columns: {
+							id: true,
+							name: true,
+							email: true,
+							pfp: true,
+							bio: true,
+							careerStage: true,
+							major: true,
+							isAdmin: true
+						},
+						with: {
+							tags: {
+								columns: {
+									tag: true
+								}
+							}
+						}
+					}
+				}
+			}
 		},
 		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
 	});
@@ -25,6 +57,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	return {
 		postId,
+		applications: post.applications.map((app) => ({
+			...app,
+			user: {
+				...app.user,
+				tags: app.user.tags.map((t) => t.tag)
+			} as UserProfile
+		})),
 		form: await superValidate(
 			{
 				isOpen: post.isOpen,
