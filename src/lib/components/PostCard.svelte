@@ -31,14 +31,16 @@
 				alt={post.title}
 				class="h-full w-24 rounded-l-xl object-cover object-center @lg:w-48"
 			/>
-			<a
-				title="View more images"
-				{href}
-				class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
-			>
-				<ImagesIcon class="h-4 w-4" />
-				More...
-			</a>
+			{#if post.images.length > 1}
+				<a
+					title="View more images"
+					{href}
+					class="absolute right-0 bottom-0 flex cursor-pointer items-center gap-1 rounded-tl-lg bg-black/50 p-2 text-xs text-white transition hover:bg-black/70"
+				>
+					<ImagesIcon class="h-4 w-4" />
+					More...
+				</a>
+			{/if}
 		</div>
 	{/if}
 	<div class="flex flex-1 flex-col gap-4 py-4">
