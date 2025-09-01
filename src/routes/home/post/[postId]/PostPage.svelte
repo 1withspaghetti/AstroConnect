@@ -54,6 +54,14 @@
 					{post.prereq}
 				</div>
 			{/if}
+			{#if post.durationStart && post.durationEnd}
+				<div>
+					<strong>Estimated Time Range:</strong>
+					{dayjs(post.durationStart, 'YYYY-MM-DD').format('MMM D, YYYY')}
+					to
+					{dayjs(post.durationEnd, 'YYYY-MM-DD').format('MMM D, YYYY')}
+				</div>
+			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">
 				{#each post.tags as tag}
 					<Badge>{tag}</Badge>

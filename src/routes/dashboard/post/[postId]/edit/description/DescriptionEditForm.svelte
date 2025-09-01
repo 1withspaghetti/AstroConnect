@@ -11,6 +11,11 @@
 	import Button from '@/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import DescriptionEditImages from './DescriptionEditImages.svelte';
+	import { CalendarDate } from '@internationalized/date';
+	import type { DateRange } from 'bits-ui';
+	import { RangeCalendar } from '@/components/ui/range-calendar';
+	import { IsMobile } from '@/hooks/is-mobile.svelte';
+	import dayjs from '@/util/dayjs';
 
 	let {
 		postId,
@@ -40,6 +45,8 @@
 
 	const { form: formData, enhance, submitting, tainted } = form;
 
+	const isMobile = new IsMobile();
+
 	// Ensure careerStage is always an array for consistency
 	let fullCareerStageList = $derived(
 		$formData.careerStage
@@ -54,6 +61,32 @@
 	let fullTagList = $derived(
 		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
 	);
+
+	function getDateRange() {
+		let start = undefined;
+		let end = undefined;
+		if ($formData.durationStart) {
+			let startDate = dayjs($formData.durationStart, 'YYYY-MM-DD');
+			start = new CalendarDate(startDate.year(), startDate.month() + 1, startDate.date());
+		}
+		if ($formData.durationEnd) {
+			let endDate = dayjs($formData.durationEnd, 'YYYY-MM-DD');
+			end = new CalendarDate(endDate.year(), endDate.month() + 1, endDate.date());
+		}
+		return {
+			start,
+			end
+		};
+	}
+
+	function setDateRange(range: DateRange) {
+		$formData.durationStart = range.start
+			? dayjs(range.start.toString()).format('YYYY-MM-DD')
+			: undefined;
+		$formData.durationEnd = range.end
+			? dayjs(range.end.toString()).format('YYYY-MM-DD')
+			: undefined;
+	}
 </script>
 
 <DescriptionEditImages {postId} {images} />
@@ -107,6 +140,22 @@
 				/>
 			{/snippet}
 		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="durationStart">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Estimated Project Date Range (optional)</Form.Label>
+				<RangeCalendar
+					bind:value={getDateRange, setDateRange}
+					class="w-fit rounded-lg border shadow-sm"
+					numberOfMonths={isMobile.current ? 1 : 2}
+				/>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
+	<Form.Field {form} name="durationEnd">
 		<Form.FieldErrors />
 	</Form.Field>
 	<div class="mt-4 flex justify-center gap-4">

@@ -88,6 +88,8 @@ export async function findFirstPost(
 			isOpen: true,
 			closesAt: true,
 			maxSlots: true,
+			durationStart: true,
+			durationEnd: true,
 			questions: true
 		},
 		with: {

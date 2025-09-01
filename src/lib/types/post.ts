@@ -22,6 +22,8 @@ export interface PostPreview extends PostMinimal {
 }
 
 export interface Post extends PostPreview {
+	durationStart: string | null;
+	durationEnd: string | null;
 	questions: ApplicationFormQuestion[];
 }
 

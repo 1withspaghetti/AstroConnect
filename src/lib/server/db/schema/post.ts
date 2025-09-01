@@ -7,7 +7,8 @@ import {
 	timestamp,
 	varchar,
 	index,
-	uuid
+	uuid,
+	date
 } from 'drizzle-orm/pg-core';
 import { users } from './user';
 import { relations, sql } from 'drizzle-orm';
@@ -30,6 +31,8 @@ export const posts = pgTable(
 		isOpen: boolean('is_open').default(true).notNull(),
 		closesAt: timestamp('closes_at'),
 		maxSlots: integer('max_slots'),
+		durationStart: date('duration_start'),
+		durationEnd: date('duration_end'),
 		questions: jsonb().$type<ApplicationFormQuestion[]>().default([]).notNull()
 	},
 	(table) => [

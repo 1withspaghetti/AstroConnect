@@ -16,7 +16,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			title: true,
 			desc: true,
 			careerStage: true,
-			prereq: true
+			prereq: true,
+			durationStart: true,
+			durationEnd: true
 		},
 		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)),
 		with: {
@@ -55,6 +57,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				desc: post.desc,
 				careerStage: post.careerStage,
 				prereq: post.prereq,
+				durationStart: post.durationStart || undefined,
+				durationEnd: post.durationEnd || undefined,
 				tags: post.tags.map((tag) => tag.tag)
 			},
 			zod4(descriptionEditFormSchema)
@@ -77,7 +81,9 @@ export const actions: Actions = {
 				title: form.data.title,
 				desc: form.data.desc || '',
 				careerStage: form.data.careerStage || '',
-				prereq: form.data.prereq || ''
+				prereq: form.data.prereq || '',
+				durationStart: form.data.durationStart || null,
+				durationEnd: form.data.durationEnd || null
 			})
 			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 
