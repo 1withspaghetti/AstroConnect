@@ -6,7 +6,6 @@
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import { cn } from '@/utils';
 	import { tick } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	type T = string;
 

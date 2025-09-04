@@ -1,17 +1,58 @@
 import { findManyPostPreviews } from '@/server/db/common';
 import type { PageServerLoad } from './$types';
 import { z } from 'zod/v4';
-import { and, asc, desc, eq, inArray, SQL, sql, type SQLWrapper } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, lte, SQL, sql, type SQLWrapper } from 'drizzle-orm';
 import { table } from '@/server/db';
 import { error } from '@sveltejs/kit';
+import dayjs from '@/util/dayjs';
 
-const queryParamsValidator = z.object({
-	search: z.string().max(250, 'Max 250 characters in search').optional(),
-	tags: z.string().max(500, 'Max 500 characters in tags').optional(),
-	careerStage: z.string().max(500, 'Max 500 characters in Career Stage').optional(),
-	orderBy: z.enum(['relevance', 'createdAt', 'title'], 'Invalid order by').optional(),
-	order: z.enum(['asc', 'desc'], 'Invalid order').optional()
-});
+const queryParamsValidator = z
+	.object({
+		search: z.string().max(250, 'Max 250 characters in search').optional(),
+		tags: z.string().max(500, 'Max 500 characters in tags').optional(),
+		careerStage: z.string().max(500, 'Max 500 characters in Career Stage').optional(),
+		start: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format, expected YYYY-MM-DD')
+			.optional(),
+		end: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format, expected YYYY-MM-DD')
+			.optional(),
+		orderBy: z.enum(['relevance', 'createdAt', 'title'], 'Invalid order by').optional(),
+		order: z.enum(['asc', 'desc'], 'Invalid order').optional()
+	})
+	.superRefine((data, ctx) => {
+		if ((data.start && !data.end) || (data.end && !data.start)) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Both start and end dates are required',
+				path: ['end']
+			});
+		} else if (data.start && data.end) {
+			let dateStart = dayjs(data.start, 'YYYY-MM-DD', true);
+			let dateEnd = dayjs(data.end, 'YYYY-MM-DD', true);
+			if (!dateStart.isValid() || dateStart.isBefore(dayjs('2000-01-01', 'YYYY-MM-DD'))) {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Invalid start date',
+					path: ['start']
+				});
+			} else if (!dateEnd.isValid() || dateEnd.isBefore(dayjs())) {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Invalid end date',
+					path: ['end']
+				});
+			} else if (dateStart.isAfter(dateEnd)) {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Start date must be before end date',
+					path: ['start']
+				});
+			}
+		}
+	});
 
 export const load = (async ({ url, locals }) => {
 	await locals.auth();
@@ -20,7 +61,7 @@ export const load = (async ({ url, locals }) => {
 	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
 	const query = parseRes.data;
 
-	let conditions: SQLWrapper[] = [];
+	let conditions: (SQLWrapper | undefined)[] = [];
 	let extras: Record<string, SQL.Aliased> = {};
 	let orderBy: SQL[] = [];
 
@@ -51,6 +92,12 @@ export const load = (async ({ url, locals }) => {
 
 	if (query.careerStage) {
 		conditions.push(inArray(table.posts.careerStage, careerStages));
+	}
+
+	if (query.start && query.end) {
+		conditions.push(
+			and(gte(table.posts.durationStart, query.start), lte(table.posts.durationEnd, query.end))
+		);
 	}
 
 	let orderFn = query.order === 'asc' ? asc : desc;
