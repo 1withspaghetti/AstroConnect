@@ -16,7 +16,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		columns: {
 			id: true,
 			isOpen: true,
-			closesAt: true
+			closesAt: true,
+			maxSlots: true
 		},
 		with: {
 			applications: {
@@ -67,7 +68,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		form: await superValidate(
 			{
 				isOpen: post.isOpen,
-				closesAt: post.closesAt || undefined
+				closesAt: post.closesAt || undefined,
+				maxSlots: post.maxSlots || undefined
 			},
 			zod4(acceptingResponsesFormSchema)
 		)
@@ -87,7 +89,8 @@ export const actions: Actions = {
 			.update(table.posts)
 			.set({
 				isOpen: form.data.isOpen,
-				closesAt: form.data.closesAt || null
+				closesAt: form.data.closesAt || null,
+				maxSlots: form.data.maxSlots || null
 			})
 			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
 

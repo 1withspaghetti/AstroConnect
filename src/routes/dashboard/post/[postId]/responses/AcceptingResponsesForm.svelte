@@ -37,6 +37,8 @@
 
 	const { form: formData, enhance, submitting, tainted } = form;
 
+	// closesAt
+
 	let closesAtChecked = $state($formData.closesAt !== undefined);
 	let closesAtDate = $state<DateValue | undefined>(
 		$formData.closesAt ? fromDate($formData.closesAt, getLocalTimeZone()) : undefined
@@ -56,6 +58,19 @@
 	});
 
 	let placeholder = $state<DateValue>(today(getLocalTimeZone()));
+
+	// maxSlots
+
+	let closesAfterApplicationsChecked = $state($formData.maxSlots !== undefined);
+	let maxSlotsInput = $state<number | undefined>($formData.maxSlots);
+
+	$effect(() => {
+		if (closesAfterApplicationsChecked && maxSlotsInput !== undefined) {
+			$formData.maxSlots = maxSlotsInput;
+		} else {
+			$formData.maxSlots = undefined;
+		}
+	});
 </script>
 
 <form use:enhance method="POST" class="flex flex-wrap items-start justify-center gap-2 px-4">
@@ -75,12 +90,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<div class="flex items-center gap-2">
-					<Checkbox
-						{...props}
-						bind:checked={closesAtChecked}
-						disabled={!$formData.isOpen}
-						class="size-5"
-					/>
+					<Checkbox bind:checked={closesAtChecked} disabled={!$formData.isOpen} class="size-5" />
 					<Form.Label>Closes&nbsp;At:</Form.Label>
 					<Popover.Root>
 						<Popover.Trigger
@@ -119,6 +129,32 @@
 				</div>
 				<Form.FieldErrors />
 				<input hidden value={closesAtChecked && $formData.closesAt} name={props.name} />
+			{/snippet}
+		</Form.Control>
+	</Form.Field>
+	<Form.Field {form} name="maxSlots" class="mr-6">
+		<Form.Control>
+			{#snippet children({ props })}
+				<div class="flex items-center gap-2">
+					<Checkbox
+						bind:checked={closesAfterApplicationsChecked}
+						disabled={!$formData.isOpen}
+						class="size-5"
+					/>
+					<Form.Label>Closes after</Form.Label>
+					<Input
+						{...props}
+						type="number"
+						min="1"
+						bind:value={maxSlotsInput}
+						disabled={!closesAfterApplicationsChecked || !$formData.isOpen}
+						class="w-20"
+					/>
+					<Form.Label>
+						application{#if maxSlotsInput !== 1}s{/if}
+					</Form.Label>
+				</div>
+				<Form.FieldErrors />
 			{/snippet}
 		</Form.Control>
 	</Form.Field>

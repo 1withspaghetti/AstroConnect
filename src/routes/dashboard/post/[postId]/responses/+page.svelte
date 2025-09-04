@@ -41,8 +41,10 @@
 								<p class="indent-4">
 									{#if answer.type === ApplicationFormQuestionType.FILE}
 										{@const filename = new URL(answer.answer as string).pathname.split('/').pop()}
-										<a href={answer.answer as string} class="text-blue-500 underline"
-											>{filename || 'View File'}</a
+										<a
+											target="_blank"
+											href={answer.answer as string}
+											class="text-blue-500 underline">{filename || 'View File'}</a
 										>
 									{:else if Array.isArray(answer.answer)}
 										{answer.answer.join(', ')}
