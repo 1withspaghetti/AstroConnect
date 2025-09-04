@@ -42,6 +42,12 @@
 	<p class="my-8 indent-4">{post.desc || 'No description provided.'}</p>
 	<div class="mb-4 flex flex-wrap items-start justify-between gap-4">
 		<div>
+			{#if post.positions}
+				<div>
+					<strong>Positions Available:</strong>
+					{post.positions}
+				</div>
+			{/if}
 			{#if post.careerStage}
 				<div>
 					<strong>Recommended Career Stage:</strong>
@@ -56,10 +62,10 @@
 			{/if}
 			{#if post.durationStart && post.durationEnd}
 				<div>
-					<strong>Estimated Time Range:</strong>
-					{dayjs(post.durationStart, 'YYYY-MM-DD').format('MMM D, YYYY')}
+					<strong>Estimated Date Range:</strong>
+					{dayjs(post.durationStart, 'YYYY-MM-DD').format('ll')}
 					to
-					{dayjs(post.durationEnd, 'YYYY-MM-DD').format('MMM D, YYYY')}
+					{dayjs(post.durationEnd, 'YYYY-MM-DD').format('ll')}
 				</div>
 			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">

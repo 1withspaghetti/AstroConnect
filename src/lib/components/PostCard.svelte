@@ -56,6 +56,12 @@
 			{/if}
 		</Card.Header>
 		<Card.Content class="flex flex-1 flex-col">
+			{#if post.positions}
+				<div class="text-muted-foreground line-clamp-1 text-sm">
+					<strong>Positions Available:</strong>
+					{post.positions}
+				</div>
+			{/if}
 			{#if post.careerStage}
 				<div class="text-muted-foreground line-clamp-1 text-sm">
 					<strong>Recommended Career Stage:</strong>
@@ -66,6 +72,14 @@
 				<div class="text-muted-foreground line-clamp-1 text-sm">
 					<strong>Prerequisite:</strong>
 					{post.prereq}
+				</div>
+			{/if}
+			{#if post.durationStart && post.durationEnd}
+				<div class="text-muted-foreground line-clamp-1 text-sm">
+					<strong>Estimated Date Range:</strong>
+					{dayjs(post.durationStart, 'YYYY-MM-DD').format('l')}
+					-
+					{dayjs(post.durationEnd, 'YYYY-MM-DD').format('l')}
 				</div>
 			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">

@@ -12,9 +12,12 @@ export interface PostMinimal {
 export interface PostPreview extends PostMinimal {
 	desc: string;
 	images: string[];
+	positions: string;
 	tags: string[];
 	careerStage: string;
 	prereq: string;
+	durationStart: string | null;
+	durationEnd: string | null;
 	closesAt: Date | null;
 	maxSlots: number | null;
 	applications: number;
@@ -22,8 +25,6 @@ export interface PostPreview extends PostMinimal {
 }
 
 export interface Post extends PostPreview {
-	durationStart: string | null;
-	durationEnd: string | null;
 	questions: ApplicationFormQuestion[];
 }
 

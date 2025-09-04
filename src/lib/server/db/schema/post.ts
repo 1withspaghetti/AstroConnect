@@ -26,6 +26,7 @@ export const posts = pgTable(
 		isDraft: boolean('is_draft').default(true).notNull(),
 		title: varchar({ length: 200 }).notNull(),
 		desc: varchar({ length: 10000 }).default('').notNull(),
+		positions: varchar('positions', { length: 100 }).default('').notNull(),
 		careerStage: varchar('career_stage', { length: 100 }).default('').notNull(),
 		prereq: varchar({ length: 1000 }).default('').notNull(),
 		isOpen: boolean('is_open').default(true).notNull(),

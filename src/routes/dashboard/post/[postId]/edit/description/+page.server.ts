@@ -15,6 +15,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		columns: {
 			title: true,
 			desc: true,
+			positions: true,
 			careerStage: true,
 			prereq: true,
 			durationStart: true,
@@ -55,6 +56,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			{
 				title: post.title,
 				desc: post.desc,
+				positions: post.positions,
 				careerStage: post.careerStage,
 				prereq: post.prereq,
 				durationStart: post.durationStart || undefined,
@@ -80,6 +82,7 @@ export const actions: Actions = {
 			.set({
 				title: form.data.title,
 				desc: form.data.desc || '',
+				positions: form.data.positions || '',
 				careerStage: form.data.careerStage || '',
 				prereq: form.data.prereq || '',
 				durationStart: form.data.durationStart || null,

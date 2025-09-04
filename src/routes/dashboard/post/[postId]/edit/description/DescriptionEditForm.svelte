@@ -109,6 +109,15 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
+	<Form.Field {form} name="positions">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Positions Available (optional)</Form.Label>
+				<Input {...props} bind:value={$formData.positions} placeholder="E.x. '1' or '5-6'" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="careerStage">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -145,7 +154,7 @@
 	<Form.Field {form} name="durationStart">
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>Estimated Project Date Range (optional)</Form.Label>
+				<Form.Label>Estimated Date Range (optional)</Form.Label>
 				<RangeCalendar
 					bind:value={getDateRange, setDateRange}
 					class="w-fit rounded-lg border shadow-sm"
