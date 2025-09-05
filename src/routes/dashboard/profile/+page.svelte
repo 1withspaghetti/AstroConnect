@@ -16,6 +16,7 @@
 	import { defaultCareerStageLevels, defaultTags } from '@/types/post';
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import Meta from '@/components/Meta.svelte';
+	import { defaultMajors } from '@/types/user';
 
 	let { data }: PageProps = $props();
 
@@ -37,13 +38,22 @@
 
 	const user = data.user;
 
-	// Ensure careerStage is always an array for consistency
+	// Ensure selected value is always in the array if not already present
 	let fullCareerStageList = $derived(
 		$formData.careerStage
 			? defaultCareerStageLevels.includes($formData.careerStage)
 				? defaultCareerStageLevels
 				: [...defaultCareerStageLevels, $formData.careerStage]
 			: defaultCareerStageLevels
+	);
+
+	// Ensure selected value is always in the array if not already present
+	let fullMajorList = $derived(
+		$formData.major
+			? defaultMajors.includes($formData.major)
+				? defaultMajors
+				: [...defaultMajors, $formData.major]
+			: defaultMajors
 	);
 
 	let tagList = $derived(
@@ -103,6 +113,7 @@
 							<SelectCombobox
 								bind:item={$formData.careerStage}
 								defaultOptions={fullCareerStageList}
+								buttonProps={{ id: props.id }}
 							/>
 							<Form.Description>
 								Where are you in your academic or professional journey?
@@ -115,9 +126,14 @@
 					<Form.Control>
 						{#snippet children({ props })}
 							<Form.Label>Major (optional)</Form.Label>
-							<Input {...props} bind:value={$formData.major} />
+							<SelectCombobox
+								bind:item={$formData.major}
+								defaultOptions={fullMajorList}
+								buttonProps={{ id: props.id }}
+							/>
 							<Form.Description>
-								If you are a student, what is your major or field of study?
+								If you are a student, what is your major or field of study? If it is not listed, you
+								can type it in.
 							</Form.Description>
 						{/snippet}
 					</Form.Control>

@@ -22,3 +22,5 @@ export interface User extends UserProfile {
 export interface SessionUser extends UserPreview {
 	isAdmin: boolean;
 }
+
+export const defaultMajors = ['ESS', 'Pre-Majors', 'Astronomy', 'Astro & Physics', 'Physics'];

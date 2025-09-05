@@ -44,15 +44,20 @@ export const defaultTags = [
 ];
 
 export const defaultCareerStageLevels = [
+	'Pre-Major',
 	'Novice Undergraduate',
 	'Experienced Undergraduate',
 	'Undergraduate',
 	'Post-Baccalaureate',
-	'Graduate',
-	'Post-Graduate',
-	'Post-Doctoral',
-	'Research/Staff Scientist Collaborator',
-	'Faculty Collaborator'
+	'1st Year Graduate Student',
+	'2nd Year Graduate Student',
+	'Graduate Student',
+	'Post-Doc',
+	'Research/Staff Scientist',
+	'Faculty',
+	'Department Staff',
+	'Collaborator',
+	'External Collaborator'
 ];
 
 export interface PostImage {
