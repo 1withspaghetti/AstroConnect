@@ -16,14 +16,20 @@
 	import { RangeCalendar } from '@/components/ui/range-calendar';
 	import { IsMobile } from '@/hooks/is-mobile.svelte';
 	import dayjs from '@/util/dayjs';
+	import * as Select from '@/components/ui/select';
+	import type { SessionUser, UserPreview } from '@/types/user';
 
 	let {
 		postId,
+		user,
+		proxyAs,
 		images,
 		postTags,
 		formInputData
 	}: {
 		postId: string;
+		user: SessionUser;
+		proxyAs: UserPreview[];
 		images: PostImage[];
 		postTags: string[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
@@ -46,6 +52,12 @@
 	const { form: formData, enhance, submitting, tainted } = form;
 
 	const isMobile = new IsMobile();
+
+	let postAsList = $derived(
+		[{ id: user.id, label: `Yourself (${user.email})` }].concat(
+			proxyAs.map((u) => ({ id: u.id, label: `${u.name} (${u.email})` }))
+		)
+	);
 
 	// Ensure careerStage is always an array for consistency
 	let fullCareerStageList = $derived(
@@ -90,7 +102,29 @@
 </script>
 
 <DescriptionEditImages {postId} {images} />
-<form method="POST" use:enhance class="flex flex-col gap-6">
+<form method="POST" use:enhance class="mt-4 flex flex-col gap-6">
+	<Form.Field {form} name="ownerId">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Post As</Form.Label>
+				<Select.Root type="single" bind:value={$formData.ownerId} name={props.name}>
+					<Select.Trigger {...props}>
+						{postAsList.find((u) => u.id === $formData.ownerId)?.label || 'Select User'}
+					</Select.Trigger>
+					<Select.Content>
+						{#each postAsList as user (user.id)}
+							<Select.Item value={user.id} label={user.label} />
+						{/each}
+					</Select.Content>
+				</Select.Root>
+				<Form.Description>
+					Other users can add you as a proxy in their settings, allowing you to post on their
+					behalf.
+				</Form.Description>
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="title">
 		<Form.Control>
 			{#snippet children({ props })}

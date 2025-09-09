@@ -11,6 +11,8 @@
 <div class="mx-auto w-full max-w-4xl px-4 pb-16">
 	<DescriptionEditForm
 		postId={data.postId}
+		user={data.user}
+		proxyAs={data.proxyAs}
 		images={data.images}
 		postTags={data.postTags}
 		formInputData={data.form}

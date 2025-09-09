@@ -1,5 +1,6 @@
 import dayjs from '@/util/dayjs';
 import { z } from 'zod/v4';
+import { idValidator } from './idValidator';
 
 export const tagValidator = z
 	.string()
@@ -8,6 +9,7 @@ export const tagValidator = z
 
 export const descriptionEditFormSchema = z
 	.object({
+		ownerId: idValidator,
 		title: z.string().min(1, 'Title is required').max(200, 'Title cannot exceed 200 characters'),
 		desc: z.string().max(10000, 'Description cannot exceed 10000 characters').optional(),
 		positions: z.string().max(100, 'Maximum length is 100 characters').optional(),

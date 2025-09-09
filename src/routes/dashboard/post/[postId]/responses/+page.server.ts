@@ -7,6 +7,7 @@ import { db, table } from '@/server/db';
 import { acceptingResponsesFormSchema } from '@/validators/acceptingResponsesFormValidator';
 import { error } from '@sveltejs/kit';
 import type { UserProfile } from '@/types/user';
+import { userHasAccessToPost } from '@/server/db/common';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { user } = await locals.auth();
@@ -49,7 +50,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				}
 			}
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
 	});
 
 	if (!post) {
@@ -92,7 +93,7 @@ export const actions: Actions = {
 				closesAt: form.data.closesAt || null,
 				maxSlots: form.data.maxSlots || null
 			})
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
+			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
 
 		if (res.rowCount === 0) return message(form, { type: 'error', text: 'Post not found' });
 

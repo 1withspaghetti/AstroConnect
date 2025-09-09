@@ -1,5 +1,14 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, pgTable, text, timestamp, varchar, index, uuid } from 'drizzle-orm/pg-core';
+import {
+	boolean,
+	pgTable,
+	text,
+	timestamp,
+	varchar,
+	index,
+	uuid,
+	uniqueIndex
+} from 'drizzle-orm/pg-core';
 import { posts } from './post';
 import { sessions } from './session';
 import { applications, applicationUploads } from './application';
@@ -38,7 +47,9 @@ export const usersRelations = relations(users, ({ many }) => ({
 	posts: many(posts),
 	sessions: many(sessions),
 	applications: many(applications),
-	applicationUploads: many(applicationUploads)
+	applicationUploads: many(applicationUploads),
+	proxies: many(userProxies, { relationName: 'user' }),
+	proxyAs: many(userProxies, { relationName: 'proxy' })
 }));
 
 export const userTags = pgTable(
@@ -60,5 +71,36 @@ export const userTagsRelations = relations(userTags, ({ one }) => ({
 	user: one(users, {
 		fields: [userTags.userId],
 		references: [users.id]
+	})
+}));
+
+export const userProxies = pgTable(
+	'user_proxies',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: uuid('user_id')
+			.references(() => users.id, { onDelete: 'cascade' })
+			.notNull(),
+		proxyId: uuid('proxy_id')
+			.references(() => users.id, { onDelete: 'cascade' })
+			.notNull()
+	},
+	(table) => [
+		index('user_proxies_user_id_idx').on(table.userId),
+		index('user_proxies_proxy_id_idx').on(table.proxyId),
+		uniqueIndex('user_proxies_user_id_proxy_id_idx').on(table.userId, table.proxyId)
+	]
+);
+
+export const userProxiesRelations = relations(userProxies, ({ one }) => ({
+	user: one(users, {
+		fields: [userProxies.userId],
+		references: [users.id],
+		relationName: 'user'
+	}),
+	proxy: one(users, {
+		fields: [userProxies.proxyId],
+		references: [users.id],
+		relationName: 'proxy'
 	})
 }));

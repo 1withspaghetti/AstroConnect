@@ -6,6 +6,7 @@ import { applicationEditFormSchema } from '@/validators/applicationEditFormValid
 import { db, table } from '@/server/db/index.js';
 import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator.js';
+import { userHasAccessToPost } from '@/server/db/common.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { user } = await locals.auth();
@@ -15,7 +16,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		columns: {
 			questions: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
 	});
 
 	if (!post) {
@@ -46,7 +47,7 @@ export const actions: Actions = {
 			.set({
 				questions: form.data.questions
 			})
-			.where(and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id)));
+			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
 
 		return message(form, { type: 'success', text: 'Post updated successfully!' });
 	}

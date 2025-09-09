@@ -2,13 +2,13 @@ import type { PageServerLoad, Actions } from './$types';
 import { db, table } from '@/server/db';
 import { error, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { findManyPostPreviews } from '@/server/db/common';
+import { findManyPostPreviews, userHasAccessToPost } from '@/server/db/common';
 
 export const load = (async ({ locals }) => {
 	const { user } = await locals.auth();
 
 	const posts = findManyPostPreviews({
-		where: and(eq(table.posts.ownerId, user.id), eq(table.posts.isDraft, true))
+		where: and(eq(table.posts.isDraft, true), userHasAccessToPost(user.id))
 	});
 
 	return {

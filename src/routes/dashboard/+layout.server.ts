@@ -1,7 +1,8 @@
 import type { PostMinimal } from '@/types/post';
 import type { LayoutServerLoad } from './$types';
 import { db, table } from '@/server/db';
-import { desc, eq } from 'drizzle-orm';
+import { desc } from 'drizzle-orm';
+import { userHasAccessToPost } from '@/server/db/common';
 
 export const load = (async ({ locals }) => {
 	const { session, user } = await locals.auth();
@@ -14,7 +15,7 @@ export const load = (async ({ locals }) => {
 			isOpen: true,
 			createdAt: true
 		},
-		where: eq(table.posts.ownerId, user.id),
+		where: userHasAccessToPost(user.id),
 		orderBy: [desc(table.posts.createdAt)]
 	});
 

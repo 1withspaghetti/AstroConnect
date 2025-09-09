@@ -8,6 +8,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { S3_BUCKET_IMAGES, S3_BUCKET_IMAGES_PUBLIC_URL } from '$env/static/private';
 import { db, table } from '@/server/db';
 import { and, eq, sql } from 'drizzle-orm';
+import { userHasAccessToPost } from '@/server/db/common';
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/avif', 'image/webp', 'image/tiff'];
@@ -30,7 +31,7 @@ export const POST: RequestHandler = async ({ request, params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 

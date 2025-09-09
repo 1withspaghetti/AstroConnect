@@ -7,6 +7,7 @@ import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { S3_BUCKET_IMAGES } from '$env/static/private';
 import { s3client } from '@/server/s3';
 import { z } from 'zod/v4';
+import { userHasAccessToPost } from '@/server/db/common';
 
 const imagePatchRequestValidator = z.strictObject({
 	order: z.number().min(0).optional()
@@ -25,7 +26,7 @@ export const PATCH: RequestHandler = async ({ request, params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 
@@ -47,7 +48,7 @@ export const DELETE: RequestHandler = async ({ params, locals }) => {
 		columns: {
 			id: true
 		},
-		where: and(eq(table.posts.id, postId), eq(table.posts.ownerId, user.id))
+		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
 	});
 	if (post === undefined) return error(404, 'Post not found');
 

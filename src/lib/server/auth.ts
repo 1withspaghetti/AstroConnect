@@ -50,6 +50,13 @@ export async function validateSessionToken(token: any) {
 					email: true,
 					pfp: true,
 					isAdmin: true
+				},
+				with: {
+					proxyAs: {
+						columns: {
+							userId: true
+						}
+					}
 				}
 			}
 		}
@@ -58,7 +65,18 @@ export async function validateSessionToken(token: any) {
 	if (!result) {
 		return { session: null, user: null };
 	}
-	const { user, ...session }: { user: SessionUser } & Session = result;
+
+	let session: Session = {
+		id: result.id,
+		userId: result.userId,
+		adminId: result.adminId,
+		expiresAt: result.expiresAt
+	};
+
+	let user: SessionUser = {
+		...result.user,
+		proxyAs: result.user.proxyAs.map((pa) => pa.userId)
+	};
 
 	const sessionExpired = Date.now() >= session.expiresAt.getTime();
 	if (sessionExpired) {

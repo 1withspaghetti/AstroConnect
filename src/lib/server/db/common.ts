@@ -1,6 +1,6 @@
 import type { Post, PostPreview } from '@/types/post';
 import { db, table } from '.';
-import { desc } from 'drizzle-orm';
+import { and, desc, eq, exists, or } from 'drizzle-orm';
 
 export async function findManyPostPreviews(
 	query: Omit<Omit<Parameters<typeof db.query.posts.findMany>[0], 'columns'>, 'with'>
@@ -152,4 +152,24 @@ export async function findFirstPost(
 				questions: post.questions
 			}
 		: undefined;
+}
+
+/**
+ * @returns a condition for checking user access to a post, should be used in a where clause
+ */
+export function userHasAccessToPost(userId: string) {
+	return or(
+		eq(table.posts.ownerId, userId),
+		exists(
+			db
+				.select()
+				.from(table.userProxies)
+				.where(
+					and(
+						eq(table.userProxies.proxyId, userId),
+						eq(table.userProxies.userId, table.posts.ownerId)
+					)
+				)
+		)
+	);
 }
