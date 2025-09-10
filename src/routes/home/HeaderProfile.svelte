@@ -11,32 +11,9 @@
 	import type { UserPreview } from '@/types/user';
 	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
 	import Users from '@lucide/svelte/icons/users';
+	import Pen from '@lucide/svelte/icons/pen';
 
 	const navData = [
-		[
-			{
-				href: '/home/search',
-				icon: Search,
-				label: 'Search Research'
-			},
-			{
-				href: '/home/researchers',
-				icon: Users,
-				label: 'Researchers'
-			}
-		],
-		[
-			{
-				href: '/dashboard/drafts',
-				icon: Plus,
-				label: 'Post Research Opportunity'
-			},
-			{
-				href: '/dashboard/published',
-				icon: Eye,
-				label: 'My Posts'
-			}
-		],
 		[
 			{
 				href: '/dashboard/profile',
@@ -52,6 +29,23 @@
 				href: '/dashboard/info',
 				icon: Info,
 				label: 'Info & Contact'
+			}
+		],
+		[
+			{
+				href: '/dashboard/drafts',
+				icon: Plus,
+				label: 'Post Research Opportunity'
+			},
+			{
+				href: '/dashboard/drafts',
+				icon: Pen,
+				label: 'Drafts'
+			},
+			{
+				href: '/dashboard/published',
+				icon: Eye,
+				label: 'Published'
 			}
 		]
 	];

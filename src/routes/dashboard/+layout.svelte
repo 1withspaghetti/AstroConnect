@@ -4,6 +4,7 @@
 	import Settings from '@lucide/svelte/icons/settings';
 	import Info from '@lucide/svelte/icons/info';
 	import Eye from '@lucide/svelte/icons/eye';
+	import FileText from '@lucide/svelte/icons/file-text';
 
 	interface NavGroup {
 		title: string;
@@ -22,6 +23,36 @@
 
 	export const navData: NavGroup[] = [
 		{
+			title: 'General',
+			items: [
+				{
+					href: '/dashboard/profile',
+					icon: UserPen,
+					label: 'Edit Profile'
+				},
+				{
+					href: '/dashboard/settings',
+					icon: Settings,
+					label: 'Settings'
+				},
+				{
+					href: '/dashboard/info',
+					icon: Info,
+					label: 'Info & Contact'
+				}
+			]
+		},
+		{
+			title: 'For Students',
+			items: [
+				{
+					href: '/dashboard/applications',
+					icon: FileText,
+					label: 'My Applications'
+				}
+			]
+		},
+		{
 			title: 'For Researchers',
 			hasCreateNewPost: true,
 			items: [
@@ -38,26 +69,6 @@
 					label: 'Published',
 					hasSubPosts: true,
 					subPostsAreDrafts: false
-				}
-			]
-		},
-		{
-			title: 'Other',
-			items: [
-				{
-					href: '/dashboard/profile',
-					icon: UserPen,
-					label: 'Edit Profile'
-				},
-				{
-					href: '/dashboard/settings',
-					icon: Settings,
-					label: 'Settings'
-				},
-				{
-					href: '/dashboard/info',
-					icon: Info,
-					label: 'Info & Contact'
 				}
 			]
 		},

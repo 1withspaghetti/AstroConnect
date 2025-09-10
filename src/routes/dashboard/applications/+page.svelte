@@ -1,36 +1,32 @@
 <script lang="ts">
 	import Meta from '@/components/Meta.svelte';
 	import type { PageProps } from './$types';
-	import AcceptingResponsesForm from './AcceptingResponsesForm.svelte';
 	import * as Accordion from '@/components/ui/accordion';
-	import UserCard from '@/components/UserCard.svelte';
-	import { ApplicationFormQuestionType } from '@/types/applicationForm';
-	import UserAvatar from '@/components/UserAvatar.svelte';
 	import dayjs from '@/util/dayjs';
+	import { ApplicationFormQuestionType } from '@/types/applicationForm';
+	import PostCard from '@/components/PostCard.svelte';
+	import { Separator } from '@/components/ui/separator';
 
 	let { data }: PageProps = $props();
 
 	let open = $state<string[]>([]);
 </script>
 
-<Meta title="Responses" />
+<Meta title="Applications" />
 
-<div class="container mx-auto mt-4 pb-16">
-	<AcceptingResponsesForm formInputData={data.form} />
-	<Accordion.Root type="multiple" class="mx-auto mt-8 mb-4 max-w-6xl px-4" bind:value={open}>
+<div class="mx-auto max-w-6xl px-4 pb-16">
+	<div class="flex items-end justify-between">
+		<h1 class="mt-8 text-2xl font-bold">My Applications</h1>
+	</div>
+	<Separator class="mt-1 mb-4" />
+	<Accordion.Root type="multiple" class="mt-8 mb-4 px-4" bind:value={open}>
 		{#each data.applications as app}
 			<Accordion.Item value={`app:${app.id}`} class="@container">
 				<Accordion.Trigger
 					class="bg-accent/50 hover:bg-accent data-[state=open]:bg-accent/70 items-center gap-2 px-4 py-4 hover:no-underline"
 				>
 					<div class="flex items-center gap-2">
-						<UserAvatar user={app.user} class="size-8" />
-						<span class="font-medium"
-							>{app.user.name} (<a
-								href={`mailto:${app.user.email}`}
-								class="text-muted-foreground underline">{app.user.email}</a
-							>)</span
-						>
+						<span class="font-medium">{app.post.title}</span>
 						<span
 							title={dayjs(app.createdAt).format('LLLL')}
 							class="text-muted-foreground ml-2 text-xs"
@@ -39,8 +35,8 @@
 						</span>
 					</div>
 				</Accordion.Trigger>
-				<Accordion.Content class="flex flex-col gap-4 p-2 @2xl:flex-row">
-					<UserCard user={app.user} isAdmin={data.isAdmin} />
+				<Accordion.Content class="flex flex-col gap-4 p-2">
+					<PostCard post={app.post} href={`/home/post/${app.post.id}`} />
 					<ol>
 						{#each app.answers as answer}
 							<li class="space-y-2">
