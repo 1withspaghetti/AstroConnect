@@ -56,7 +56,7 @@ export const load = (async ({ locals, url }) => {
 	let orderFn = query.order === 'asc' ? asc : desc;
 
 	if (query.orderBy === 'relevance' && query.search) orderBy.unshift(orderFn(extras.rankCd));
-	else if (query.orderBy === 'name') orderBy.unshift(orderFn(table.users.name));
+	else if (query.orderBy === 'name') orderBy.unshift(orderFn(sql`LOWER(${table.users.name})`));
 
 	const data = db.query.users
 		.findMany({
@@ -79,7 +79,7 @@ export const load = (async ({ locals, url }) => {
 				}
 			},
 			where: and(eq(table.users.isPublic, true), ...conditions),
-			orderBy: [...orderBy, desc(table.users.name)],
+			orderBy: [...orderBy, desc(sql`LOWER(${table.users.name})`)],
 			extras: {
 				...extras,
 				total: sql<number>`count(*) OVER()`.as('total')
