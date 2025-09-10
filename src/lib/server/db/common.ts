@@ -8,11 +8,12 @@ export async function findManyPostPreviews(
 	const posts = await db.query.posts.findMany({
 		columns: {
 			id: true,
+			createdAt: true,
+			isDraft: true,
 			title: true,
 			desc: true,
 			positions: true,
-			createdAt: true,
-			isDraft: true,
+			timeCommitment: true,
 			careerStage: true,
 			prereq: true,
 			durationStart: true,
@@ -82,11 +83,12 @@ export async function findFirstPost(
 	const post = await db.query.posts.findFirst({
 		columns: {
 			id: true,
+			createdAt: true,
+			isDraft: true,
 			title: true,
 			desc: true,
 			positions: true,
-			createdAt: true,
-			isDraft: true,
+			timeCommitment: true,
 			careerStage: true,
 			prereq: true,
 			durationStart: true,

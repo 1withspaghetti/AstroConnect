@@ -152,6 +152,15 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
+	<Form.Field {form} name="timeCommitment">
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>Time Commitment (optional)</Form.Label>
+				<Input {...props} bind:value={$formData.timeCommitment} placeholder="E.x. '4hrs a week'" />
+			{/snippet}
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="careerStage">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -165,7 +174,7 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Prerequisites (optional)</Form.Label>
-				<Input {...props} bind:value={$formData.prereq} />
+				<Input {...props} bind:value={$formData.prereq} placeholder="E.x. 'Astro 322'" />
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />

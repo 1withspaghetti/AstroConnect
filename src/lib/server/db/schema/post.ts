@@ -27,13 +27,14 @@ export const posts = pgTable(
 		title: varchar({ length: 200 }).notNull(),
 		desc: varchar({ length: 10000 }).default('').notNull(),
 		positions: varchar('positions', { length: 100 }).default('').notNull(),
+		timeCommitment: varchar('time_commitment', { length: 100 }).default('').notNull(),
 		careerStage: varchar('career_stage', { length: 100 }).default('').notNull(),
 		prereq: varchar({ length: 1000 }).default('').notNull(),
+		durationStart: date('duration_start'),
+		durationEnd: date('duration_end'),
 		isOpen: boolean('is_open').default(true).notNull(),
 		closesAt: timestamp('closes_at'),
 		maxSlots: integer('max_slots'),
-		durationStart: date('duration_start'),
-		durationEnd: date('duration_end'),
 		questions: jsonb().$type<ApplicationFormQuestion[]>().default([]).notNull()
 	},
 	(table) => [

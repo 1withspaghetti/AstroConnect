@@ -62,6 +62,12 @@
 					{post.positions}
 				</div>
 			{/if}
+			{#if post.timeCommitment}
+				<div class="text-muted-foreground line-clamp-1 text-sm">
+					<strong>Time Commitment:</strong>
+					{post.timeCommitment}
+				</div>
+			{/if}
 			{#if post.careerStage}
 				<div class="text-muted-foreground line-clamp-1 text-sm">
 					<strong>Recommended Career Stage:</strong>

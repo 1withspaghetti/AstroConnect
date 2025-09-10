@@ -13,6 +13,7 @@ export interface PostPreview extends PostMinimal {
 	desc: string;
 	images: string[];
 	positions: string;
+	timeCommitment: string;
 	tags: string[];
 	careerStage: string;
 	prereq: string;
