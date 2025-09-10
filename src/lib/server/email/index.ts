@@ -34,14 +34,8 @@ export async function sendApplicationEmail(
 						Name: to.name
 					}
 				],
-				Cc: [
-					{
-						Email: data.applicantEmail,
-						Name: data.applicantName
-					}
-				],
 				Subject: 'Somebody applied to your post!',
-				TextPart: `${data.applicantName} has applied to your post. Please check the application details here: ${data.applicationLink}`,
+				TextPart: `${data.applicant.name} has applied to your post. Please check the application details here: ${data.applicationLink}`,
 				HTMLPart: htmlContent
 			}
 		]

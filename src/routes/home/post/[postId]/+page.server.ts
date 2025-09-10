@@ -5,7 +5,7 @@ import { error } from '@sveltejs/kit';
 import { getApplicationFormSchema } from '@/validators/applicationFormValidator.js';
 import { findFirstPost } from '@/server/db/common.js';
 import { db, table } from '@/server/db/index.js';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { sendApplicationEmail } from '@/server/email/index.js';
 import {
 	ApplicationFormQuestionType,
@@ -19,6 +19,7 @@ import {
 	S3_BUCKET_TEMP_UPLOADS,
 	S3_BUCKET_UPLOADS_PUBLIC_URL
 } from '$env/static/private';
+import { PUBLIC_BASE_URL } from '$env/static/public';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const postId = validateId(params.postId);
@@ -141,11 +142,14 @@ export const actions: Actions = {
 			};
 		});
 
-		await db.insert(table.applications).values({
-			postId: post.id,
-			userId: user.id,
-			answers
-		});
+		const [application] = await db
+			.insert(table.applications)
+			.values({
+				postId: post.id,
+				userId: user.id,
+				answers
+			})
+			.returning({ id: table.applications.id });
 
 		// Now handle email notifications, etc. if needed
 
@@ -169,10 +173,22 @@ export const actions: Actions = {
 
 			const sender = await db.query.users.findFirst({
 				columns: {
+					id: true,
 					name: true,
 					email: true,
 					bio: true,
-					pfp: true
+					pfp: true,
+					careerStage: true,
+					major: true,
+					isAdmin: true
+				},
+				with: {
+					tags: {
+						columns: {
+							tag: true
+						},
+						orderBy: desc(table.userTags.tag)
+					}
 				},
 				where: eq(table.users.id, user.id)
 			});
@@ -190,11 +206,14 @@ export const actions: Actions = {
 				},
 				{
 					name: owner.name,
-					applicantName: sender.name,
-					applicantEmail: sender.email,
-					applicantBio: sender.bio,
-					applicantPfp: sender.pfp,
-					applicationLink: `/dashboard/post/${postId}/responses`,
+					applicant: {
+						...sender,
+						tags: sender.tags.map((t) => t.tag)
+					},
+					applicationLink: new URL(
+						`/dashboard/post/${postId}/responses#${application.id}`,
+						PUBLIC_BASE_URL
+					).toString(),
 					questions: answers.map((answer) => ({
 						label: answer.label,
 						response: stringifyApplicationFormAnswer(answer)

@@ -2,7 +2,7 @@ import { message, superValidate } from 'sveltekit-superforms';
 import type { Actions, PageServerLoad } from './$types';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { validateId } from '@/validators/idValidator';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { db, table } from '@/server/db';
 import { acceptingResponsesFormSchema } from '@/validators/acceptingResponsesFormValidator';
 import { error } from '@sveltejs/kit';
@@ -47,7 +47,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 							}
 						}
 					}
-				}
+				},
+				orderBy: [desc(table.applications.createdAt)]
 			}
 		},
 		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))

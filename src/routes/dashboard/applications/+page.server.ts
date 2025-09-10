@@ -1,6 +1,6 @@
 import { db, table } from '@/server/db';
 import type { PageServerLoad } from './$types';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import type { PostPreview } from '@/types/post';
 
 export const load = (async ({ locals }) => {
@@ -71,7 +71,8 @@ export const load = (async ({ locals }) => {
 					}
 				}
 			}
-		}
+		},
+		orderBy: [desc(table.applications.createdAt)]
 	});
 
 	return {

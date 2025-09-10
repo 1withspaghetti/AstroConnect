@@ -7,10 +7,21 @@
 	import { ApplicationFormQuestionType } from '@/types/applicationForm';
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import dayjs from '@/util/dayjs';
+	import { page } from '$app/state';
+	import { idValidator } from '@/validators/idValidator';
 
 	let { data }: PageProps = $props();
 
 	let open = $state<string[]>([]);
+
+	$effect(() => {
+		if (page.url.hash && idValidator.safeParse(page.url.hash.slice(1)).success) {
+			open = [page.url.hash.slice(1)];
+			document.getElementById(page.url.hash.slice(1))?.scrollIntoView();
+		} else {
+			open = [];
+		}
+	});
 </script>
 
 <Meta title="Responses" />
@@ -21,6 +32,7 @@
 		{#each data.applications as app}
 			<Accordion.Item value={`app:${app.id}`} class="@container">
 				<Accordion.Trigger
+					id={app.id}
 					class="bg-accent/50 hover:bg-accent data-[state=open]:bg-accent/70 items-center gap-2 px-4 py-4 hover:no-underline"
 				>
 					<div class="flex items-center gap-2">

@@ -1,11 +1,10 @@
+import { PUBLIC_BASE_URL } from '$env/static/public';
+import type { UserProfile } from '@/types/user';
 import mjml2html from 'mjml';
 
 export type ApplicationEmailTemplateData = {
 	name: string;
-	applicantName: string;
-	applicantEmail: string;
-	applicantBio: string | null;
-	applicantPfp: string | null;
+	applicant: UserProfile;
 	questions: { label: string; response: string }[];
 	applicationLink: string;
 };
@@ -33,20 +32,33 @@ export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData):
     </mj-section>
     <mj-section background-color="#f9fafb" padding-bottom="15px">
       ${
-				data.applicantPfp
+				data.applicant.pfp
 					? `
       <mj-column>
-        <mj-image src="${data.applicantPfp}" alt="Profile Picture" width="64px" height="64px" border-radius="100%" />
+        <mj-image src="${data.applicant.pfp}" alt="Profile Picture" width="64px" height="64px" border-radius="100%" />
       </mj-column>
       `
 					: ''
 			}
       <mj-column width="100%">
         <mj-text align="center" font-size="15px" padding-left="15px" padding-right="15px" padding-bottom="0px">
-          <strong>${data.applicantName}</strong>
-          <i>(${data.applicantEmail})</i>
+          <strong>${data.applicant.name}</strong>
+          <span>(<a href="mailto:${data.applicant.email}">${data.applicant.email}</a>)</span>
         </mj-text>
-        <mj-text align="center" font-size="13px" padding-left="25px" padding-right="25px" padding-bottom="20px" padding-top="10px">${data.applicantBio || 'No Bio Provided'}</mj-text>
+        <mj-text align="center" font-size="12px" padding-left="25px" padding-right="25px" padding-bottom="20px" padding-top="0px">
+          <p>${data.applicant.bio || 'No Bio Provided'}</p>
+          ${
+						data.applicant.careerStage || data.applicant.major
+							? `
+            <p>
+              ${data.applicant.careerStage}
+              ${data.applicant.careerStage && data.applicant.major ? ' • ' : ''}
+              ${data.applicant.major}
+            </p>
+            `
+							: ''
+					}
+        </mj-text>
 
         <mj-divider border-color="#99a1af" border-width="2px" border-style="solid" padding-left="20px" padding-right="20px" padding-bottom="0px" padding-top="0"></mj-divider>
       </mj-column>
@@ -81,9 +93,9 @@ export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData):
     <mj-section background-color="#ffffff" padding-bottom="5px" padding-top="0">
       <mj-column width="100%">
         <mj-text align="center" font-size="15px" padding-left="25px" padding-right="25px" padding-bottom="20px" padding-top="20px">
-          <a href="https://astroconnect-demo.netlify.app/home" style="font-size:15px;color:#030712">Astro Connect</a>
+          <a href="${new URL(`/home`, PUBLIC_BASE_URL).toString()}" style="font-size:15px;color:#030712">Astro Connect</a>
           <span>-</span>
-          <a href="https://astroconnect-demo.netlify.app/dashboard/settings" style="font-size:15px;color:#030712">Disable These Emails</a>
+          <a href="${new URL(`/dashboard/settings`, PUBLIC_BASE_URL).toString()}" style="font-size:15px;color:#030712">Disable These Emails</a>
         </mj-text>
       </mj-column>
     </mj-section>
