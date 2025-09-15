@@ -19,6 +19,8 @@
 	import type { SessionUser, UserPreview } from '@/types/user';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
+	import * as Popover from '@/components/ui/popover';
+	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 
 	let {
 		postId,
@@ -70,6 +72,8 @@
 				: [...defaultCareerStageLevels, $formData.careerStage]
 			: defaultCareerStageLevels
 	);
+
+	let dateRangeOpen = $state(false);
 
 	function getDateRange() {
 		let start = undefined;
@@ -196,11 +200,26 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Estimated Date Range (optional)</Form.Label>
-				<RangeCalendar
-					bind:value={getDateRange, setDateRange}
-					class="w-fit rounded-lg border shadow-sm"
-					numberOfMonths={isMobile.current ? 1 : 2}
-				/>
+				<Popover.Root bind:open={dateRangeOpen}>
+					<Popover.Trigger {...props}>
+						{#snippet child({ props })}
+							<Button {...props} variant="outline" class="w-[200px] justify-between font-normal">
+								{$formData.durationStart && $formData.durationEnd
+									? `${dayjs($formData.durationStart, 'YYYY-MM-DD').format('l')} - ${dayjs($formData.durationEnd, 'YYYY-MM-DD').format('l')}`
+									: 'Select date'}
+								<ChevronDownIcon />
+							</Button>
+						{/snippet}
+					</Popover.Trigger>
+					<Popover.Content class="w-auto overflow-hidden p-0" align="start">
+						<RangeCalendar
+							bind:value={getDateRange, setDateRange}
+							class="w-fit rounded-lg border shadow-sm"
+							numberOfMonths={isMobile.current ? 1 : 2}
+							captionLayout="dropdown"
+						/>
+					</Popover.Content>
+				</Popover.Root>
 			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
