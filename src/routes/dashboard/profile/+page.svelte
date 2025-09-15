@@ -13,10 +13,10 @@
 	import { Switch } from '@/components/ui/switch';
 	import ProfilePfpUpload from './ProfilePfpUpload.svelte';
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels, defaultTags } from '@/types/post';
-	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
+	import { defaultCareerStageLevels } from '@/types/post';
 	import Meta from '@/components/Meta.svelte';
 	import { defaultMajors } from '@/types/user';
+	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -56,13 +56,12 @@
 			: defaultMajors
 	);
 
-	let tagList = $derived(
-		defaultTags.concat(data.userTagList.filter((tag) => !defaultTags.includes(tag)))
-	);
-
-	let fullTagList = $derived(
-		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
-	);
+	let globalTags = $state<string[]>([]);
+	let userTags = $state<string[]>([]);
+	$effect(() => {
+		data.globalTagsData.then((tags) => (globalTags = tags));
+		data.userTagsData.then((tags) => (userTags = tags));
+	});
 </script>
 
 <Meta title="Profile" />
@@ -143,9 +142,10 @@
 					<Form.Control>
 						{#snippet children({ props })}
 							<Form.Label>Tags (optional)</Form.Label>
-							<MultiselectCombobox
-								bind:items={$formData.tags}
-								defaultOptions={fullTagList}
+							<TagMultiselectCombobox
+								bind:tags={$formData.tags}
+								{globalTags}
+								{userTags}
 								allowCustom={true}
 								placeholder="Search Tags"
 								emptyText="No existing tags found"

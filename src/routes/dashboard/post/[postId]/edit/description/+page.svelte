@@ -4,6 +4,13 @@
 	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
+
+	let globalTags = $state<string[]>([]);
+	let userTags = $state<string[]>([]);
+	$effect(() => {
+		data.globalTagsData.then((tags) => (globalTags = tags));
+		data.userTagsData.then((tags) => (userTags = tags));
+	});
 </script>
 
 <Meta title="Edit Description" />
@@ -14,7 +21,8 @@
 		user={data.user}
 		proxyAs={data.proxyAs}
 		images={data.images}
-		postTags={data.postTags}
+		{globalTags}
+		{userTags}
 		formInputData={data.form}
 	/>
 </div>

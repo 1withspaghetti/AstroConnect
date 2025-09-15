@@ -12,6 +12,7 @@
 	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
 	import Users from '@lucide/svelte/icons/users';
 	import Pen from '@lucide/svelte/icons/pen';
+	import Tags from '@lucide/svelte/icons/tags';
 
 	const navData = [
 		[
@@ -74,6 +75,10 @@
 				<DropdownMenu.Item onclick={() => goto('/dashboard/admin/users')} class="cursor-pointer">
 					<Users />
 					View User List [ADMIN]
+				</DropdownMenu.Item>
+				<DropdownMenu.Item onclick={() => goto('/dashboard/admin/tags')} class="cursor-pointer">
+					<Tags />
+					Default Tags [ADMIN]
 				</DropdownMenu.Item>
 				<AdminAccountSwitcherMenuItem />
 			{/if}

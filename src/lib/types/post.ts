@@ -29,21 +29,6 @@ export interface Post extends PostPreview {
 	questions: ApplicationFormQuestion[];
 }
 
-export const defaultTags = [
-	'Astrobiology',
-	'Astrophysical processes',
-	'Cosmology',
-	'Exoplanets',
-	'Galactic and extragalactic astronomy',
-	'High energy astrophysics',
-	'Interdisciplinary astronomy',
-	'Interstellar medium',
-	'Observational astronomy',
-	'Solar physics',
-	'Solar system astronomy',
-	'Stellar astronomy'
-];
-
 export const defaultCareerStageLevels = [
 	'Pre-Major',
 	'Novice Undergraduate',

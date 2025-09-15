@@ -7,8 +7,9 @@
 	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
 	import { defaultCareerStageLevels } from '@/types/post';
 	import { goto } from '$app/navigation';
+	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
 
-	let { tagList }: { tagList: string[] } = $props();
+	let { globalTags, userTags }: { globalTags: string[]; userTags: string[] } = $props();
 
 	let formRef = $state<HTMLFormElement>(null!);
 
@@ -19,12 +20,8 @@
 	let orderBy = $state(page.url.searchParams.get('orderBy') || 'relevance');
 	let order = $state(page.url.searchParams.get('order') || 'desc');
 
-	let fullTagList = $derived(tags.concat(tagList.filter((tag) => !tags.includes(tag))));
-
 	let fullCareerStageList = $derived(
-		defaultCareerStageLevels.concat(
-			careerStage.filter((custom) => !defaultCareerStageLevels.includes(custom))
-		)
+		careerStage.concat(defaultCareerStageLevels.filter((custom) => !careerStage.includes(custom)))
 	);
 
 	const orderOptions = [
@@ -96,9 +93,10 @@
 
 		<div class="flex items-center gap-2">
 			<Label>Tags:</Label>
-			<MultiselectCombobox
-				bind:items={tags}
-				defaultOptions={fullTagList}
+			<TagMultiselectCombobox
+				bind:tags
+				{globalTags}
+				{userTags}
 				onChange={submit}
 				allowCustom
 				placeholder="Search Tags"

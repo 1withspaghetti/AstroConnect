@@ -5,16 +5,15 @@
 	import { Label } from '@/components/ui/label';
 	import UserCard from '@/components/UserCard.svelte';
 	import SearchForm from '../../../home/researchers/search-form.svelte';
-	import { defaultTags } from '@/types/post';
 	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
-	let tagList = $state(defaultTags);
+	let globalTags = $state<string[]>([]);
+	let userTags = $state<string[]>([]);
 	$effect(() => {
-		data.userTagsData.then((tags) => {
-			tagList = defaultTags.concat(tags.filter((tag) => !defaultTags.includes(tag)));
-		});
+		data.globalTagsData.then((tags) => (globalTags = tags));
+		data.userTagsData.then((tags) => (userTags = tags));
 	});
 </script>
 
@@ -22,7 +21,7 @@
 
 <div class="container mx-auto pb-16">
 	<div class="px-8 py-8">
-		<SearchForm {tagList} />
+		<SearchForm {globalTags} {userTags} />
 	</div>
 
 	<div class="mx-auto mb-4">

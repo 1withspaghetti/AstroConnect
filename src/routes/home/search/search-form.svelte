@@ -15,8 +15,9 @@
 	import * as Popover from '@/components/ui/popover';
 	import { Button } from '@/components/ui/button';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
 
-	let { tagList }: { tagList: string[] } = $props();
+	let { globalTags, userTags }: { globalTags: string[]; userTags: string[] } = $props();
 
 	let formRef = $state<HTMLFormElement>(null!);
 	const isMobile = new IsMobile();
@@ -53,12 +54,8 @@
 		durationEnd = range.end ? dayjs(range.end.toString()).format('YYYY-MM-DD') : undefined;
 	}
 
-	let fullTagList = $derived(tags.concat(tagList.filter((tag) => !tags.includes(tag))));
-
 	let fullCareerStageList = $derived(
-		defaultCareerStageLevels.concat(
-			careerStage.filter((custom) => !defaultCareerStageLevels.includes(custom))
-		)
+		careerStage.concat(defaultCareerStageLevels.filter((custom) => !careerStage.includes(custom)))
 	);
 
 	const orderOptions = [
@@ -126,9 +123,10 @@
 	<div class="mt-2 flex flex-wrap items-center justify-center gap-4">
 		<div class="flex items-center gap-2">
 			<Label for="tags">Tags:</Label>
-			<MultiselectCombobox
-				bind:items={tags}
-				defaultOptions={fullTagList}
+			<TagMultiselectCombobox
+				bind:tags
+				{globalTags}
+				{userTags}
 				onChange={submit}
 				allowCustom
 				placeholder="Search Tags"

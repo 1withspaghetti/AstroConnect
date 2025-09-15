@@ -6,8 +6,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels, defaultTags, type PostImage } from '@/types/post';
-	import MultiselectCombobox from '@/components/ui/MultiselectCombobox.svelte';
+	import { defaultCareerStageLevels, type PostImage } from '@/types/post';
 	import Button from '@/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
 	import DescriptionEditImages from './DescriptionEditImages.svelte';
@@ -19,20 +18,23 @@
 	import * as Select from '@/components/ui/select';
 	import type { SessionUser, UserPreview } from '@/types/user';
 	import ChevronRight from '@lucide/svelte/icons/chevron-right';
+	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
 
 	let {
 		postId,
 		user,
 		proxyAs,
 		images,
-		postTags,
+		globalTags,
+		userTags,
 		formInputData
 	}: {
 		postId: string;
 		user: SessionUser;
 		proxyAs: UserPreview[];
 		images: PostImage[];
-		postTags: string[];
+		globalTags: string[];
+		userTags: string[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
 	} = $props();
 
@@ -67,12 +69,6 @@
 				? defaultCareerStageLevels
 				: [...defaultCareerStageLevels, $formData.careerStage]
 			: defaultCareerStageLevels
-	);
-
-	let tagList = $derived(defaultTags.concat(postTags.filter((tag) => !defaultTags.includes(tag))));
-
-	let fullTagList = $derived(
-		$formData.tags.concat(tagList.filter((tag) => !$formData.tags.includes(tag)))
 	);
 
 	function getDateRange() {
@@ -184,10 +180,11 @@
 		<Form.Control>
 			{#snippet children({ props })}
 				<Form.Label>Tags (optional)</Form.Label>
-				<MultiselectCombobox
-					bind:items={$formData.tags}
-					defaultOptions={fullTagList}
-					allowCustom={true}
+				<TagMultiselectCombobox
+					bind:tags={$formData.tags}
+					{globalTags}
+					{userTags}
+					allowCustom
 					placeholder="Search Tags"
 					emptyText="No existing tags found"
 				/>

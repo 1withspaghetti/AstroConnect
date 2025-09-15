@@ -5,6 +5,7 @@
 	import Info from '@lucide/svelte/icons/info';
 	import Eye from '@lucide/svelte/icons/eye';
 	import FileText from '@lucide/svelte/icons/file-text';
+	import Tags from '@lucide/svelte/icons/tags';
 
 	interface NavGroup {
 		title: string;
@@ -80,6 +81,11 @@
 					href: '/dashboard/admin/users',
 					icon: Users,
 					label: 'User List'
+				},
+				{
+					href: '/dashboard/admin/tags',
+					icon: Tags,
+					label: 'Default Tags'
 				}
 			]
 		}

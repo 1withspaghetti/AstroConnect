@@ -5,16 +5,15 @@
 	import { Skeleton } from '@/components/ui/skeleton';
 	import { Label } from '@/components/ui/label';
 	import UserCard from '@/components/UserCard.svelte';
-	import { defaultTags } from '@/types/post';
 	import Meta from '@/components/Meta.svelte';
 
 	let { data }: PageProps = $props();
 
-	let tagList = $state(defaultTags);
+	let globalTags = $state<string[]>([]);
+	let userTags = $state<string[]>([]);
 	$effect(() => {
-		data.userTagsData.then((tags) => {
-			tagList = defaultTags.concat(tags.filter((tag) => !defaultTags.includes(tag)));
-		});
+		data.globalTagsData.then((tags) => (globalTags = tags));
+		data.userTagsData.then((tags) => (userTags = tags));
 	});
 </script>
 
@@ -46,7 +45,7 @@
 		</div>
 	</div>
 	<div class="-translate-y-5 px-8">
-		<SearchForm {tagList} />
+		<SearchForm {globalTags} {userTags} />
 	</div>
 
 	<div class="mx-auto mb-4">
