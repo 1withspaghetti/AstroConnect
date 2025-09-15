@@ -28,10 +28,6 @@ export const load = (async ({ locals, url }) => {
 		conditions.push(
 			sql`to_tsvector('english', ${table.users.name} || ' ' || ${table.users.bio}) @@ websearch_to_tsquery('english', ${query.search || ''})`
 		);
-		extras.rank =
-			sql`ts_rank(to_tsvector('english', ${table.users.name} || ' ' || ${table.users.bio}), websearch_to_tsquery('english', ${query.search || ''}))`.as(
-				'rank'
-			);
 		extras.rankCd =
 			sql`ts_rank_cd(to_tsvector('english', ${table.users.name} || ' ' || ${table.users.bio}), websearch_to_tsquery('english', ${query.search || ''}))`.as(
 				'rank_cd'
@@ -89,9 +85,8 @@ export const load = (async ({ locals, url }) => {
 			users: users.map((user) => ({
 				...user,
 				tags: user.tags.map((t) => t.tag), // Simplify tags to string array
-				total: undefined // Remove total from individual users
-				// rank: undefined, // Remove rank from individual users
-				// rankCd: undefined // Remove rank_cd from individual users
+				total: undefined, // Remove total from individual users
+				rankCd: undefined // Remove rank_cd from individual users
 			})) as UserProfile[],
 			total: users[0]?.total ?? 0
 		}));

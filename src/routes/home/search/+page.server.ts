@@ -69,10 +69,6 @@ export const load = (async ({ url, locals }) => {
 		conditions.push(
 			sql`to_tsvector('english', ${table.posts.title} || ' ' || ${table.posts.desc}) @@ websearch_to_tsquery('english', ${query.search || ''})`
 		);
-		extras.rank =
-			sql`ts_rank(to_tsvector('english', ${table.posts.title} || ' ' || ${table.posts.desc}), websearch_to_tsquery('english', ${query.search || ''}))`.as(
-				'rank'
-			);
 		extras.rankCd =
 			sql`ts_rank_cd(to_tsvector('english', ${table.posts.title} || ' ' || ${table.posts.desc}), websearch_to_tsquery('english', ${query.search || ''}))`.as(
 				'rank_cd'
@@ -117,7 +113,6 @@ export const load = (async ({ url, locals }) => {
 		posts: posts.map((post) => ({
 			...post,
 			total: undefined, // Remove total from individual posts
-			rank: undefined, // Remove rank from individual posts
 			rankCd: undefined // Remove rank_cd from individual posts
 		})),
 		total: posts[0]?.total ?? 0
