@@ -143,8 +143,8 @@
 			action="/dashboard/post/{page.params.postId}?/publish"
 			class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
 		>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action>Publish</AlertDialog.Action>
+			<AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action type="submit">Publish</AlertDialog.Action>
 		</form>
 	</AlertDialog.Content>
 </AlertDialog.Root>
@@ -167,8 +167,8 @@
 			action="/dashboard/post/{page.params.postId}?/unpublish"
 			class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
 		>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action>Unpublish</AlertDialog.Action>
+			<AlertDialog.Cancel type="button">Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action type="submit">Unpublish</AlertDialog.Action>
 		</form>
 	</AlertDialog.Content>
 </AlertDialog.Root>
