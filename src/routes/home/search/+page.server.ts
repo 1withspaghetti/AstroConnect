@@ -6,6 +6,8 @@ import { table } from '@/server/db';
 import { error } from '@sveltejs/kit';
 import dayjs from '@/util/dayjs';
 
+const perPage = 25;
+
 const queryParamsValidator = z
 	.object({
 		search: z.string().max(250, 'Max 250 characters in search').optional(),
@@ -20,7 +22,8 @@ const queryParamsValidator = z
 			.regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format, expected YYYY-MM-DD')
 			.optional(),
 		orderBy: z.enum(['relevance', 'createdAt', 'title'], 'Invalid order by').optional(),
-		order: z.enum(['asc', 'desc'], 'Invalid order').optional()
+		order: z.enum(['asc', 'desc'], 'Invalid order').optional(),
+		page: z.coerce.number().min(1, 'Page must be at least 1').optional().default(1)
 	})
 	.superRefine((data, ctx) => {
 		if ((data.start && !data.end) || (data.end && !data.start)) {
@@ -108,7 +111,9 @@ export const load = (async ({ url, locals }) => {
 		extras: {
 			...extras,
 			total: sql<number>`count(*) OVER()`.as('total')
-		}
+		},
+		limit: perPage,
+		offset: (query.page - 1) * perPage
 	}).then((posts) => ({
 		posts: posts.map((post) => ({
 			...post,

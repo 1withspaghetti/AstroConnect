@@ -5,12 +5,15 @@ import { db, table } from '@/server/db';
 import type { UserProfile } from '@/types/user';
 import { error } from '@sveltejs/kit';
 
+const perPage = 25;
+
 const queryParamsValidator = z.object({
 	search: z.string().max(250, 'Max 250 characters in search').optional(),
 	tags: z.string().max(500, 'Max 500 characters in tags').optional(),
 	careerStage: z.string().max(500, 'Max 500 characters in Career Stage').optional(),
 	orderBy: z.enum(['relevance', 'name'], 'Invalid order by').optional(),
-	order: z.enum(['asc', 'desc'], 'Invalid order').optional()
+	order: z.enum(['asc', 'desc'], 'Invalid order').optional(),
+	page: z.coerce.number().min(1, 'Page must be at least 1').optional().default(1)
 });
 
 export const load = (async ({ locals, url }) => {
@@ -83,7 +86,9 @@ export const load = (async ({ locals, url }) => {
 			extras: {
 				...extras,
 				total: sql<number>`count(*) OVER()`.as('total')
-			}
+			},
+			limit: perPage,
+			offset: (query.page - 1) * perPage
 		})
 		.then((users) => ({
 			users: users.map((user) => ({

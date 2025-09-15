@@ -6,6 +6,8 @@
 	import UserCard from '@/components/UserCard.svelte';
 	import SearchForm from '../../../home/researchers/search-form.svelte';
 	import Meta from '@/components/Meta.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let { data }: PageProps = $props();
 
@@ -15,6 +17,12 @@
 		data.globalTagsData.then((tags) => (globalTags = tags));
 		data.userTagsData.then((tags) => (userTags = tags));
 	});
+
+	function gotoPage(pageNum: number) {
+		const params = page.url.searchParams;
+		params.set('page', pageNum.toString());
+		goto(`?${params.toString()}`, { invalidateAll: true, keepFocus: true });
+	}
 </script>
 
 <Meta title="User List" />
@@ -56,7 +64,12 @@
 		</div>
 	{:then { total }}
 		{#if total > 0}
-			<Pagination.Root count={total} perPage={25}>
+			<Pagination.Root
+				count={total}
+				perPage={25}
+				page={parseInt(page.url.searchParams.get('page') || '1')}
+				onPageChange={gotoPage}
+			>
 				{#snippet children({ pages, currentPage })}
 					<Pagination.Content>
 						<Pagination.Item>

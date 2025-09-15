@@ -48,6 +48,8 @@
 		params.set('orderBy', orderBy);
 		params.set('order', order);
 
+		params.delete('page'); // Reset page on new search
+
 		// Remove empty search params
 		for (const key of Array.from(params.keys())) {
 			if (!params.get(key)) params.delete(key);
