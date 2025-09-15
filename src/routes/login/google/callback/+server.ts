@@ -109,8 +109,15 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 			.returning({ id: table.users.id });
 
 		userId = user[0].id;
-		redirectUrl = '/profile/home';
+		redirectUrl = '/dashboard/profile';
 	}
+
+	if (cookies.get('login_ref')) redirectUrl = cookies.get('login_ref')!;
+
+	// Clean up OAuth cookies
+	cookies.delete('google_oauth_state', { path: '/' });
+	cookies.delete('google_code_verifier', { path: '/' });
+	cookies.delete('login_ref', { path: '/' });
 
 	// Create a session for the user
 	const token = generateSessionToken();

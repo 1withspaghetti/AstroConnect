@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Meta from '@/components/Meta.svelte';
 	import { Button } from '@/components/ui/button/index.js';
@@ -36,7 +37,7 @@
 				<Card.Description>Please use your Net ID email</Card.Description>
 			</Card.Header>
 			<Card.Footer class="flex-col gap-2">
-				<Button variant="default" href="/login/google" class="w-full"
+				<Button variant="default" href={'/login/google' + page.url.search} class="w-full"
 					><GoogleIcon /> Login with Google</Button
 				>
 			</Card.Footer>

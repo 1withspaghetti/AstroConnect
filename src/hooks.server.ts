@@ -22,7 +22,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		if (req && !session) {
 			if (event.request.headers.get('accept')?.includes('text/html')) {
-				throw redirect(302, '/');
+				throw redirect(302, '/?ref=' + encodeURIComponent(event.url.pathname + event.url.search));
 			} else {
 				throw error(401, 'Unauthorized');
 			}
