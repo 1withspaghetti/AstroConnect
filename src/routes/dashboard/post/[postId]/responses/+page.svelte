@@ -79,6 +79,10 @@
 					</p>
 				</Accordion.Content>
 			</Accordion.Item>
+		{:else}
+			<p class="mt-16 text-center text-muted-foreground text-sm">
+				No one has applied to your post yet.
+			</p>
 		{/each}
 	</Accordion.Root>
 </div>
