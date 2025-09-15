@@ -25,6 +25,7 @@
 	import Plus from '@lucide/svelte/icons/plus';
 	import { toast } from 'svelte-sonner';
 	import { tick } from 'svelte';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 
 	let {
 		formInputData
@@ -340,10 +341,15 @@
 	</Form.Fieldset>
 	<div class="mt-4 flex justify-center gap-4">
 		<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
+		<Button type="submit" disabled={$submitting || !$tainted} name="continue"
+			>Save and continue <ChevronRight /></Button
+		>
+	</div>
+	<div class="flex justify-center">
 		<Button
 			type="reset"
 			variant="secondary"
-			disabled={$submitting || !$tainted}
+			disabled={!$tainted}
 			onclick={(e) => {
 				e.preventDefault();
 				form.reset();

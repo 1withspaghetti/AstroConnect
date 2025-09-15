@@ -18,6 +18,7 @@
 	import dayjs from '@/util/dayjs';
 	import * as Select from '@/components/ui/select';
 	import type { SessionUser, UserPreview } from '@/types/user';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 
 	let {
 		postId,
@@ -212,6 +213,11 @@
 	</Form.Field>
 	<div class="mt-4 flex justify-center gap-4">
 		<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
+		<Button type="submit" disabled={$submitting || !$tainted} name="continue"
+			>Save and continue <ChevronRight /></Button
+		>
+	</div>
+	<div class="flex justify-center">
 		<Button
 			type="reset"
 			variant="secondary"

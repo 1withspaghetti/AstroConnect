@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from './$types.js';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { applicationEditFormSchema } from '@/validators/applicationEditFormValidator.js';
@@ -37,8 +37,9 @@ export const actions: Actions = {
 	default: async ({ request, params, locals }) => {
 		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
+		const formData = await request.formData();
 
-		const form = await superValidate(request, zod4(applicationEditFormSchema));
+		const form = await superValidate(formData, zod4(applicationEditFormSchema));
 
 		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
 
@@ -48,6 +49,8 @@ export const actions: Actions = {
 				questions: form.data.questions
 			})
 			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
+
+		if (formData.has('continue')) return redirect(303, `/dashboard/post/${postId}/preview`);
 
 		return message(form, { type: 'success', text: 'Post updated successfully!' });
 	}
