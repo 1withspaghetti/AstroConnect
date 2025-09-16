@@ -83,7 +83,7 @@ export const load = (async ({ url, locals }) => {
 	if (query.tags) {
 		// This could prob be optimized further, but for now it works
 		conditions.push(
-			sql`to_jsonb("posts_tags"."data") @> ${JSON.stringify(tags.map((tag) => [tag]))}::jsonb`
+			sql`exists (SELECT json_array_elements_text("posts_tags"."data") INTERSECT SELECT json_array_elements_text(${JSON.stringify(tags.map((tag) => [tag]))}::json))`
 		);
 	}
 
