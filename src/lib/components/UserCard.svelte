@@ -93,7 +93,11 @@
 		</div>
 		{#if user.careerStage || user.major}
 			<div class="text-muted-foreground mt-2 text-sm">
-				{user.careerStage}
+				{#if user.careerStage === 'Faculty' || user.careerStage === 'Faculty Collaborator'}
+					<Badge class="text-foreground bg-amber-300 dark:bg-amber-600">{user.careerStage}</Badge>
+				{:else}
+					{user.careerStage}
+				{/if}
 				{user.careerStage && user.major ? ' • ' : ''}
 				{user.major}
 			</div>
