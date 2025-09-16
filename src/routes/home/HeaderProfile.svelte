@@ -4,7 +4,6 @@
 	import Info from '@lucide/svelte/icons/info';
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import { goto } from '$app/navigation';
-	import Search from '@lucide/svelte/icons/search';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Eye from '@lucide/svelte/icons/eye';
 	import UserAvatar from '@/components/UserAvatar.svelte';
@@ -13,8 +12,16 @@
 	import Users from '@lucide/svelte/icons/users';
 	import Pen from '@lucide/svelte/icons/pen';
 	import Tags from '@lucide/svelte/icons/tags';
+	import LayoutDashboard from '@lucide/svelte/icons/layout-dashboard';
 
 	const navData = [
+		[
+			{
+				href: '/dashboard',
+				icon: LayoutDashboard,
+				label: 'Dashboard'
+			}
+		],
 		[
 			{
 				href: '/dashboard/profile',
