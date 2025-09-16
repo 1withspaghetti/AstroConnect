@@ -10,29 +10,10 @@
 	import Eye from '@lucide/svelte/icons/eye';
 	import EyeOff from '@lucide/svelte/icons/eye-off';
 	import { enhance } from '$app/forms';
-
-	const tabs = [
-		{
-			label: 'Description',
-			href: '/edit/description'
-		},
-		{
-			label: 'Application',
-			href: '/edit/application'
-		},
-		{
-			label: 'Preview',
-			href: '/preview'
-		},
-		{
-			label: 'Responses',
-			href: '/responses'
-		}
-	];
+	import Pen from '@lucide/svelte/icons/pen';
+	import List from '@lucide/svelte/icons/list';
 
 	let { data, children }: LayoutProps = $props();
-
-	let relativePath = $derived('/dashboard/post/' + page.params.postId);
 
 	let currentPostNavItem = $derived(data.postList.find((post) => post.id === page.params.postId));
 
@@ -41,13 +22,16 @@
 	let deleteDialogOpen = $state(false);
 
 	const enhanceCallback: SubmitFunction = () => {
-		return async ({ result, update }) => {
+		return async ({ update }) => {
 			await update();
 			publishDialogOpen = false;
 			unpublishDialogOpen = false;
 			deleteDialogOpen = false;
 		};
 	};
+
+	let relativePath = $derived('/dashboard/post/' + page.params.postId);
+	let isEditing = $derived(page.url.pathname.startsWith(relativePath + '/edit'));
 </script>
 
 <div class="mx-auto max-w-6xl px-4">
@@ -59,8 +43,23 @@
 			{/if}
 		</h1>
 		<div class="hidden items-center gap-2 lg:flex">
+			{#if isEditing}
+				<Button
+					variant="default"
+					href={relativePath + '/responses'}
+					class="text-primary dark:text-primary-foreground bg-green-300 hover:bg-green-400"
+				>
+					<List />
+					View Responses
+				</Button>
+			{:else}
+				<Button variant="default" href={relativePath + '/edit'}>
+					<Pen />
+					Edit Post
+				</Button>
+			{/if}
 			{#if currentPostNavItem?.isDraft}
-				<Button onclick={() => (publishDialogOpen = true)}>
+				<Button variant="outline" onclick={() => (publishDialogOpen = true)}>
 					<Eye />
 					Publish
 				</Button>
@@ -104,25 +103,6 @@
 		</DropdownMenu.Root>
 	</div>
 	<Separator class="mt-1" />
-</div>
-
-<div class="flex justify-center p-4">
-	<div
-		class="bg-muted text-muted-foreground inline-flex h-10 w-fit items-center justify-center rounded-lg p-[3px]"
-	>
-		{#each tabs as tab}
-			{@const isActive = page.url.pathname.startsWith(relativePath + tab.href)}
-			<a
-				href={relativePath + tab.href}
-				data-state={isActive ? 'active' : ''}
-				role="tab"
-				aria-selected={isActive}
-				tabindex={isActive ? -1 : 0}
-				class="data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-				>{tab.label}</a
-			>
-		{/each}
-	</div>
 </div>
 
 {@render children?.()}

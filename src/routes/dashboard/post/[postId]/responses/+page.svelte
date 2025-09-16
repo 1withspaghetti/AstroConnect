@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Meta from '@/components/Meta.svelte';
 	import type { PageProps } from './$types';
-	import AcceptingResponsesForm from './AcceptingResponsesForm.svelte';
 	import * as Accordion from '@/components/ui/accordion';
 	import UserCard from '@/components/UserCard.svelte';
 	import { ApplicationFormQuestionType } from '@/types/applicationForm';
@@ -27,7 +26,6 @@
 <Meta title="Responses" />
 
 <div class="container mx-auto mt-4 pb-16">
-	<AcceptingResponsesForm formInputData={data.form} />
 	<Accordion.Root type="multiple" class="mx-auto mt-8 mb-4 max-w-6xl px-4" bind:value={open}>
 		{#each data.applications as app}
 			<Accordion.Item value={`app:${app.id}`} class="@container">

@@ -77,5 +77,12 @@ export const applicationEditFormFieldSchema = z.discriminatedUnion('type', [
 ]);
 
 export const applicationEditFormSchema = z.object({
+	isOpen: z.boolean(),
+	closesAt: z
+		.date()
+		.min(new Date(), 'Closing date must be in the future')
+		.max(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), 'Closing date must be within one year')
+		.optional(),
+	maxSlots: z.number().min(1, 'Must be at least 1').optional(),
 	questions: z.array(applicationEditFormFieldSchema).max(25, 'Max 25 questions are allowed')
 });

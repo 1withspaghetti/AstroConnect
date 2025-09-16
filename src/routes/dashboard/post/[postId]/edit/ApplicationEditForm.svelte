@@ -25,7 +25,13 @@
 	import Plus from '@lucide/svelte/icons/plus';
 	import { toast } from 'svelte-sonner';
 	import { tick } from 'svelte';
-	import ChevronRight from '@lucide/svelte/icons/chevron-right';
+	import { cn } from '@/utils';
+	import { buttonVariants } from '@/components/ui/button';
+	import * as Popover from '@/components/ui/popover';
+	import CalendarIcon from '@lucide/svelte/icons/calendar';
+	import { Calendar } from '@/components/ui/calendar';
+	import { type DateValue, getLocalTimeZone, fromDate, today } from '@internationalized/date';
+	import dayjs from '@/util/dayjs';
 
 	let {
 		formInputData
@@ -42,6 +48,7 @@
 			formData.update(
 				() => {
 					return {
+						...$formData,
 						questions: $formData.questions.map((q, i) => ({
 							...q,
 							id: getQuestionID(q.label, i)
@@ -62,6 +69,43 @@
 
 	const { form: formData, enhance, submitting, tainted } = form;
 
+	// closesAt
+
+	let closesAtChecked = $state($formData.closesAt !== undefined);
+	let closesAtDate = $state<DateValue | undefined>(
+		$formData.closesAt ? fromDate($formData.closesAt, getLocalTimeZone()) : undefined
+	);
+	let closesAtTime = $state<string | undefined>(
+		$formData.closesAt ? dayjs($formData.closesAt).format('HH:mm') : '23:59'
+	);
+	$effect(() => {
+		if (closesAtChecked && closesAtDate) {
+			let [hours, minutes] = (closesAtTime || '23:59').split(':').map(Number);
+			let date = closesAtDate.toDate(getLocalTimeZone());
+			date.setHours(hours, minutes, 0, 0);
+			$formData.closesAt = date;
+		} else {
+			$formData.closesAt = undefined;
+		}
+	});
+
+	let placeholder = $state<DateValue>(today(getLocalTimeZone()));
+
+	// maxSlots
+
+	let closesAfterApplicationsChecked = $state($formData.maxSlots !== undefined);
+	let maxSlotsInput = $state<number | undefined>($formData.maxSlots);
+
+	$effect(() => {
+		if (closesAfterApplicationsChecked && maxSlotsInput !== undefined) {
+			$formData.maxSlots = maxSlotsInput;
+		} else {
+			$formData.maxSlots = undefined;
+		}
+	});
+
+	// Questions
+
 	function getQuestionID(label: string, ignoreSelf?: number): string {
 		let id = label
 			.replace(/\s+/g, '_')
@@ -81,14 +125,16 @@
 			required: true,
 			type: QType.TEXT
 		} as TextQuestion;
-		formData.update(() => ({ questions: [...$formData.questions, newQuestion] }), { taint: true });
+		formData.update((form) => ({ ...form, questions: [...$formData.questions, newQuestion] }), {
+			taint: true
+		});
 	}
 
 	function moveUp(index: number) {
 		if (index > 0) {
 			const questions = $formData.questions;
 			[questions[index - 1], questions[index]] = [questions[index], questions[index - 1]];
-			formData.update(() => ({ questions }), { taint: true });
+			formData.update((form) => ({ ...form, questions }), { taint: true });
 		}
 	}
 
@@ -96,7 +142,7 @@
 		if (index < $formData.questions.length - 1) {
 			const questions = $formData.questions;
 			[questions[index + 1], questions[index]] = [questions[index], questions[index + 1]];
-			formData.update(() => ({ questions }), { taint: true });
+			formData.update((form) => ({ ...form, questions }), { taint: true });
 		}
 	}
 
@@ -104,7 +150,8 @@
 		const question = $formData.questions[index];
 		const newQuestion = { ...question, id: getQuestionID(question.label) };
 		formData.update(
-			() => ({
+			(form) => ({
+				...form,
 				questions: [
 					...$formData.questions.slice(0, index + 1),
 					newQuestion,
@@ -116,13 +163,102 @@
 	}
 
 	function remove(index: number) {
-		formData.update(() => ({ questions: $formData.questions.filter((_, i) => i !== index) }), {
-			taint: true
-		});
+		formData.update(
+			(form) => ({ ...form, questions: $formData.questions.filter((_, i) => i !== index) }),
+			{
+				taint: true
+			}
+		);
 	}
 </script>
 
-<form method="POST" use:enhance class="flex flex-col">
+<form method="POST" use:enhance action="?/application" class="flex flex-col">
+	<div class="mb-4 flex flex-wrap items-start justify-center gap-2">
+		<Form.Field {form} name="isOpen" class="mr-6">
+			<Form.Control>
+				{#snippet children({ props })}
+					<div class="flex h-9 items-center gap-2">
+						<Checkbox {...props} bind:checked={$formData.isOpen} class="size-5" />
+						<Form.Label>Accepting Responses</Form.Label>
+					</div>
+					<Form.FieldErrors />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+		<Form.Field {form} name="closesAt" class="mr-6">
+			<Form.Control>
+				{#snippet children({ props })}
+					<div class="flex items-center gap-2">
+						<Checkbox bind:checked={closesAtChecked} disabled={!$formData.isOpen} class="size-5" />
+						<Form.Label>Closes&nbsp;At:</Form.Label>
+						<Popover.Root>
+							<Popover.Trigger
+								{...props}
+								class={cn(
+									buttonVariants({ variant: 'outline' }),
+									'w-48 justify-start pl-4 text-left font-normal',
+									!closesAtDate && 'text-muted-foreground'
+								)}
+								disabled={!closesAtChecked || !$formData.isOpen}
+							>
+								{closesAtDate
+									? dayjs(closesAtDate.toDate(getLocalTimeZone())).format('LL')
+									: 'Pick a date'}
+								<CalendarIcon class="ml-auto size-4 opacity-50" />
+							</Popover.Trigger>
+							<Popover.Content class="w-auto p-0" side="top">
+								<Calendar
+									type="single"
+									bind:placeholder
+									bind:value={closesAtDate}
+									minValue={today(getLocalTimeZone())}
+									maxValue={today(getLocalTimeZone()).add({ years: 1 })}
+									calendarLabel="Closing Date"
+									disabled={!closesAtChecked || !$formData.isOpen}
+								/>
+							</Popover.Content>
+						</Popover.Root>
+						<Input
+							type="time"
+							id="{props.id}-time"
+							bind:value={closesAtTime}
+							disabled={!closesAtChecked || !$formData.isOpen}
+							class="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+						/>
+					</div>
+					<Form.FieldErrors />
+					<input hidden value={closesAtChecked && $formData.closesAt} name={props.name} />
+				{/snippet}
+			</Form.Control>
+		</Form.Field>
+		<Form.Field {form} name="maxSlots" class="mr-6">
+			<Form.Control>
+				{#snippet children({ props })}
+					<div class="flex items-center gap-2">
+						<Checkbox
+							bind:checked={closesAfterApplicationsChecked}
+							disabled={!$formData.isOpen}
+							class="size-5"
+						/>
+						<Form.Label>Closes after</Form.Label>
+						<Input
+							{...props}
+							type="number"
+							min="1"
+							bind:value={maxSlotsInput}
+							disabled={!closesAfterApplicationsChecked || !$formData.isOpen}
+							class="w-20"
+						/>
+						<Form.Label>
+							application{#if maxSlotsInput !== 1}s{/if}
+						</Form.Label>
+					</div>
+					<Form.FieldErrors />
+				{/snippet}
+			</Form.Control>
+		</Form.Field>
+	</div>
 	<Form.Fieldset {form} name="questions" class="space-y-8">
 		<Form.Legend class="sr-only">Application Questions</Form.Legend>
 		{#each $formData.questions as _, i (_.id)}
@@ -339,13 +475,8 @@
 			<span>New Question</span>
 		</Button>
 	</Form.Fieldset>
-	<div class="mt-4 flex justify-center gap-4">
+	<div class="mt-6 flex justify-center gap-4">
 		<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
-		<Button type="submit" disabled={$submitting || !$tainted} name="continue"
-			>Save and continue <ChevronRight /></Button
-		>
-	</div>
-	<div class="flex justify-center">
 		<Button
 			type="reset"
 			variant="secondary"

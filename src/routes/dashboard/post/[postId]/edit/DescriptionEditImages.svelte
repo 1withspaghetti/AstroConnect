@@ -60,7 +60,7 @@
 				}
 			}
 		};
-		req.open('POST', `/dashboard/post/${postId}/edit/description/image`, true);
+		req.open('POST', `/dashboard/post/${postId}/edit/image`, true);
 		req.send(formData);
 	}
 
@@ -104,7 +104,7 @@
 
 	function deleteImage(id: string) {
 		isLoading = true;
-		apiRequest('DELETE', `/dashboard/post/${postId}/edit/description/image/${id}`)
+		apiRequest('DELETE', `/dashboard/post/${postId}/edit/image/${id}`)
 			.catch((error) => {
 				toast.error('Failed to delete image: ' + error.message);
 			})
@@ -120,11 +120,9 @@
 		for (let i = 0; i < newOrder.length; i++) {
 			if (images.find((image) => image.id === newOrder[i].id)!.order !== i) {
 				updates.push(
-					apiRequest(
-						'PATCH',
-						`/dashboard/post/${postId}/edit/description/image/${newOrder[i].id}`,
-						{ order: i }
-					)
+					apiRequest('PATCH', `/dashboard/post/${postId}/edit/image/${newOrder[i].id}`, {
+						order: i
+					})
 				);
 			}
 		}
@@ -210,6 +208,6 @@
 			</label>
 		</Carousel.Item>
 	</Carousel.Content>
-	<Carousel.Previous class="-left-4" />
-	<Carousel.Next class="-right-4" />
+	<Carousel.Previous class="-left-2" />
+	<Carousel.Next class="-right-2" />
 </Carousel.Root>

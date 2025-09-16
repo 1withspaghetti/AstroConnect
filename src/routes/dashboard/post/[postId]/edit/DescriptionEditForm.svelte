@@ -6,10 +6,9 @@
 	import { Input } from '$lib/components/ui/input';
 	import Textarea from '@/components/ui/textarea/textarea.svelte';
 	import SelectCombobox from '@/components/ui/SelectCombobox.svelte';
-	import { defaultCareerStageLevels, type PostImage } from '@/types/post';
+	import { defaultCareerStageLevels } from '@/types/post';
 	import Button from '@/components/ui/button/button.svelte';
 	import { toast } from 'svelte-sonner';
-	import DescriptionEditImages from './DescriptionEditImages.svelte';
 	import { CalendarDate } from '@internationalized/date';
 	import type { DateRange } from 'bits-ui';
 	import { RangeCalendar } from '@/components/ui/range-calendar';
@@ -17,24 +16,19 @@
 	import dayjs from '@/util/dayjs';
 	import * as Select from '@/components/ui/select';
 	import type { SessionUser, UserPreview } from '@/types/user';
-	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
 	import * as Popover from '@/components/ui/popover';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 
 	let {
-		postId,
 		user,
 		proxyAs,
-		images,
 		globalTags,
 		userTags,
 		formInputData
 	}: {
-		postId: string;
 		user: SessionUser;
 		proxyAs: UserPreview[];
-		images: PostImage[];
 		globalTags: string[];
 		userTags: string[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
@@ -102,8 +96,7 @@
 	}
 </script>
 
-<DescriptionEditImages {postId} {images} />
-<form method="POST" use:enhance class="mt-4 flex flex-col gap-6">
+<form method="POST" use:enhance action="?/description" class="mt-4 flex flex-col gap-6">
 	<Form.Field {form} name="ownerId">
 		<Form.Control>
 			{#snippet children({ props })}
@@ -224,16 +217,8 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Field {form} name="durationEnd">
-		<Form.FieldErrors />
-	</Form.Field>
-	<div class="mt-4 flex justify-center gap-4">
+	<div class="flex justify-center gap-4">
 		<Button type="submit" disabled={$submitting || !$tainted}>Save</Button>
-		<Button type="submit" disabled={$submitting || !$tainted} name="continue"
-			>Save and continue <ChevronRight /></Button
-		>
-	</div>
-	<div class="flex justify-center">
 		<Button
 			type="reset"
 			variant="secondary"

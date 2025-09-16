@@ -78,9 +78,7 @@
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
 					onclick={() =>
-						logInAsUser(() =>
-							goto(`/dashboard/post/${post.id}/edit/description`, { invalidateAll: true })
-						)}
+						logInAsUser(() => goto(`/dashboard/post/${post.id}/edit`, { invalidateAll: true }))}
 					class="cursor-pointer"
 				>
 					<Pencil /> Log In As Author & Edit Post

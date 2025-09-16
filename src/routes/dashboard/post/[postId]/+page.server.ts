@@ -9,7 +9,7 @@ import { S3_BUCKET_IMAGES } from '$env/static/private';
 import { userHasAccessToPost } from '@/server/db/common';
 
 export const load = (async ({ params }) => {
-	return redirect(301, `/dashboard/post/${params.postId}/edit/description`);
+	return redirect(301, `/dashboard/post/${params.postId}/edit`);
 }) satisfies PageServerLoad;
 
 export const actions = {

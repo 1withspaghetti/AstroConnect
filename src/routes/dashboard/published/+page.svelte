@@ -23,7 +23,7 @@
 			{#each posts as post}
 				<PostCard {post} href={`/dashboard/post/${post.id}`}>
 					{#snippet action()}
-						<Button href={`/dashboard/post/${post.id}/edit/description`}>
+						<Button href={`/dashboard/post/${post.id}/edit`}>
 							<Pen />
 							Edit
 						</Button>

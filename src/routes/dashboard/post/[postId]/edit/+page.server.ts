@@ -7,6 +7,8 @@ import { db, table } from '@/server/db/index.js';
 import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator.js';
 import { userHasAccessToPost } from '@/server/db/common.js';
+import { applicationEditFormSchema } from '@/validators/applicationEditFormValidator.js';
+import { acceptingResponsesFormSchema } from '@/validators/acceptingResponsesFormValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { user } = await locals.auth();
@@ -22,7 +24,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			careerStage: true,
 			prereq: true,
 			durationStart: true,
-			durationEnd: true
+			durationEnd: true,
+			isOpen: true,
+			closesAt: true,
+			maxSlots: true,
+			questions: true
 		},
 		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id)),
 		with: {
@@ -75,7 +81,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		images: post.images,
 		postTags,
 		proxyAs,
-		form: await superValidate(
+		descriptionForm: await superValidate(
 			{
 				ownerId: post.ownerId,
 				title: post.title,
@@ -89,12 +95,21 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				tags: post.tags.map((tag) => tag.tag)
 			},
 			zod4(descriptionEditFormSchema)
+		),
+		applicationForm: await superValidate(
+			{
+				isOpen: post.isOpen,
+				closesAt: post.closesAt || undefined,
+				maxSlots: post.maxSlots || undefined,
+				questions: post.questions
+			},
+			zod4(applicationEditFormSchema)
 		)
 	};
 };
 
 export const actions: Actions = {
-	default: async ({ request, params, locals }) => {
+	description: async ({ request, params, locals }) => {
 		const { user } = await locals.auth();
 		const postId = validateId(params.postId);
 		const formData = await request.formData();
@@ -133,8 +148,26 @@ export const actions: Actions = {
 			);
 		}
 
-		if (formData.has('continue'))
-			return redirect(303, `/dashboard/post/${postId}/edit/application`);
+		return message(form, { type: 'success', text: 'Post updated successfully!' });
+	},
+	application: async ({ request, params, locals }) => {
+		const { user } = await locals.auth();
+		const postId = validateId(params.postId);
+		const formData = await request.formData();
+
+		const form = await superValidate(formData, zod4(applicationEditFormSchema));
+
+		if (!form.valid) return message(form, { type: 'error', text: 'Invalid data' });
+
+		await db
+			.update(table.posts)
+			.set({
+				isOpen: form.data.isOpen,
+				closesAt: form.data.closesAt || null,
+				maxSlots: form.data.maxSlots || null,
+				questions: form.data.questions
+			})
+			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
 
 		return message(form, { type: 'success', text: 'Post updated successfully!' });
 	}
