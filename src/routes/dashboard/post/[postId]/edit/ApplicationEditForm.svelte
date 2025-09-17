@@ -189,15 +189,21 @@
 		<Form.Field {form} name="closesAt" class="mr-6">
 			<Form.Control>
 				{#snippet children({ props })}
-					<div class="flex items-center gap-2">
-						<Checkbox bind:checked={closesAtChecked} disabled={!$formData.isOpen} class="size-5" />
-						<Form.Label>Closes&nbsp;At:</Form.Label>
+					<div class="flex flex-wrap items-center justify-center gap-2">
+						<div class="flex items-center gap-2">
+							<Checkbox
+								bind:checked={closesAtChecked}
+								disabled={!$formData.isOpen}
+								class="size-5"
+							/>
+							<Form.Label>Closes&nbsp;At:</Form.Label>
+						</div>
 						<Popover.Root>
 							<Popover.Trigger
 								{...props}
 								class={cn(
 									buttonVariants({ variant: 'outline' }),
-									'w-48 justify-start pl-4 text-left font-normal',
+									'w-42 justify-start pl-4 text-left font-normal',
 									!closesAtDate && 'text-muted-foreground'
 								)}
 								disabled={!closesAtChecked || !$formData.isOpen}
@@ -224,7 +230,7 @@
 							id="{props.id}-time"
 							bind:value={closesAtTime}
 							disabled={!closesAtChecked || !$formData.isOpen}
-							class="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+							class="bg-background w-min appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
 						/>
 					</div>
 					<Form.FieldErrors />
