@@ -12,7 +12,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const post = await db.query.posts.findFirst({
 		columns: {
-			id: true
+			id: true,
+			isDraft: true
 		},
 		with: {
 			applications: {
@@ -54,6 +55,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	return {
 		postId,
+		isDraft: post.isDraft,
 		applications: post.applications.map((app) => ({
 			...app,
 			user: {

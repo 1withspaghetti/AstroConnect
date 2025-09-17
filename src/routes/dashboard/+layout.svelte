@@ -90,6 +90,24 @@
 			]
 		}
 	];
+
+	export const postNavData: NavItem[] = [
+		{
+			href: '/edit',
+			icon: Pen,
+			label: 'Edit Post'
+		},
+		{
+			href: '/preview',
+			icon: Eye,
+			label: 'Preview'
+		},
+		{
+			href: '/responses',
+			icon: List,
+			label: 'Responses'
+		}
+	];
 </script>
 
 <script lang="ts">
@@ -102,6 +120,7 @@
 	import AdminImpersonationHeader from '@/components/AdminImpersonationHeader.svelte';
 	import Users from '@lucide/svelte/icons/users';
 	import Meta from '@/components/Meta.svelte';
+	import List from '@lucide/svelte/icons/list';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -109,9 +128,17 @@
 		navData.flatMap((group) => group.items).find((item) => page.url.pathname.startsWith(item.href))
 	);
 
-	let currentPostNavItem = $derived(
+	let currentPost = $derived(
 		page.url.pathname.startsWith(`/dashboard/post/`)
 			? data.postList.find((post) => page.url.pathname.startsWith(`/dashboard/post/${post.id}`))
+			: undefined
+	);
+
+	let currentPostNavItem = $derived(
+		currentPost
+			? postNavData.find((item) =>
+					page.url.pathname.startsWith(`/dashboard/post/${currentPost.id}` + item.href)
+				)
 			: undefined
 	);
 </script>
@@ -124,8 +151,8 @@
 		<header class="sticky top-0 z-30 flex h-12 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />
 			<Separator orientation="vertical" class="mr-2 h-4" />
-			<Breadcrumb.Root>
-				<Breadcrumb.List>
+			<Breadcrumb.Root class="max-w-full overflow-x-hidden">
+				<Breadcrumb.List class="flex-nowrap justify-end whitespace-nowrap">
 					<Breadcrumb.Item>
 						<Breadcrumb.Link href="/dashboard">Dashboard</Breadcrumb.Link>
 					</Breadcrumb.Item>
@@ -134,9 +161,9 @@
 						<Breadcrumb.Item>
 							<Breadcrumb.Link href={currentNavItem.href}>{currentNavItem.label}</Breadcrumb.Link>
 						</Breadcrumb.Item>
-					{:else if currentPostNavItem}
+					{:else if currentPost}
 						<Breadcrumb.Separator />
-						{#if currentPostNavItem.isDraft}
+						{#if currentPost.isDraft}
 							<Breadcrumb.Item>
 								<Breadcrumb.Link href="/dashboard/drafts">Drafts</Breadcrumb.Link>
 							</Breadcrumb.Item>
@@ -148,12 +175,21 @@
 						<Breadcrumb.Separator />
 						<Breadcrumb.Item>
 							<Breadcrumb.Link
-								href={`/dashboard/post/${currentPostNavItem.id}`}
-								class="line-clamp-1 max-w-sm"
+								href={`/dashboard/post/${currentPost.id}`}
+								class="line-clamp-1 max-w-xs whitespace-normal"
 							>
-								{currentPostNavItem.title || 'Untitled Post'}
+								{currentPost.title || 'Untitled Post'}
 							</Breadcrumb.Link>
 						</Breadcrumb.Item>
+						{#if currentPostNavItem}
+							<Breadcrumb.Separator />
+							<Breadcrumb.Item>
+								<Breadcrumb.Link
+									href={`/dashboard/post/${currentPost.id}` + currentPostNavItem.href}
+									>{currentPostNavItem.label}</Breadcrumb.Link
+								>
+							</Breadcrumb.Item>
+						{/if}
 					{/if}
 				</Breadcrumb.List>
 			</Breadcrumb.Root>

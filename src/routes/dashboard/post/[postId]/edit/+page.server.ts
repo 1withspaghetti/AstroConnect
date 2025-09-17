@@ -1,6 +1,6 @@
 import { descriptionEditFormSchema } from '@/validators/descriptionEditFormValidator.js';
 import type { Actions, PageServerLoad } from './$types.js';
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { db, table } from '@/server/db/index.js';
@@ -8,7 +8,6 @@ import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator.js';
 import { userHasAccessToPost } from '@/server/db/common.js';
 import { applicationEditFormSchema } from '@/validators/applicationEditFormValidator.js';
-import { acceptingResponsesFormSchema } from '@/validators/acceptingResponsesFormValidator.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const { user } = await locals.auth();
@@ -17,6 +16,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const post = await db.query.posts.findFirst({
 		columns: {
 			ownerId: true,
+			isDraft: true,
 			title: true,
 			desc: true,
 			positions: true,
@@ -78,6 +78,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	return {
 		postId,
+		isDraft: post.isDraft,
 		images: post.images,
 		postTags,
 		proxyAs,
