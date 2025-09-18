@@ -38,7 +38,7 @@
 		"bits-ui": "^2.9.3",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",
-		"drizzle-kit": "^0.30.6",
+		"drizzle-kit": "^0.31.4",
 		"drizzle-orm": "^0.40.1",
 		"embla-carousel-svelte": "^8.6.0",
 		"eslint": "^9.33.0",
