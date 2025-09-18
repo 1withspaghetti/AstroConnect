@@ -102,12 +102,12 @@ export const load = (async ({ url, locals }) => {
 	let orderFn = query.order === 'asc' ? asc : desc;
 
 	if (query.orderBy === 'relevance' && query.search) orderBy.unshift(orderFn(extras.rankCd));
-	else if (query.orderBy === 'createdAt') orderBy.unshift(orderFn(table.posts.createdAt));
+	else if (query.orderBy === 'createdAt') orderBy.unshift(orderFn(table.posts.publishedAt));
 	else if (query.orderBy === 'title') orderBy.unshift(orderFn(table.posts.title));
 
 	const postData = findManyPostPreviews({
 		where: and(eq(table.posts.isDraft, false), ...conditions),
-		orderBy: [...orderBy, desc(table.posts.createdAt)],
+		orderBy: [...orderBy, desc(table.posts.publishedAt)],
 		extras: {
 			...extras,
 			total: sql<number>`count(*) OVER()`.as('total')

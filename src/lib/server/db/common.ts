@@ -9,6 +9,7 @@ export async function findManyPostPreviews(
 		columns: {
 			id: true,
 			createdAt: true,
+			publishedAt: true,
 			isDraft: true,
 			title: true,
 			desc: true,
@@ -61,7 +62,7 @@ export async function findManyPostPreviews(
 				}
 			}
 		},
-		orderBy: desc(table.posts.createdAt),
+		orderBy: [desc(table.posts.publishedAt), desc(table.posts.createdAt)],
 		...query
 	});
 
@@ -84,6 +85,7 @@ export async function findFirstPost(
 		columns: {
 			id: true,
 			createdAt: true,
+			publishedAt: true,
 			isDraft: true,
 			title: true,
 			desc: true,
@@ -137,7 +139,7 @@ export async function findFirstPost(
 				}
 			}
 		},
-		orderBy: desc(table.posts.createdAt),
+		orderBy: [desc(table.posts.publishedAt), desc(table.posts.createdAt)],
 		...query
 	});
 

@@ -7,6 +7,7 @@ export interface PostMinimal {
 	title: string;
 	isOpen: boolean;
 	createdAt: Date;
+	publishedAt: Date | null;
 }
 
 export interface PostPreview extends PostMinimal {

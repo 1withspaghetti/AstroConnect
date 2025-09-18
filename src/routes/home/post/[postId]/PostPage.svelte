@@ -81,7 +81,9 @@
 			</div>
 			<div class="mt-2 mb-4 text-sm">
 				Posted
-				<span title={dayjs(post.createdAt).format('LLLL')}>{dayjs(post.createdAt).fromNow()}</span>
+				<span title={dayjs(post.publishedAt || post.createdAt).format('LLLL')}
+					>{dayjs(post.publishedAt || post.createdAt).fromNow()}</span
+				>
 			</div>
 			{#if !closed && (post.closesAt !== null || post.maxSlots !== null)}
 				<div class="mb-2 italic">

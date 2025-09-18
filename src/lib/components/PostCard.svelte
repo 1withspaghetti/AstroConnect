@@ -130,8 +130,8 @@
 			{/if}
 			<div class="text-muted-foreground text-xs @lg:text-right">
 				<span
-					>Posted <b title={dayjs(post.createdAt).format('LLLL')}
-						>{dayjs(post.createdAt).fromNow()}</b
+					>Posted <b title={dayjs(post.publishedAt || post.createdAt).format('LLLL')}
+						>{dayjs(post.publishedAt || post.createdAt).fromNow()}</b
 					>
 					by {post.owner.name} (<a
 						href={`mailto:${post.owner.email}`}

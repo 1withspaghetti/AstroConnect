@@ -19,7 +19,7 @@ export const actions = {
 
 		const res = await db
 			.update(table.posts)
-			.set({ isDraft: false })
+			.set({ isDraft: false, publishedAt: new Date() })
 			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
 
 		if (res.rowCount < 1) {
@@ -35,7 +35,7 @@ export const actions = {
 
 		const res = await db
 			.update(table.posts)
-			.set({ isDraft: true })
+			.set({ isDraft: true, publishedAt: null })
 			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
 
 		if (res.rowCount < 1) {

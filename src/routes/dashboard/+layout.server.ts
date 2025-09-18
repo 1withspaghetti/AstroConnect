@@ -13,7 +13,8 @@ export const load = (async ({ locals }) => {
 			isDraft: true,
 			title: true,
 			isOpen: true,
-			createdAt: true
+			createdAt: true,
+			publishedAt: true
 		},
 		where: userHasAccessToPost(user.id),
 		orderBy: [desc(table.posts.createdAt)]
