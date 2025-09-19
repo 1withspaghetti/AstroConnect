@@ -87,7 +87,7 @@ export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData):
         <mj-button background-color="#101828" color="#FFF" font-size="14px" align="center" font-weight="bold" border="none" padding="15px 30px" border-radius="10px" href='${data.applicationLink}' padding-left="25px" padding-right="25px" padding-bottom="10px">View Application</mj-button>
       </mj-column>
       <mj-column width="50%">
-        <mj-button background-color="#101828" color="#FFF" font-size="14px" align="center" font-weight="bold" border="none" padding="15px 30px" border-radius="10px" href="https://astroconnect-demo.netlify.app/dashboard/published" padding-left="25px" padding-right="25px" padding-bottom="12px">My Dashboard</mj-button>
+        <mj-button background-color="#101828" color="#FFF" font-size="14px" align="center" font-weight="bold" border="none" padding="15px 30px" border-radius="10px" href="${new URL(`/dashboard/published`, PUBLIC_BASE_URL).toString()}" padding-left="25px" padding-right="25px" padding-bottom="12px">My Dashboard</mj-button>
       </mj-column>
     </mj-section>
     <mj-section background-color="#ffffff" padding-bottom="5px" padding-top="0">
