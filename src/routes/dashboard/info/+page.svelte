@@ -19,8 +19,8 @@
 			target="_blank"
 			rel="noopener"
 			class="text-blue-600 hover:underline">open-source project</a
-		> created by Tyler Place at Cal Poly SLO. It was a Summer Project at UW Astro, supervised/mentored
-		by Ishan Ghosh-Coutinho, a then Post-Baccalaureate with the department. Ishan reached out to Tyler
+		> created by Tyler Place at Cal Poly SLO. It was created as Summer Project at UW Astro, supervised/mentored
+		by Ishan Ghosh-Coutinho. A then Post-Baccalaureate with the department, Ishan reached out to Tyler
 		after desiring to bridge the lack of connection between students looking for research opportunities
 		and faculty/researchers who might provide those opportunities. With help from Ishan constantly communicating,
 		providing feedback, and getting input from potential users, Tyler designed and developed this platform,
