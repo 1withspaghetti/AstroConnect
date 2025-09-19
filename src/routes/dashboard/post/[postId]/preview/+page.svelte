@@ -24,5 +24,5 @@
 	<Separator class="mt-1 mb-4" />
 </div>
 <main class="container mx-auto">
-	<PostPage post={data.post} allowSubmit={false} isAdmin={false} />
+	<PostPage post={data.post} allowSubmit={false} userId={data.user.id} isAdmin={false} />
 </main>

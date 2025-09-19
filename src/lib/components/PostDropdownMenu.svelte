@@ -12,8 +12,9 @@
 	import apiRequest from '@/util/apiClient';
 	import { goto, invalidateAll } from '$app/navigation';
 	import * as AlertDialog from './ui/alert-dialog';
+	import List from '@lucide/svelte/icons/list';
 
-	let { post, isAdmin }: { post: PostPreview; isAdmin: boolean } = $props();
+	let { post, userId, isAdmin }: { post: PostPreview; userId: string; isAdmin: boolean } = $props();
 
 	let deleteModelOpen = $state(false);
 
@@ -71,6 +72,21 @@
 			>
 				<Link /> Copy Link
 			</DropdownMenu.Item>
+			{#if userId === post.owner.id}
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item
+					onclick={() => goto(`/dashboard/post/${post.id}/edit`, { invalidateAll: true })}
+					class="cursor-pointer"
+				>
+					<Pencil /> Edit Post
+				</DropdownMenu.Item>
+				<DropdownMenu.Item
+					onclick={() => goto(`/dashboard/post/${post.id}/responses`, { invalidateAll: true })}
+					class="cursor-pointer"
+				>
+					<List /> View Responses
+				</DropdownMenu.Item>
+			{/if}
 			{#if isAdmin}
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item onclick={() => logInAsUser(invalidateAll)} class="cursor-pointer">

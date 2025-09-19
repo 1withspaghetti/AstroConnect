@@ -14,5 +14,11 @@
 />
 
 <main class="container mx-auto">
-	<PostPage post={data.post} formInputData={data.form} allowSubmit isAdmin={data.isAdmin} />
+	<PostPage
+		post={data.post}
+		formInputData={data.form}
+		allowSubmit
+		userId={data.user.id}
+		isAdmin={data.isAdmin}
+	/>
 </main>

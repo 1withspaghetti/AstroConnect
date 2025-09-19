@@ -64,7 +64,7 @@
 				<PostCard {post} href={`/home/post/${post.id}`}>
 					{#snippet action({ closed })}
 						<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>
-						<PostDropdownMenu {post} isAdmin={data.isAdmin} />
+						<PostDropdownMenu {post} userId={data.user.id} isAdmin={data.isAdmin} />
 					{/snippet}
 				</PostCard>
 			{/each}
