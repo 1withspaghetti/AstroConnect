@@ -44,6 +44,7 @@
 		dataType: 'json',
 		taintedMessage: true,
 		resetForm: false,
+		applyAction: 'never', // Prevents the other form submission from resetting this one
 		onSubmit: async (e) => {
 			formData.update(
 				() => {

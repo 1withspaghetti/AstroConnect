@@ -39,6 +39,7 @@
 		dataType: 'json',
 		taintedMessage: true,
 		resetForm: false,
+		applyAction: 'never', // Prevents the other form submission from resetting this one
 		onUpdated: ({ form }) =>
 			form.message && toast[form.message.type](form.message.text, { duration: 3000 }),
 		onError: ({ result }) =>
