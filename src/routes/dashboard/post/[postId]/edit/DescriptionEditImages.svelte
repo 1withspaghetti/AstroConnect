@@ -41,7 +41,7 @@
 		};
 		req.upload.onerror = (event) => {
 			console.error('Upload error', event);
-			toast.error('Failed to upload ' + file.name);
+			toast.error('Error during upload');
 		};
 		req.upload.onloadend = (event) => {
 			fileProgress = event.loaded / event.total;
@@ -56,7 +56,7 @@
 		req.onreadystatechange = () => {
 			if (req.readyState === 4) {
 				if (req.status !== 200) {
-					toast.error('Failed to upload ' + file.name);
+					toast.error('Failed to upload: ' + req.status + ': ' + req.statusText);
 				}
 			}
 		};

@@ -6,6 +6,7 @@
 	import { toast } from 'svelte-sonner';
 	import Progress from '@/components/ui/progress/progress.svelte';
 	import apiRequest from '@/util/apiClient';
+	import uploadToS3 from '@/util/s3UploadHelper';
 
 	type Props = HTMLInputAttributes & {
 		value?: string;
@@ -45,27 +46,11 @@
 
 		// Send to S3
 
-		let req = new XMLHttpRequest();
-		req.upload.onprogress = (event) => {
-			fileProgress = event.loaded / event.total;
-		};
-		req.upload.onerror = (event) => {
-			console.error('Upload error', event);
-			toast.error('Failed to upload ' + file.name);
-		};
-		req.upload.onloadend = (event) => {
-			fileProgress = event.loaded / event.total;
-			value = id;
-		};
-		req.onreadystatechange = () => {
-			if (req.readyState === 4) {
-				if (req.status !== 200) {
-					toast.error('Failed to upload ' + file.name);
-				}
-			}
-		};
-		req.open('PUT', uploadUrl, true);
-		req.send(file);
+		await uploadToS3(uploadUrl, file, (progress) => (fileProgress = progress))
+			.then(() => {
+				value = id;
+			})
+			.catch(toast.error);
 	}
 </script>
 

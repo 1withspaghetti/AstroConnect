@@ -25,7 +25,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	const { user } = await locals.auth();
 
 	const result = uploadRequestValidator.safeParse(await request.json());
-	if (!result.success) error(400, { message: result.error.issues[0].message });
+	if (!result.success) error(400, result.error.issues[0]);
 	const { name, size } = result.data;
 
 	const fileKey = nanoid() + '-' + encodeURIComponent(name.normalize('NFC'));
