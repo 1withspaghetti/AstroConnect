@@ -32,8 +32,8 @@ export interface Post extends PostPreview {
 
 export const defaultCareerStageLevels = [
 	'Pre-Major',
-	'Novice Undergraduate',
-	'Experienced Undergraduate',
+	'Lower-Division Undergraduate',
+	'Upper-Division Undergraduate',
 	'Undergraduate',
 	'Post-Baccalaureate',
 	'1st Year Graduate Student',
