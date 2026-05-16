@@ -68,7 +68,7 @@
 							<li class="space-y-2">
 								<b class="mb-2">{answer.label}:</b>
 								<p class="indent-4">
-									{#if answer.type === ApplicationFormQuestionType.FILE}
+									{#if answer.type === ApplicationFormQuestionType.FILE && typeof answer.answer === 'string'}
 										{@const filename = (answer.answer as string).replaceAll(/^https?:\/\/[^/]+\//g, "")}
 										<a
 											target="_blank"
