@@ -69,7 +69,7 @@
 								<b class="mb-2">{answer.label}:</b>
 								<p class="indent-4">
 									{#if answer.type === ApplicationFormQuestionType.FILE}
-										{@const filename = (answer.answer as string).replaceAll(/^https?:\/\/[^/]+\//, "")}
+										{@const filename = (answer.answer as string).replaceAll(/^https?:\/\/[^/]+\//g, "")}
 										<a
 											target="_blank"
 											href={answer.answer as string}
