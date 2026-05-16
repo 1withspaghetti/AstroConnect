@@ -39,7 +39,7 @@
 	<Separator class="mt-1 mb-4" />
 
 	<Accordion.Root type="multiple" class="mx-auto mt-8 mb-4 max-w-6xl px-4" bind:value={open}>
-		{#each data.applications as app}
+		{#each data.applications as app (app.id)}
 			<Accordion.Item value={`app:${app.id}`} class="@container">
 				<Accordion.Trigger
 					id={app.id}
@@ -64,12 +64,12 @@
 				<Accordion.Content class="flex flex-col gap-4 p-2 @2xl:flex-row">
 					<UserCard user={app.user} isAdmin={data.isAdmin} />
 					<ol>
-						{#each app.answers as answer}
+						{#each app.answers as answer, i (i)}
 							<li class="space-y-2">
 								<b class="mb-2">{answer.label}:</b>
 								<p class="indent-4">
 									{#if answer.type === ApplicationFormQuestionType.FILE}
-										{@const filename = new URL(answer.answer as string).pathname.split('/').pop()}
+										{@const filename = (answer.answer as string).replaceAll(/^https?:\/\/[^/]+\//, "")}
 										<a
 											target="_blank"
 											href={answer.answer as string}
