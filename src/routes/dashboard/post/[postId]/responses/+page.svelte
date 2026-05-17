@@ -69,7 +69,7 @@
 								<b class="mb-2">{answer.label}:</b>
 								<p class="indent-4">
 									{#if answer.type === ApplicationFormQuestionType.FILE && typeof answer.answer === 'string'}
-										{@const filename = (answer.answer as string).replaceAll(/^https?:\/\/[^/]+\//g, "")}
+										{@const filename = new URL(answer.answer as string).pathname.split('/').pop()}
 										<a
 											target="_blank"
 											href={answer.answer as string}
