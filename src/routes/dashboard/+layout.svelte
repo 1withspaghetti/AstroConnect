@@ -16,7 +16,7 @@
 
 	interface NavItem {
 		href: string;
-		icon: any;
+		icon: Component;
 		label: string;
 		hasSubPosts?: boolean;
 		subPostsAreDrafts?: boolean;
@@ -121,6 +121,7 @@
 	import Users from '@lucide/svelte/icons/users';
 	import Meta from '@/components/Meta.svelte';
 	import List from '@lucide/svelte/icons/list';
+	import type { Component } from 'svelte';
 
 	let { children, data }: LayoutProps = $props();
 

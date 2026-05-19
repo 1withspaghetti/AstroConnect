@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 import type { PageServerLoad } from './$types';
-import { and, asc, desc, inArray, sql, eq, type SQL, type SQLWrapper } from 'drizzle-orm';
+import { and, asc, desc, inArray, sql, type SQL, type SQLWrapper } from 'drizzle-orm';
 import { db, table } from '@/server/db';
 import type { UserProfile } from '@/types/user';
 import { error } from '@sveltejs/kit';
@@ -24,9 +24,9 @@ export const load = (async ({ locals, url }) => {
 	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
 	const query = parseRes.data;
 
-	let conditions: SQLWrapper[] = [];
-	let extras: Record<string, SQL.Aliased> = {};
-	let orderBy: SQL[] = [];
+	const conditions: SQLWrapper[] = [];
+	const extras: Record<string, SQL.Aliased> = {};
+	const orderBy: SQL[] = [];
 
 	if (query.search) {
 		conditions.push(
@@ -38,22 +38,22 @@ export const load = (async ({ locals, url }) => {
 			);
 	}
 
-	let tags = query.tags ? query.tags.split(';') : [];
+	const tags = query.tags ? query.tags.split(';') : [];
 
 	if (query.tags) {
 		// This could prob be optimized further, but for now it works
 		conditions.push(
-			sql`exists (SELECT json_array_elements_text("posts_tags"."data") INTERSECT SELECT json_array_elements_text(${JSON.stringify(tags.map((tag) => [tag]))}::json))`
+			sql`exists (SELECT json_array_elements_text("user_tags"."data") INTERSECT SELECT json_array_elements_text(${JSON.stringify(tags.map((tag) => [tag]))}::json))`
 		);
 	}
 
-	let careerStages = query.careerStage ? query.careerStage.split(';') : [];
+	const careerStages = query.careerStage ? query.careerStage.split(';') : [];
 
 	if (query.careerStage) {
 		conditions.push(inArray(table.users.careerStage, careerStages));
 	}
 
-	let orderFn = query.order === 'asc' ? asc : desc;
+	const orderFn = query.order === 'asc' ? asc : desc;
 
 	if (query.orderBy === 'relevance' && query.search) orderBy.unshift(orderFn(extras.rankCd));
 	else if (query.orderBy === 'name') orderBy.unshift(orderFn(sql`LOWER(${table.users.name})`));

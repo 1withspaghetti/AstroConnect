@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { db, table } from '@/server/db';
 import { and, eq } from 'drizzle-orm';
 import { validateId } from '@/validators/idValidator';
@@ -12,7 +12,7 @@ export const load = (async ({ params }) => {
 	return redirect(301, `/dashboard/post/${params.postId}/edit`);
 }) satisfies PageServerLoad;
 
-export const actions = {
+export const actions: Actions = {
 	publish: async ({ params, locals }) => {
 		const { user } = await locals.auth();
 		const postId = validateId(params.postId);

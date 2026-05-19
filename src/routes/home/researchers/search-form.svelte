@@ -114,7 +114,7 @@
 					{orderByOptions.find((f) => f.value === orderBy)?.label ?? 'Select an option'}
 				</Select.Trigger>
 				<Select.Content>
-					{#each orderByOptions as option}
+					{#each orderByOptions as option (option.value)}
 						<Select.Item value={option.value} label={option.label} />
 					{/each}
 				</Select.Content>
@@ -124,7 +124,7 @@
 					{orderOptions.find((f) => f.value === order)?.label ?? 'Select an option'}
 				</Select.Trigger>
 				<Select.Content>
-					{#each orderOptions as option}
+					{#each orderOptions as option (option.value)}
 						<Select.Item value={option.value} label={option.label} />
 					{/each}
 				</Select.Content>

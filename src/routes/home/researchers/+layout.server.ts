@@ -11,9 +11,9 @@ export const load = (async ({ locals }) => {
 		.then((tags) => tags.map((tag) => tag.tag));
 
 	const userTagsData = db
-		.selectDistinct({ tag: table.postTags.tag })
-		.from(table.postTags)
-		.orderBy(table.postTags.tag)
+		.selectDistinct({ tag: table.userTags.tag })
+		.from(table.userTags)
+		.orderBy(table.userTags.tag)
 		.then((tags) => tags.map((tag) => tag.tag));
 
 	return {

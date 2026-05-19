@@ -76,7 +76,7 @@
 			<Skeleton class="h-64 w-full max-w-xs" />
 			<Skeleton class="h-64 w-full max-w-xs" />
 		{:then { users }}
-			{#each users as user}
+			{#each users as user (user.id)}
 				<UserCard {user} isAdmin={data.isAdmin} />
 			{/each}
 		{/await}
