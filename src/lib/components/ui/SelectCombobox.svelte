@@ -62,7 +62,7 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-[200px] p-0">
+	<Popover.Content class="w-50 p-0">
 		<Command.Root>
 			<Command.Input bind:value={search} {placeholder} />
 			<Command.List>
@@ -70,7 +70,7 @@
 					<Command.Empty>{emptyText}</Command.Empty>
 				{/if}
 				<Command.Group>
-					{#each defaultOptions as option}
+					{#each defaultOptions as option (option)}
 						<Command.Item
 							value={option}
 							onSelect={() => {

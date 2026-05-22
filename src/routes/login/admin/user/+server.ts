@@ -5,7 +5,7 @@ import { invalidateSession } from '@/server/auth';
 import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
-	const { session, user } = await locals.auth();
+	const { session } = await locals.auth();
 	if (!session.adminId) return error(403, 'Unauthorized');
 
 	const token = generateSessionToken();

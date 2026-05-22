@@ -13,6 +13,7 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import * as AlertDialog from './ui/alert-dialog';
 	import List from '@lucide/svelte/icons/list';
+	import { resolve } from '$app/paths';
 
 	let { post, userId, isAdmin }: { post: PostPreview; userId: string; isAdmin: boolean } = $props();
 
@@ -75,13 +76,14 @@
 			{#if userId === post.owner.id}
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item
-					onclick={() => goto(`/dashboard/post/${post.id}/edit`, { invalidateAll: true })}
+					onclick={() => goto(resolve(`/dashboard/post/${post.id}/edit`), { invalidateAll: true })}
 					class="cursor-pointer"
 				>
 					<Pencil /> Edit Post
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
-					onclick={() => goto(`/dashboard/post/${post.id}/responses`, { invalidateAll: true })}
+					onclick={() =>
+						goto(resolve(`/dashboard/post/${post.id}/responses`), { invalidateAll: true })}
 					class="cursor-pointer"
 				>
 					<List /> View Responses
@@ -94,7 +96,9 @@
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
 					onclick={() =>
-						logInAsUser(() => goto(`/dashboard/post/${post.id}/edit`, { invalidateAll: true }))}
+						logInAsUser(() =>
+							goto(resolve(`/dashboard/post/${post.id}/edit`), { invalidateAll: true })
+						)}
 					class="cursor-pointer"
 				>
 					<Pencil /> Log In As Author & Edit Post

@@ -65,7 +65,7 @@ export const actions: Actions = {
 		for (const question of post.questions.filter(
 			(q) => q.type === ApplicationFormQuestionType.FILE
 		)) {
-			const fileId = form.data[question.id];
+			const fileId = form.data[question.id] as string;
 			if (fileId) {
 				// Verify file exists in database
 				const file = await db.query.applicationUploads.findFirst({
@@ -91,8 +91,8 @@ export const actions: Actions = {
 				});
 				try {
 					await s3client.send(command);
-				} catch (error: any) {
-					if (error.name === 'NotFound') {
+				} catch (error) {
+					if (error instanceof Error && error.name === 'NotFound') {
 						return message(form, {
 							type: 'error',
 							text: `File not found in S3 for question ${question.label}`
@@ -133,7 +133,7 @@ export const actions: Actions = {
 			}
 		}
 
-		let answers = post.questions.map((question) => {
+		const answers = post.questions.map((question) => {
 			const answer = form.data[question.id];
 			return {
 				type: question.type,
@@ -169,7 +169,7 @@ export const actions: Actions = {
 		}
 
 		if (owner.sendSubmissionEmails) {
-			let email = owner.alternateEmail || owner.email;
+			const email = owner.alternateEmail || owner.email;
 
 			const sender = await db.query.users.findFirst({
 				columns: {

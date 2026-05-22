@@ -8,6 +8,7 @@
 	import Meta from '@/components/Meta.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -21,7 +22,10 @@
 	function gotoPage(pageNum: number) {
 		const params = page.url.searchParams;
 		params.set('page', pageNum.toString());
-		goto(`?${params.toString()}`, { invalidateAll: true, keepFocus: true });
+		goto(resolve(`/dashboard/admin/users?${params.toString()}`), {
+			invalidateAll: true,
+			keepFocus: true
+		});
 	}
 </script>
 
@@ -52,7 +56,7 @@
 			<Skeleton class="h-64 w-full max-w-xs" />
 			<Skeleton class="h-64 w-full max-w-xs" />
 		{:then { users }}
-			{#each users as user}
+			{#each users as user (user.id)}
 				<UserCard {user} isAdmin={data.isAdmin} />
 			{/each}
 		{/await}

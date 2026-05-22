@@ -22,6 +22,7 @@
 		proxyUsers: UserPreview[];
 	} = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(proxyUserFormInputData, {
 		validators: zod4Client(proxyUserSubmitSchema),
 		taintedMessage: false,
@@ -57,7 +58,7 @@
 				<Dialog.Trigger class="cursor-pointer text-sm text-blue-500 underline"
 					>What is a Proxy User?</Dialog.Trigger
 				>
-				<Dialog.Content class="sm:max-w-[425px]">
+				<Dialog.Content class="sm:max-w-106.25">
 					<Dialog.Header>
 						<Dialog.Title>What is a Proxy User?</Dialog.Title>
 					</Dialog.Header>

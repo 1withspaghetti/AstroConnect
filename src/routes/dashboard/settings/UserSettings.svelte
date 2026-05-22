@@ -19,6 +19,7 @@
 		user: SessionUser;
 	} = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(userSettingsFormInputData, {
 		validators: zod4Client(settingsEditSchema),
 		taintedMessage: true,

@@ -26,6 +26,7 @@
 		allowSubmit?: boolean;
 	} = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(formInputData || {}, {
 		validators: zod4Client(getApplicationFormSchema(formQuestions)),
 		onUpdated: ({ form }) =>
@@ -41,7 +42,7 @@
 </script>
 
 <form method="POST" use:enhance class="flex flex-col gap-6">
-	{#each formQuestions as question}
+	{#each formQuestions as question (question.id)}
 		{#if question.type === ApplicationFormQuestionType.TEXT}
 			<Form.Field {form} name={question.id}>
 				<Form.Control>
@@ -91,14 +92,14 @@
 						<Select.Root
 							type="single"
 							{disabled}
-							bind:value={$formData[question.id]}
+							bind:value={$formData[question.id] as string}
 							name={props.name}
 						>
 							<Select.Trigger {...props} class="w-full">
 								{$formData[question.id] ? $formData[question.id] : 'Select...'}
 							</Select.Trigger>
 							<Select.Content>
-								{#each question.options as option}
+								{#each question.options as option (option)}
 									<Select.Item value={option} label={option} />
 								{/each}
 							</Select.Content>
@@ -123,16 +124,16 @@
 						<Select.Root
 							type="multiple"
 							{disabled}
-							bind:value={$formData[question.id]}
+							bind:value={$formData[question.id] as string[]}
 							name={props.name}
 						>
 							<Select.Trigger {...props} class="w-full">
 								{$formData[question.id]?.length > 0
-									? $formData[question.id].join(', ')
+									? ($formData[question.id] as string[]).join(', ')
 									: 'Select Multiple...'}
 							</Select.Trigger>
 							<Select.Content>
-								{#each question.options as option}
+								{#each question.options as option (option)}
 									<Select.Item value={option} label={option} />
 								{/each}
 							</Select.Content>
@@ -157,7 +158,7 @@
 						<ApplicationFormFileUpload
 							{...props}
 							disabled={disabled || !allowSubmit}
-							bind:value={$formData[question.id]}
+							bind:value={$formData[question.id] as string}
 						/>
 					{/snippet}
 				</Form.Control>

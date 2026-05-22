@@ -4,7 +4,7 @@ import { z } from 'zod/v4';
 import { db, table } from '@/server/db';
 import { ilike, asc } from 'drizzle-orm';
 
-let userQueryValidator = z.object({
+const userQueryValidator = z.object({
 	q: z.string().min(0).max(100).trim().optional()
 });
 

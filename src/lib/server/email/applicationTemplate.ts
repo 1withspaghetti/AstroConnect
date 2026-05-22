@@ -9,8 +9,11 @@ export type ApplicationEmailTemplateData = {
 	applicationLink: string;
 };
 
-export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData): string =>
-	mjml2html(`
+export const getApplicationEmailTemplate = async (
+	data: ApplicationEmailTemplateData
+): Promise<string> =>
+	(
+		await mjml2html(`
 <mjml>
   <mj-body color="#030712" background-color="#ffffff" font-family="sans-serif">
     <mj-section background-color="#ffffff" padding-bottom="20px" padding-top="20px">
@@ -101,4 +104,5 @@ export const getApplicationEmailTemplate = (data: ApplicationEmailTemplateData):
     </mj-section>
   </mj-body>
 </mjml>
-`).html;
+`)
+	).html;

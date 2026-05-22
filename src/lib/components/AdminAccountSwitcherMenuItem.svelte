@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
-	import Users from '@lucide/svelte/icons/users';
 	import * as Command from './ui/command';
 	import * as AlertDialog from './ui/alert-dialog';
 	import { writable } from 'svelte/store';
@@ -34,7 +33,6 @@
 
 	let debounceTimeout: NodeJS.Timeout;
 	$effect(() => {
-		search;
 		loading = true;
 		results = [];
 		clearTimeout(debounceTimeout);
@@ -100,7 +98,7 @@
 		{/if}
 		{#if $mostRecent.length}
 			<Command.Group heading="Recent">
-				{#each $mostRecent as user}
+				{#each $mostRecent as user (user)}
 					<Command.Item onclick={() => select(user)}>
 						{user}
 					</Command.Item>
@@ -111,7 +109,7 @@
 			heading="All Users"
 			forceMount={!(search && results.length === 0 && !loading && !isSearchAValidEmail)}
 		>
-			{#each results as user}
+			{#each results as user (user)}
 				<Command.Item onclick={() => select(user)}>
 					{user}
 				</Command.Item>

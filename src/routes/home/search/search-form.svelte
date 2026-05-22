@@ -16,6 +16,7 @@
 	import { Button } from '@/components/ui/button';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
+	import { resolve } from '$app/paths';
 
 	let { globalTags, userTags }: { globalTags: string[]; userTags: string[] } = $props();
 
@@ -97,7 +98,7 @@
 			if (!params.get(key)) params.delete(key);
 		}
 
-		goto(`?${params.toString()}`, { invalidateAll: true, keepFocus: true });
+		goto(resolve(`/home/search?${params.toString()}`), { invalidateAll: true, keepFocus: true });
 	}
 </script>
 
@@ -155,7 +156,7 @@
 					{orderByOptions.find((f) => f.value === orderBy)?.label ?? 'Select an option'}
 				</Select.Trigger>
 				<Select.Content>
-					{#each orderByOptions as option}
+					{#each orderByOptions as option (option.value)}
 						<Select.Item value={option.value} label={option.label} />
 					{/each}
 				</Select.Content>
@@ -165,7 +166,7 @@
 					{orderOptions.find((f) => f.value === order)?.label ?? 'Select an option'}
 				</Select.Trigger>
 				<Select.Content>
-					{#each orderOptions as option}
+					{#each orderOptions as option (option.value)}
 						<Select.Item value={option.value} label={option.label} />
 					{/each}
 				</Select.Content>
@@ -177,7 +178,7 @@
 			<Popover.Root bind:open={dateRangeOpen} onOpenChange={submit}>
 				<Popover.Trigger id="date-range">
 					{#snippet child({ props })}
-						<Button {...props} variant="outline" class="w-[200px] justify-between font-normal">
+						<Button {...props} variant="outline" class="w-50 justify-between font-normal">
 							{durationStart && durationEnd
 								? `${dayjs(durationStart, 'YYYY-MM-DD').format('l')} - ${dayjs(durationEnd, 'YYYY-MM-DD').format('l')}`
 								: 'Select date'}

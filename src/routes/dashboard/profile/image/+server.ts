@@ -1,6 +1,5 @@
 import { z } from 'zod/v4';
 import type { RequestHandler } from './$types';
-import { validateId } from '@/validators/idValidator';
 import { error, json } from '@sveltejs/kit';
 import sharp from 'sharp';
 import { s3client } from '@/server/s3';

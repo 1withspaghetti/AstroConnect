@@ -11,15 +11,11 @@
 
 	let isLoading = $state<boolean>(false);
 
-	let pfp = $state<string | null>(user.pfp);
-	$effect(() => {
-		pfp = user.pfp;
-	});
-
+	let pfp = $derived(user.pfp);
 	function onFileUpload(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const file = target.files?.[0];
-		if (!file) return;
+		if (!file || isLoading) return;
 
 		isLoading = true;
 

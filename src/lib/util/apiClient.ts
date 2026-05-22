@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default async function apiRequest(
 	method: string,
 	url: string,
@@ -16,7 +17,9 @@ export default async function apiRequest(
 		let message = res.statusText || 'An error occurred';
 		try {
 			message = (await res.json()).message;
-		} catch {}
+		} catch {
+			/* empty */
+		}
 		throw new Error(message);
 	}
 }

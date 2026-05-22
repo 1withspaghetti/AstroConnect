@@ -31,7 +31,7 @@
 	</div>
 	<Separator class="mt-1 mb-4" />
 	<Accordion.Root type="multiple" class="mt-8 mb-4 px-4" bind:value={open}>
-		{#each data.applications as app}
+		{#each data.applications as app (app.id)}
 			<Accordion.Item value={`app:${app.id}`} class="@container">
 				<Accordion.Trigger
 					id={app.id}
@@ -50,7 +50,7 @@
 				<Accordion.Content class="flex flex-col gap-4 p-2">
 					<PostCard post={app.post} href={`/home/post/${app.post.id}`} />
 					<ol>
-						{#each app.answers as answer}
+						{#each app.answers as answer, i (i)}
 							<li class="space-y-2">
 								<b class="mb-2">{answer.label}:</b>
 								<p class="indent-4">
@@ -59,6 +59,7 @@
 										<a
 											target="_blank"
 											href={answer.answer as string}
+											rel="external"
 											class="text-blue-500 underline">{filename || 'View File'}</a
 										>
 									{:else if Array.isArray(answer.answer)}

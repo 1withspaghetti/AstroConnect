@@ -1,4 +1,8 @@
-import { ApplicationFormQuestionType, type ApplicationFormQuestion } from '@/types/applicationForm';
+import {
+	ApplicationFormQuestionType,
+	type ApplicationFormQuestion,
+	type InferApplicationFormQuestionAnswer
+} from '@/types/applicationForm';
 import { z } from 'zod/v4';
 
 export const TEXT_MAX_LENGTH = 1000;
@@ -12,13 +16,22 @@ export function getApplicationFormSchema(questions: ApplicationFormQuestion[]) {
 				acc[question.id] = _questionDefinitionToSchema(question);
 				return acc;
 			},
-			{} as Record<string, z.ZodType<any, any>>
+			{} as Record<
+				string,
+				z.ZodType<
+					InferApplicationFormQuestionAnswer<ApplicationFormQuestionType>,
+					InferApplicationFormQuestionAnswer<ApplicationFormQuestionType>
+				>
+			>
 		)
 	);
 }
 
 function _questionDefinitionToSchema(question: ApplicationFormQuestion) {
-	let schema: z.ZodTypeAny;
+	let schema: z.ZodType<
+		InferApplicationFormQuestionAnswer<ApplicationFormQuestionType> | undefined,
+		InferApplicationFormQuestionAnswer<ApplicationFormQuestionType> | undefined
+	>;
 
 	switch (question.type) {
 		case ApplicationFormQuestionType.TEXT: // TEXT
@@ -84,5 +97,8 @@ function _questionDefinitionToSchema(question: ApplicationFormQuestion) {
 		schema = schema.optional();
 	}
 
-	return schema;
+	return schema as z.ZodType<
+		InferApplicationFormQuestionAnswer<ApplicationFormQuestionType>,
+		InferApplicationFormQuestionAnswer<ApplicationFormQuestionType>
+	>;
 }

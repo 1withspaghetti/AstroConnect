@@ -5,6 +5,7 @@
 	import Pen from '@lucide/svelte/icons/pen';
 	import { Separator } from '@/components/ui/separator';
 	import Meta from '@/components/Meta.svelte';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 </script>
@@ -20,10 +21,10 @@
 		{#await data.posts}
 			<p class="text-muted-foreground">Loading drafts...</p>
 		{:then posts}
-			{#each posts as post}
-				<PostCard {post} href={`/dashboard/post/${post.id}`}>
+			{#each posts as post (post.id)}
+				<PostCard {post} href={resolve(`/dashboard/post/${post.id}`)}>
 					{#snippet action()}
-						<Button href={`/dashboard/post/${post.id}/edit`}>
+						<Button href={resolve(`/dashboard/post/${post.id}/edit`)}>
 							<Pen />
 							Edit
 						</Button>

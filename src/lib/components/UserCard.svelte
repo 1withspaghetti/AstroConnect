@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { User, UserProfile } from '@/types/user';
 	import * as Card from '@/components/ui/card';
-	import * as Avatar from '@/components/ui/avatar';
 	import Mail from '@lucide/svelte/icons/mail';
 	import { Badge } from './ui/badge';
 	import * as DropdownMenu from './ui/dropdown-menu';
@@ -104,7 +103,7 @@
 		{/if}
 		{#if user.tags}
 			<div class="mt-2 flex flex-wrap gap-2">
-				{#each user.tags as tag}
+				{#each user.tags as tag (tag)}
 					<Badge>{tag}</Badge>
 				{/each}
 			</div>

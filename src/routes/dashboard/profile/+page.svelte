@@ -20,6 +20,7 @@
 
 	let { data }: PageProps = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(data.form, {
 		validators: zod4Client(profileEditSchema),
 		dataType: 'json',
@@ -36,7 +37,7 @@
 
 	let { form: formData, enhance, submitting, tainted } = form;
 
-	const user = data.user;
+	const user = $derived(data.user);
 
 	// Ensure selected value is always in the array if not already present
 	let fullCareerStageList = $derived(
@@ -140,20 +141,18 @@
 				</Form.Field>
 				<Form.Field {form} name="tags">
 					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Tags (optional)</Form.Label>
-							<TagMultiselectCombobox
-								bind:tags={$formData.tags}
-								{globalTags}
-								{userTags}
-								allowCustom={true}
-								placeholder="Search Tags"
-								emptyText="No existing tags found"
-							/>
-							<Form.Description>
-								Topics related to your research interests, skills, or areas of expertise.
-							</Form.Description>
-						{/snippet}
+						<Form.Label>Tags (optional)</Form.Label>
+						<TagMultiselectCombobox
+							bind:tags={$formData.tags}
+							{globalTags}
+							{userTags}
+							allowCustom={true}
+							placeholder="Search Tags"
+							emptyText="No existing tags found"
+						/>
+						<Form.Description>
+							Topics related to your research interests, skills, or areas of expertise.
+						</Form.Description>
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>

@@ -33,8 +33,8 @@ const queryParamsValidator = z
 				path: ['end']
 			});
 		} else if (data.start && data.end) {
-			let dateStart = dayjs(data.start, 'YYYY-MM-DD', true);
-			let dateEnd = dayjs(data.end, 'YYYY-MM-DD', true);
+			const dateStart = dayjs(data.start, 'YYYY-MM-DD', true);
+			const dateEnd = dayjs(data.end, 'YYYY-MM-DD', true);
 			if (!dateStart.isValid() || dateStart.isBefore(dayjs('2000-01-01', 'YYYY-MM-DD'))) {
 				ctx.addIssue({
 					code: 'custom',
@@ -64,9 +64,9 @@ export const load = (async ({ url, locals }) => {
 	if (!parseRes.success) return error(400, parseRes.error.issues[0].message);
 	const query = parseRes.data;
 
-	let conditions: (SQLWrapper | undefined)[] = [];
-	let extras: Record<string, SQL.Aliased> = {};
-	let orderBy: SQL[] = [];
+	const conditions: (SQLWrapper | undefined)[] = [];
+	const extras: Record<string, SQL.Aliased> = {};
+	const orderBy: SQL[] = [];
 
 	if (query.search) {
 		conditions.push(
@@ -78,7 +78,7 @@ export const load = (async ({ url, locals }) => {
 			);
 	}
 
-	let tags = query.tags ? query.tags.split(';') : [];
+	const tags = query.tags ? query.tags.split(';') : [];
 
 	if (query.tags) {
 		// This could prob be optimized further, but for now it works
@@ -87,7 +87,7 @@ export const load = (async ({ url, locals }) => {
 		);
 	}
 
-	let careerStages = query.careerStage ? query.careerStage.split(';') : [];
+	const careerStages = query.careerStage ? query.careerStage.split(';') : [];
 
 	if (query.careerStage) {
 		conditions.push(inArray(table.posts.careerStage, careerStages));
@@ -99,7 +99,7 @@ export const load = (async ({ url, locals }) => {
 		);
 	}
 
-	let orderFn = query.order === 'asc' ? asc : desc;
+	const orderFn = query.order === 'asc' ? asc : desc;
 
 	if (query.orderBy === 'relevance' && query.search) orderBy.unshift(orderFn(extras.rankCd));
 	else if (query.orderBy === 'createdAt') orderBy.unshift(orderFn(table.posts.publishedAt));
@@ -120,7 +120,7 @@ export const load = (async ({ url, locals }) => {
 			total: undefined, // Remove total from individual posts
 			rankCd: undefined // Remove rank_cd from individual posts
 		})),
-		total: posts[0]?.total ?? 0
+		total: (posts[0]?.total as number) ?? 0
 	}));
 
 	return {

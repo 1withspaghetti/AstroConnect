@@ -13,45 +13,54 @@
 	import Pen from '@lucide/svelte/icons/pen';
 	import Tags from '@lucide/svelte/icons/tags';
 	import LayoutDashboard from '@lucide/svelte/icons/layout-dashboard';
+	import { resolve } from '$app/paths';
+	import type { Component } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 
-	const navData = [
+	type NavData = {
+		href: ResolvedPathname;
+		icon: Component;
+		label: string;
+	}[][];
+
+	const navData: NavData = [
 		[
 			{
-				href: '/dashboard',
+				href: resolve('/dashboard'),
 				icon: LayoutDashboard,
 				label: 'Dashboard'
 			}
 		],
 		[
 			{
-				href: '/dashboard/profile',
+				href: resolve('/dashboard/profile'),
 				icon: UserPen,
 				label: 'Edit Profile'
 			},
 			{
-				href: '/dashboard/settings',
+				href: resolve('/dashboard/settings'),
 				icon: Settings,
 				label: 'Settings'
 			},
 			{
-				href: '/dashboard/info',
+				href: resolve('/dashboard/info'),
 				icon: Info,
 				label: 'Info & Contact'
 			}
 		],
 		[
 			{
-				href: '/dashboard/drafts',
+				href: resolve('/dashboard/drafts'),
 				icon: Plus,
 				label: 'Post Research Opportunity'
 			},
 			{
-				href: '/dashboard/drafts',
+				href: resolve('/dashboard/drafts'),
 				icon: Pen,
 				label: 'Drafts'
 			},
 			{
-				href: '/dashboard/published',
+				href: resolve('/dashboard/published'),
 				icon: Eye,
 				label: 'Published'
 			}
@@ -69,7 +78,7 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			{#each navData as group}
+			{#each navData as group, i (i)}
 				{#each group as item (item.label)}
 					<DropdownMenu.Item onclick={() => goto(item.href)} class="cursor-pointer">
 						<item.icon />
@@ -79,11 +88,17 @@
 				<DropdownMenu.Separator />
 			{/each}
 			{#if isAdmin}
-				<DropdownMenu.Item onclick={() => goto('/dashboard/admin/users')} class="cursor-pointer">
+				<DropdownMenu.Item
+					onclick={() => goto(resolve('/dashboard/admin/users'))}
+					class="cursor-pointer"
+				>
 					<Users />
 					View User List [ADMIN]
 				</DropdownMenu.Item>
-				<DropdownMenu.Item onclick={() => goto('/dashboard/admin/tags')} class="cursor-pointer">
+				<DropdownMenu.Item
+					onclick={() => goto(resolve('/dashboard/admin/tags'))}
+					class="cursor-pointer"
+				>
 					<Tags />
 					Default Tags [ADMIN]
 				</DropdownMenu.Item>
@@ -91,7 +106,7 @@
 			{/if}
 			<DropdownMenu.Item
 				variant="destructive"
-				onclick={() => goto('/login/logout')}
+				onclick={() => goto(resolve('/login/logout'))}
 				class="cursor-pointer">Logout</DropdownMenu.Item
 			>
 		</DropdownMenu.Group>

@@ -1,9 +1,6 @@
 <script lang="ts">
 	import Meta from '@/components/Meta.svelte';
-	import type { PageProps } from './$types';
 	import { Separator } from '@/components/ui/separator';
-
-	let { data }: PageProps = $props();
 </script>
 
 <Meta title="Info & Contact" />

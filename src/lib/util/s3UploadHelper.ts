@@ -11,7 +11,7 @@ export default async function uploadToS3(
 	onprogress?: (progress: number) => void
 ): Promise<void> {
 	return new Promise((resolve, reject) => {
-		let req = new XMLHttpRequest();
+		const req = new XMLHttpRequest();
 		req.upload.onprogress = (event) => {
 			onprogress?.(event.loaded / event.total);
 		};
@@ -27,7 +27,7 @@ export default async function uploadToS3(
 				if (req.status === 200) {
 					resolve();
 				} else {
-					let message = req.responseXML?.querySelector('Message')?.textContent || 'Unknown Error';
+					const message = req.responseXML?.querySelector('Message')?.textContent || 'Unknown Error';
 					console.error('Upload error' + req.status + ': ' + req.statusText, req.responseXML);
 					reject('Failed to upload: ' + req.status + ': ' + message);
 				}

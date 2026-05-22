@@ -8,6 +8,7 @@
 	import { enhance } from '$app/forms';
 	import Plus from '@lucide/svelte/icons/plus';
 	import type { UserPreview } from '@/types/user';
+	import { resolve } from '$app/paths';
 
 	let { posts, user, isAdmin }: { posts: PostMinimal[]; user: UserPreview; isAdmin: boolean } =
 		$props();
@@ -24,7 +25,7 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton>
 					{#snippet child({ props })}
-						<a href="/home/search" {...props}>
+						<a href={resolve('/home/search')} {...props}>
 							<ChevronsLeft />
 							Back to Home
 						</a>

@@ -4,7 +4,7 @@ import { and, desc, eq, exists, or } from 'drizzle-orm';
 
 export async function findManyPostPreviews(
 	query: Omit<Omit<Parameters<typeof db.query.posts.findMany>[0], 'columns'>, 'with'>
-): Promise<(PostPreview & Record<string, any>)[]> {
+): Promise<(PostPreview & Record<string, unknown>)[]> {
 	const posts = await db.query.posts.findMany({
 		columns: {
 			id: true,

@@ -33,7 +33,7 @@
 
 <Carousel.Root setApi={(emblaApi) => (mainApi = emblaApi)}>
 	<Carousel.Content class="ml-0">
-		{#each images as image}
+		{#each images as image (image)}
 			<Carousel.Item class="basis-auto p-4 pl-0 first:pl-4">
 				<img src={image} alt="" class="h-64 object-contain object-center" />
 			</Carousel.Item>
@@ -44,7 +44,7 @@
 </Carousel.Root>
 <Carousel.Root setApi={(emblaApi) => (previewApi = emblaApi)}>
 	<Carousel.Content class="ml-0">
-		{#each images as image, i}
+		{#each images as image, i (image)}
 			<Carousel.Item class="basis-auto py-1 pr-2 pl-0 first:pl-2">
 				<button onclick={() => (current = i)} class="cursor-pointer">
 					<img

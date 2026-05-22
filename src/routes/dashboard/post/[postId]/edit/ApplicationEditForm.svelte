@@ -39,13 +39,14 @@
 		formInputData: SuperValidated<Infer<typeof applicationEditFormSchema>>;
 	} = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(formInputData, {
 		validators: zod4Client(applicationEditFormSchema),
 		dataType: 'json',
 		taintedMessage: true,
 		resetForm: false,
 		applyAction: 'never', // Prevents the other form submission from resetting this one
-		onSubmit: async (e) => {
+		onSubmit: async () => {
 			formData.update(
 				() => {
 					return {

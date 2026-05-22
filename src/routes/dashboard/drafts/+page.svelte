@@ -28,7 +28,7 @@
 		{#await data.posts}
 			<p class="text-muted-foreground">Loading drafts...</p>
 		{:then posts}
-			{#each posts as post}
+			{#each posts as post (post.id)}
 				<PostCard {post} href={`/dashboard/post/${post.id}`}>
 					{#snippet action()}
 						<Button href={`/dashboard/post/${post.id}/edit`}>

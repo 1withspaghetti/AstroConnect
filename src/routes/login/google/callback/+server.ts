@@ -23,16 +23,16 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	let tokens: OAuth2Tokens;
 	try {
 		tokens = await google.validateAuthorizationCode(code, codeVerifier);
-	} catch (e) {
+	} catch {
 		// Invalid code or client credentials
 		return error(400, 'Invalid code or client credentials, please try again');
 	}
-	const claims = decodeIdToken(tokens.idToken()) as any;
+	const claims = decodeIdToken(tokens.idToken()) as Record<string, string>;
 
-	const googleId = claims.sub as string;
-	const name = claims.name as string;
-	const email = claims.email as string;
-	const pfp = claims.picture as string;
+	const googleId = claims.sub;
+	const name = claims.name;
+	const email = claims.email;
+	const pfp = claims.picture;
 
 	let userId: string;
 	let isAdmin: boolean;

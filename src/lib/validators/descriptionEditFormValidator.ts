@@ -34,8 +34,8 @@ export const descriptionEditFormSchema = z
 				path: ['durationEnd']
 			});
 		} else if (data.durationStart && data.durationEnd) {
-			let dateStart = dayjs(data.durationStart, 'YYYY-MM-DD', true);
-			let dateEnd = dayjs(data.durationEnd, 'YYYY-MM-DD', true);
+			const dateStart = dayjs(data.durationStart, 'YYYY-MM-DD', true);
+			const dateEnd = dayjs(data.durationEnd, 'YYYY-MM-DD', true);
 			if (!dateStart.isValid() || dateStart.isBefore(dayjs('2000-01-01', 'YYYY-MM-DD'))) {
 				ctx.addIssue({
 					code: 'custom',

@@ -10,6 +10,6 @@
 <AdminImpersonationHeader
 	isImpersonating={data.isImpersonating}
 	user={data.user}
-	class="top-[69px]"
+	class="top-17.25"
 />
 {@render children?.()}

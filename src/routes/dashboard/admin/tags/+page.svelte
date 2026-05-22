@@ -3,7 +3,6 @@
 	import type { PageProps } from './$types';
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '@/components/ui/button';
-	import Trash from '@lucide/svelte/icons/trash';
 	import { superForm } from 'sveltekit-superforms';
 	import { defaultTagSchema } from '@/validators/defaultTagValidator';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
@@ -16,6 +15,7 @@
 
 	let { data }: PageProps = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(data.defaultTagForm, {
 		validators: zod4Client(defaultTagSchema),
 		taintedMessage: false,

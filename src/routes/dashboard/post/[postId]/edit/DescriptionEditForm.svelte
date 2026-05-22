@@ -34,6 +34,7 @@
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
 	} = $props();
 
+	// svelte-ignore state_referenced_locally
 	let form = superForm(formInputData, {
 		validators: zod4Client(descriptionEditFormSchema),
 		dataType: 'json',
@@ -158,10 +159,8 @@
 	</Form.Field>
 	<Form.Field {form} name="careerStage">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Career Stage (optional)</Form.Label>
-				<SelectCombobox bind:item={$formData.careerStage} defaultOptions={fullCareerStageList} />
-			{/snippet}
+			<Form.Label>Career Stage (optional)</Form.Label>
+			<SelectCombobox bind:item={$formData.careerStage} defaultOptions={fullCareerStageList} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
@@ -176,17 +175,15 @@
 	</Form.Field>
 	<Form.Field {form} name="tags">
 		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Tags (optional)</Form.Label>
-				<TagMultiselectCombobox
-					bind:tags={$formData.tags}
-					{globalTags}
-					{userTags}
-					allowCustom
-					placeholder="Search Tags"
-					emptyText="No existing tags found"
-				/>
-			{/snippet}
+			<Form.Label>Tags (optional)</Form.Label>
+			<TagMultiselectCombobox
+				bind:tags={$formData.tags}
+				{globalTags}
+				{userTags}
+				allowCustom
+				placeholder="Search Tags"
+				emptyText="No existing tags found"
+			/>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
@@ -197,7 +194,7 @@
 				<Popover.Root bind:open={dateRangeOpen}>
 					<Popover.Trigger {...props}>
 						{#snippet child({ props })}
-							<Button {...props} variant="outline" class="w-[200px] justify-between font-normal">
+							<Button {...props} variant="outline" class="w-50 justify-between font-normal">
 								{$formData.durationStart && $formData.durationEnd
 									? `${dayjs($formData.durationStart, 'YYYY-MM-DD').format('l')} - ${dayjs($formData.durationEnd, 'YYYY-MM-DD').format('l')}`
 									: 'Select date'}

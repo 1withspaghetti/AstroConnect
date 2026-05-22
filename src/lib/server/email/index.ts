@@ -14,7 +14,7 @@ export async function sendApplicationEmail(
 	to: { email: string; name: string },
 	data: ApplicationEmailTemplateData
 ) {
-	const htmlContent = getApplicationEmailTemplate(data);
+	const htmlContent = await getApplicationEmailTemplate(data);
 
 	const mailjet = new Mailjet({
 		apiKey: MJ_APIKEY_PUBLIC,

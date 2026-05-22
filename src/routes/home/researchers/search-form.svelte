@@ -8,6 +8,7 @@
 	import { defaultCareerStageLevels } from '@/types/post';
 	import { goto } from '$app/navigation';
 	import TagMultiselectCombobox from '@/components/ui/TagMultiselectCombobox.svelte';
+	import { resolve } from '$app/paths';
 
 	let { globalTags, userTags }: { globalTags: string[]; userTags: string[] } = $props();
 
@@ -55,7 +56,10 @@
 			if (!params.get(key)) params.delete(key);
 		}
 
-		goto(`?${params.toString()}`, { invalidateAll: true, keepFocus: true });
+		goto(resolve(`/home/researchers?${params.toString()}`), {
+			invalidateAll: true,
+			keepFocus: true
+		});
 	}
 </script>
 

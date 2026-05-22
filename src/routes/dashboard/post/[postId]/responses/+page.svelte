@@ -11,6 +11,7 @@
 	import { Button } from '@/components/ui/button';
 	import Pen from '@lucide/svelte/icons/pen';
 	import { Separator } from '@/components/ui/separator';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -73,6 +74,7 @@
 										<a
 											target="_blank"
 											href={answer.answer as string}
+											rel="external"
 											class="text-blue-500 underline">{filename || 'View File'}</a
 										>
 									{:else if Array.isArray(answer.answer)}
@@ -92,7 +94,7 @@
 		{:else}
 			<p class="mt-16 text-center text-muted-foreground text-sm">
 				No one has applied to your post yet. {#if data.isDraft}Make sure to <a
-						href="/dashboard/post/{data.postId}/edit#actions"
+						href={resolve(`/dashboard/post/${data.postId}/edit#actions`)}
 						class="text-blue-500 underline">publish it</a
 					> so people can see it!{/if}
 			</p>

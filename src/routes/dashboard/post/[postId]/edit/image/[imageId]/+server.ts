@@ -66,7 +66,7 @@ export const DELETE: RequestHandler = async ({ params, locals }) => {
 	});
 
 	try {
-		const res = await s3client.send(delRequest);
+		await s3client.send(delRequest);
 	} catch (err) {
 		console.error('Error deleting image from S3:', err);
 		// Still continue and delete from db

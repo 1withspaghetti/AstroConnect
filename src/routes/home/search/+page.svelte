@@ -10,6 +10,7 @@
 	import Meta from '@/components/Meta.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 
 	let { data }: PageProps = $props();
 
@@ -23,7 +24,7 @@
 	function gotoPage(pageNum: number) {
 		const params = page.url.searchParams;
 		params.set('page', pageNum.toString());
-		goto(`?${params.toString()}`, { invalidateAll: true, keepFocus: true });
+		goto(resolve(`/home/search?${params.toString()}`), { invalidateAll: true, keepFocus: true });
 	}
 </script>
 
@@ -60,7 +61,7 @@
 					{total} result{total > 1 ? 's' : ''} found
 				{/if}
 			</Label>
-			{#each posts as post}
+			{#each posts as post (post.id)}
 				<PostCard {post} href={`/home/post/${post.id}`}>
 					{#snippet action({ closed })}
 						<Button href="/home/post/{post.id}" disabled={closed}>Apply</Button>

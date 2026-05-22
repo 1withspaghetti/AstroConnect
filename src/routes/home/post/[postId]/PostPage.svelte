@@ -77,7 +77,7 @@
 				</div>
 			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">
-				{#each post.tags as tag}
+				{#each post.tags as tag (tag)}
 					<Badge>{tag}</Badge>
 				{/each}
 			</div>

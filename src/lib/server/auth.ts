@@ -33,7 +33,7 @@ export async function createSession(token: string, userId: string, adminId?: str
 	return session;
 }
 
-export async function validateSessionToken(token: any) {
+export async function validateSessionToken(token: unknown) {
 	if (!token || typeof token !== 'string' || token.length !== 32) {
 		return { session: null, user: null };
 	}
@@ -66,14 +66,14 @@ export async function validateSessionToken(token: any) {
 		return { session: null, user: null };
 	}
 
-	let session: Session = {
+	const session: Session = {
 		id: result.id,
 		userId: result.userId,
 		adminId: result.adminId,
 		expiresAt: result.expiresAt
 	};
 
-	let user: SessionUser = {
+	const user: SessionUser = {
 		...result.user,
 		proxyAs: result.user.proxyAs.map((pa) => pa.userId)
 	};

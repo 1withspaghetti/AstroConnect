@@ -8,6 +8,7 @@
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import type { UserPreview } from '@/types/user';
 	import AdminAccountSwitcherMenuItem from '@/components/AdminAccountSwitcherMenuItem.svelte';
+	import { resolve } from '$app/paths';
 
 	let { user, isAdmin }: { user: UserPreview; isAdmin: boolean } = $props();
 
@@ -43,7 +44,7 @@
 					<AdminAccountSwitcherMenuItem />
 				{/if}
 				<DropdownMenu.Item
-					onclick={() => goto('/login/logout')}
+					onclick={() => goto(resolve('/login/logout'))}
 					variant="destructive"
 					class="cursor-pointer"
 				>

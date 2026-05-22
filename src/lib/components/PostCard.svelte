@@ -5,6 +5,7 @@
 	import dayjs from '@/util/dayjs';
 	import { Badge } from '$lib/components/ui/badge';
 	import type { Snippet } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 
 	let {
 		post,
@@ -12,7 +13,7 @@
 		action
 	}: {
 		post: PostPreview;
-		href: string;
+		href: ResolvedPathname;
 		action?: Snippet<[{ closed: boolean }]>;
 	} = $props();
 
@@ -89,7 +90,7 @@
 				</div>
 			{/if}
 			<div class="mt-2 flex flex-wrap gap-2">
-				{#each post.tags as tag}
+				{#each post.tags as tag (tag)}
 					<Badge>{tag}</Badge>
 				{/each}
 			</div>

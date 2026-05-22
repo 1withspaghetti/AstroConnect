@@ -14,10 +14,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Save these values in case auth() is called multiple times
 	let { session, user }: PartialAuthReturn = { session: null, user: null };
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	event.locals.auth = async <Req extends boolean = true>(req = true) => {
 		if (session && user) return { session, user };
 
-		let token = event.cookies.get(sessionCookieName);
+		const token = event.cookies.get(sessionCookieName);
 		({ session, user } = await validateSessionToken(token));
 
 		if (req && !session) {
