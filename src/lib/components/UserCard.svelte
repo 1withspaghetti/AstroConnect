@@ -77,8 +77,8 @@
 <Card.Root class="relative w-full max-w-xs">
 	<Card.Content class="flex flex-col items-center">
 		<UserAvatar {user} class="mb-2 size-12" />
-		<Card.Title class="line-clamp-1 pb-1">
-			{user.name}
+		<Card.Title class="pb-1 flex items-center gap-2">
+			<span>{user.name}</span>
 			{#if user.isAdmin}
 				<Badge variant="destructive">Admin</Badge>
 			{/if}
@@ -102,7 +102,7 @@
 			</div>
 		{/if}
 		{#if user.tags}
-			<div class="mt-2 flex flex-wrap gap-2">
+			<div class="mt-2 flex flex-wrap gap-1">
 				{#each user.tags as tag (tag)}
 					<Badge>{tag}</Badge>
 				{/each}

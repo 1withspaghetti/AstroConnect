@@ -76,7 +76,7 @@
 					{dayjs(post.durationEnd, 'YYYY-MM-DD').format('ll')}
 				</div>
 			{/if}
-			<div class="mt-2 flex flex-wrap gap-2">
+			<div class="mt-2 flex flex-wrap gap-1">
 				{#each post.tags as tag (tag)}
 					<Badge>{tag}</Badge>
 				{/each}
