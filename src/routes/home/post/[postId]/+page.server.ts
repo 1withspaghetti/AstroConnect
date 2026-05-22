@@ -21,12 +21,20 @@ import {
 } from '$env/static/private';
 import { PUBLIC_BASE_URL } from '$env/static/public';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, locals }) => {
+	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 
 	const post = await findFirstPost({
 		where: and(eq(table.posts.id, postId), eq(table.posts.isDraft, false))
 	});
+
+	const existingApplication = await db.query.applications.findFirst({
+		columns: {
+			id: true
+		},
+		where: eq(table.applications.userId, user.id)
+	})
 
 	if (!post) {
 		throw error(404, `Post not found`);
@@ -34,7 +42,8 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	return {
 		post,
-		form: await superValidate(zod4(getApplicationFormSchema(post.questions)))
+		form: await superValidate(zod4(getApplicationFormSchema(post.questions))),
+		alreadySubmitted: !!existingApplication
 	};
 };
 

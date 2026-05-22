@@ -9,17 +9,21 @@
 	import type { getApplicationFormSchema } from '@/validators/applicationFormValidator';
 	import UserCard from '@/components/UserCard.svelte';
 	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
+	import * as Alert from '@/components/ui/alert';
+	import AlertCircle from '@lucide/svelte/icons/alert-circle'
 
 	let {
 		post,
 		formInputData,
 		allowSubmit,
+		alreadySubmitted = false,
 		userId,
 		isAdmin
 	}: {
 		post: Post;
 		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		allowSubmit: boolean;
+		alreadySubmitted?: boolean
 		userId: string;
 		isAdmin: boolean;
 	} = $props();
@@ -124,6 +128,15 @@
 
 	<h2 class="text-2xl font-bold">Apply</h2>
 	<Separator class="mt-1 mb-6" />
+	{#if alreadySubmitted}
+		<Alert.Root variant="warning" class="mb-6">
+			<AlertCircle />
+			<Alert.Title>Reminder: You have already applied to this research opportunity</Alert.Title>
+			<Alert.Description>
+				You can still apply again, but note the researcher will see both applications
+			</Alert.Description>
+		</Alert.Root>
+	{/if}
 	<div class="px-2">
 		<ApplicationForm
 			formQuestions={post.questions}

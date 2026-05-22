@@ -18,6 +18,7 @@
 		post={data.post}
 		formInputData={data.form}
 		allowSubmit
+		alreadySubmitted={data.alreadySubmitted}
 		userId={data.user.id}
 		isAdmin={data.isAdmin}
 	/>

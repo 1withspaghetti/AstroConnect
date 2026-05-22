@@ -6,6 +6,7 @@
 		variants: {
 			variant: {
 				default: 'bg-card text-card-foreground',
+				warning: 'text-yellow-500 dark:text-yellow-400 bg-card *:data-[slot=alert-description]:text-yellow-500/90 dark:*:data-[slot=alert-description]:text-yellow-400/90 [&>svg]:text-current',
 				destructive:
 					'text-destructive bg-card *:data-[slot=alert-description]:text-destructive/90 [&>svg]:text-current'
 			}
