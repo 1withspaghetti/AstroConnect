@@ -1,6 +1,5 @@
 import { descriptionEditFormSchema } from '@/validators/descriptionEditFormValidator.js';
 import type { Actions, PageServerLoad } from './$types.js';
-import { error } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { db, table } from '@/server/db/index.js';
@@ -9,53 +8,17 @@ import { validateId } from '@/validators/idValidator.js';
 import { userHasAccessToPost } from '@/server/db/common.js';
 import { applicationEditFormSchema } from '@/validators/applicationEditFormValidator.js';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
-	const { user } = await locals.auth();
-	const postId = validateId(params.postId);
+export const load: PageServerLoad = async ({ parent }) => {
+	const { post, user } = await parent();
 
-	const post = await db.query.posts.findFirst({
+	const postImages = await db.query.postImages.findMany({
 		columns: {
-			ownerId: true,
-			isDraft: true,
-			title: true,
-			desc: true,
-			positions: true,
-			timeCommitment: true,
-			careerStage: true,
-			prereq: true,
-			durationStart: true,
-			durationEnd: true,
-			isOpen: true,
-			closesAt: true,
-			maxSlots: true,
-			questions: true
+			id: true,
+			url: true,
+			order: true
 		},
-		where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id)),
-		with: {
-			tags: {
-				columns: {
-					tag: true
-				}
-			},
-			images: {
-				columns: {
-					id: true,
-					url: true,
-					order: true
-				}
-			}
-		}
+		where: eq(table.postImages.postId, post.id)
 	});
-
-	if (!post) {
-		throw error(404, `Post not found`);
-	}
-
-	const postTags = await db
-		.selectDistinct({ tag: table.postTags.tag })
-		.from(table.postTags)
-		.orderBy(table.postTags.tag)
-		.then((tags) => tags.map((tag) => tag.tag));
 
 	const proxyAs = await db.query.userProxies
 		.findMany({
@@ -77,14 +40,11 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		.then((proxies) => proxies.map((p) => p.user));
 
 	return {
-		postId,
-		isDraft: post.isDraft,
-		images: post.images,
-		postTags,
+		postImages,
 		proxyAs,
 		descriptionForm: await superValidate(
 			{
-				ownerId: post.ownerId,
+				ownerId: post.owner.id,
 				title: post.title,
 				desc: post.desc,
 				positions: post.positions,
@@ -93,7 +53,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				prereq: post.prereq,
 				durationStart: post.durationStart || undefined,
 				durationEnd: post.durationEnd || undefined,
-				tags: post.tags.map((tag) => tag.tag)
+				tags: post.tags
 			},
 			zod4(descriptionEditFormSchema)
 		),

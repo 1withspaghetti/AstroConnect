@@ -20,7 +20,7 @@ export const actions: Actions = {
 		const res = await db
 			.update(table.posts)
 			.set({ isDraft: false, publishedAt: new Date() })
-			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
+			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id, user.isAdmin)));
 
 		if (res.rowCount < 1) {
 			throw error(404, `Post not found`);
@@ -36,7 +36,7 @@ export const actions: Actions = {
 		const res = await db
 			.update(table.posts)
 			.set({ isDraft: true, publishedAt: null })
-			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
+			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id, user.isAdmin)));
 
 		if (res.rowCount < 1) {
 			throw error(404, `Post not found`);
@@ -60,7 +60,7 @@ export const actions: Actions = {
 					}
 				}
 			},
-			where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id))
+			where: and(eq(table.posts.id, postId), userHasAccessToPost(user.id, user.isAdmin))
 		});
 
 		if (!post) throw error(404, 'Post Not Found');
@@ -78,9 +78,7 @@ export const actions: Actions = {
 		}
 
 		// Finally delete from db, should cascade to posts and other schemas that depend on it
-		await db
-			.delete(table.posts)
-			.where(and(eq(table.posts.id, postId), userHasAccessToPost(user.id)));
+		await db.delete(table.posts).where(eq(table.posts.id, postId));
 
 		return redirect(303, `/dashboard/drafts`);
 	}

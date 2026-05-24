@@ -35,6 +35,13 @@
 
 	let displayText = $derived(item ? item : placeholder);
 
+	function select(option: string) {
+		item = option;
+		search = '';
+		closeAndFocusTrigger();
+		onChange?.(item);
+	}
+
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
 	// rest of the form with the keyboard.
@@ -62,7 +69,7 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-50 p-0">
+	<Popover.Content class="w-64 p-0">
 		<Command.Root>
 			<Command.Input bind:value={search} {placeholder} />
 			<Command.List>
@@ -71,14 +78,7 @@
 				{/if}
 				<Command.Group>
 					{#each defaultOptions as option (option)}
-						<Command.Item
-							value={option}
-							onSelect={() => {
-								item = option;
-								closeAndFocusTrigger();
-								onChange?.(item);
-							}}
-						>
+						<Command.Item value={option} onSelect={() => select(option)}>
 							<CheckIcon class={cn('mr-2 size-4', item !== option && 'text-transparent')} />
 							{option}
 						</Command.Item>
@@ -87,15 +87,7 @@
 				{#if allowCustom}
 					<Command.Group forceMount>
 						{#if search && !defaultOptions.includes(search)}
-							<Command.Item
-								value={search}
-								onSelect={() => {
-									item = search;
-									closeAndFocusTrigger();
-									onChange?.(item);
-								}}
-								forceMount
-							>
+							<Command.Item value={search} onSelect={() => select(search)} forceMount>
 								<CheckIcon class="mr-2 size-4 text-transparent" />
 								"{search}"
 							</Command.Item>

@@ -1,11 +1,11 @@
-import type { PageServerLoad } from './$types.js';
-import { error } from '@sveltejs/kit';
+import { validateId } from '@/validators/idValidator';
+import type { LayoutServerLoad } from './$types';
+import { table } from '@/server/db';
 import { findFirstPost, userHasAccessToPost } from '@/server/db/common';
+import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { table } from '@/server/db/index.js';
-import { validateId } from '@/validators/idValidator.js';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load = (async ({ params, locals }) => {
 	const { user } = await locals.auth();
 	const postId = validateId(params.postId);
 
@@ -20,4 +20,4 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	return {
 		post
 	};
-};
+}) satisfies LayoutServerLoad;

@@ -95,7 +95,7 @@
 		{
 			href: '/edit',
 			icon: Pen,
-			label: 'Edit Post'
+			label: 'Edit'
 		},
 		{
 			href: '/preview',

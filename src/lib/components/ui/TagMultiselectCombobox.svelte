@@ -37,6 +37,13 @@
 
 	let displayText = $derived(tags.length > 0 ? tags.join(', ') : placeholder);
 
+	function select(tag: string) {
+		tags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
+		search = '';
+		closeAndFocusTrigger();
+		onChange?.(tags);
+	}
+
 	// We want to refocus the trigger button when the user selects
 	// a tag from the list so users can continue navigating the
 	// rest of the form with the keyboard.
@@ -54,14 +61,7 @@
 </script>
 
 {#snippet commandItem(tag: T)}
-	<Command.Item
-		value={tag}
-		onSelect={() => {
-			tags = tags.includes(tag) ? tags.filter((t) => t !== tag) : [...tags, tag];
-			closeAndFocusTrigger();
-			onChange?.(tags);
-		}}
-	>
+	<Command.Item value={tag} onSelect={() => select(tag)}>
 		<CheckIcon class={cn('mr-2 size-4', !tags.includes(tag) && 'text-transparent')} />
 		{tag}
 	</Command.Item>
@@ -83,7 +83,7 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-50 p-0">
+	<Popover.Content class="w-64 p-0">
 		<Command.Root>
 			<Command.Input bind:value={search} {placeholder} />
 			<Command.List>

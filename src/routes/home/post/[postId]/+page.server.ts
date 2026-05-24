@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			id: true
 		},
 		where: eq(table.applications.userId, user.id)
-	})
+	});
 
 	if (!post) {
 		throw error(404, `Post not found`);

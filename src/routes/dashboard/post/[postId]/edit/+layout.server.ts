@@ -10,7 +10,7 @@ export const load = (async ({ locals }) => {
 		.orderBy(table.defaultTags.tag)
 		.then((tags) => tags.map((tag) => tag.tag));
 
-	const userTagsData = db
+	const postTagsData = db
 		.selectDistinct({ tag: table.postTags.tag })
 		.from(table.postTags)
 		.orderBy(table.postTags.tag)
@@ -18,6 +18,6 @@ export const load = (async ({ locals }) => {
 
 	return {
 		globalTagsData,
-		userTagsData
+		postTagsData
 	};
 }) satisfies LayoutServerLoad;

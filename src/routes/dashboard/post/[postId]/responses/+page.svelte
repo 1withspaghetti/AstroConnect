@@ -11,7 +11,8 @@
 	import { Button } from '@/components/ui/button';
 	import Pen from '@lucide/svelte/icons/pen';
 	import { Separator } from '@/components/ui/separator';
-	import { resolve } from '$app/paths';
+	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
+	import Ellipsis from '@lucide/svelte/icons/ellipsis';
 
 	let { data }: PageProps = $props();
 
@@ -32,10 +33,18 @@
 <div class="mx-auto w-full max-w-6xl px-4 pb-16">
 	<div class="flex items-end justify-between">
 		<h1 id="responses" class="mt-8 line-clamp-1 text-2xl font-bold">Responses</h1>
-		<Button variant="default" href="/dashboard/post/{data.postId}/edit">
-			<Pen />
-			Edit
-		</Button>
+		<div class="flex gap-2">
+			<Button variant="default" href="/dashboard/post/{data.postId}/edit">
+				<Pen />
+				Edit Form
+			</Button>
+			<PostDropdownMenu
+				post={data.post}
+				userId={data.user.id}
+				isAdmin={data.isAdmin}
+				hasAccessToEditOverride
+			/>
+		</div>
 	</div>
 	<Separator class="mt-1 mb-4" />
 
@@ -66,9 +75,9 @@
 					<UserCard user={app.user} isAdmin={data.isAdmin} />
 					<ol>
 						{#each app.answers as answer, i (i)}
-							<li class="space-y-2">
+							<li>
 								<b class="mb-2">{answer.label}:</b>
-								<p class="indent-4">
+								<p class="indent-4 mb-4">
 									{#if answer.type === ApplicationFormQuestionType.FILE && typeof answer.answer === 'string'}
 										{@const filename = new URL(answer.answer as string).pathname.split('/').pop()}
 										<a
@@ -85,18 +94,16 @@
 								</p>
 							</li>
 						{/each}
+						<p class="text-muted-foreground text-sm italic mt-4">
+							Submitted on {dayjs(app.createdAt).format('LLLL')}
+						</p>
 					</ol>
-					<p class="text-muted-foreground text-sm">
-						Submitted on {dayjs(app.createdAt).format('LLLL')}
-					</p>
 				</Accordion.Content>
 			</Accordion.Item>
 		{:else}
 			<p class="mt-16 text-center text-muted-foreground text-sm">
-				No one has applied to your post yet. {#if data.isDraft}Make sure to <a
-						href={resolve(`/dashboard/post/${data.postId}/edit#actions`)}
-						class="text-blue-500 underline">publish it</a
-					> so people can see it!{/if}
+				No one has applied to your post yet. {#if data.isDraft}Make sure to publish it using the
+					three dots (<Ellipsis class="inline size-4" />) above so people can see it!{/if}
 			</p>
 		{/each}
 	</Accordion.Root>

@@ -24,13 +24,13 @@
 		user,
 		proxyAs,
 		globalTags,
-		userTags,
+		postTags,
 		formInputData
 	}: {
 		user: SessionUser;
 		proxyAs: UserPreview[];
 		globalTags: string[];
-		userTags: string[];
+		postTags: string[];
 		formInputData: SuperValidated<Infer<typeof descriptionEditFormSchema>>;
 	} = $props();
 
@@ -139,79 +139,87 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Field {form} name="positions">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Positions Available (optional)</Form.Label>
-				<Input {...props} bind:value={$formData.positions} placeholder="E.x. '1' or '5-6'" />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="timeCommitment">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Time Commitment (optional)</Form.Label>
-				<Input {...props} bind:value={$formData.timeCommitment} placeholder="E.x. '4hrs a week'" />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="careerStage">
-		<Form.Control>
-			<Form.Label>Career Stage (optional)</Form.Label>
-			<SelectCombobox bind:item={$formData.careerStage} defaultOptions={fullCareerStageList} />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="prereq">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Prerequisites (optional)</Form.Label>
-				<Input {...props} bind:value={$formData.prereq} placeholder="E.x. 'Astro 322'" />
-			{/snippet}
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+	<div class="flex gap-6 w-full flex-wrap text-nowrap">
+		<Form.Field {form} name="positions" class="flex-1">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Positions Available (optional)</Form.Label>
+					<Input {...props} bind:value={$formData.positions} placeholder="E.x. '1' or '5-6'" />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+		<Form.Field {form} name="timeCommitment" class="flex-1">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Time Commitment (optional)</Form.Label>
+					<Input
+						{...props}
+						bind:value={$formData.timeCommitment}
+						placeholder="E.x. '4hrs a week'"
+					/>
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+		<Form.Field {form} name="durationStart" class="flex-1">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Estimated Date Range (optional)</Form.Label>
+					<Popover.Root bind:open={dateRangeOpen}>
+						<Popover.Trigger {...props}>
+							{#snippet child({ props })}
+								<Button {...props} variant="outline" class="w-full justify-between font-normal">
+									{$formData.durationStart && $formData.durationEnd
+										? `${dayjs($formData.durationStart, 'YYYY-MM-DD').format('l')} - ${dayjs($formData.durationEnd, 'YYYY-MM-DD').format('l')}`
+										: 'Select date'}
+									<ChevronDownIcon />
+								</Button>
+							{/snippet}
+						</Popover.Trigger>
+						<Popover.Content class="w-auto overflow-hidden p-0" align="start">
+							<RangeCalendar
+								bind:value={getDateRange, setDateRange}
+								class="w-fit rounded-lg border shadow-sm"
+								numberOfMonths={isMobile.current ? 1 : 2}
+								captionLayout="dropdown"
+							/>
+						</Popover.Content>
+					</Popover.Root>
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+	</div>
+	<div class="flex gap-6 w-full flex-wrap text-nowrap">
+		<Form.Field {form} name="careerStage" class="flex-1">
+			<Form.Control>
+				<Form.Label>Career Stage (optional)</Form.Label>
+				<SelectCombobox bind:item={$formData.careerStage} defaultOptions={fullCareerStageList} />
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+		<Form.Field {form} name="prereq" class="flex-1">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>Prerequisites (optional)</Form.Label>
+					<Input {...props} bind:value={$formData.prereq} placeholder="E.x. 'Astro 322'" />
+				{/snippet}
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
+	</div>
 	<Form.Field {form} name="tags">
 		<Form.Control>
 			<Form.Label>Tags (optional)</Form.Label>
 			<TagMultiselectCombobox
 				bind:tags={$formData.tags}
 				{globalTags}
-				{userTags}
+				userTags={postTags}
 				allowCustom
 				placeholder="Search Tags"
 				emptyText="No existing tags found"
 			/>
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="durationStart">
-		<Form.Control>
-			{#snippet children({ props })}
-				<Form.Label>Estimated Date Range (optional)</Form.Label>
-				<Popover.Root bind:open={dateRangeOpen}>
-					<Popover.Trigger {...props}>
-						{#snippet child({ props })}
-							<Button {...props} variant="outline" class="w-50 justify-between font-normal">
-								{$formData.durationStart && $formData.durationEnd
-									? `${dayjs($formData.durationStart, 'YYYY-MM-DD').format('l')} - ${dayjs($formData.durationEnd, 'YYYY-MM-DD').format('l')}`
-									: 'Select date'}
-								<ChevronDownIcon />
-							</Button>
-						{/snippet}
-					</Popover.Trigger>
-					<Popover.Content class="w-auto overflow-hidden p-0" align="start">
-						<RangeCalendar
-							bind:value={getDateRange, setDateRange}
-							class="w-fit rounded-lg border shadow-sm"
-							numberOfMonths={isMobile.current ? 1 : 2}
-							captionLayout="dropdown"
-						/>
-					</Popover.Content>
-				</Popover.Root>
-			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>

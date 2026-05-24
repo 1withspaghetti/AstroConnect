@@ -10,7 +10,7 @@
 	import UserCard from '@/components/UserCard.svelte';
 	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
 	import * as Alert from '@/components/ui/alert';
-	import AlertCircle from '@lucide/svelte/icons/alert-circle'
+	import AlertCircle from '@lucide/svelte/icons/alert-circle';
 
 	let {
 		post,
@@ -23,7 +23,7 @@
 		post: Post;
 		formInputData?: SuperValidated<Infer<ReturnType<typeof getApplicationFormSchema>>>;
 		allowSubmit: boolean;
-		alreadySubmitted?: boolean
+		alreadySubmitted?: boolean;
 		userId: string;
 		isAdmin: boolean;
 	} = $props();
