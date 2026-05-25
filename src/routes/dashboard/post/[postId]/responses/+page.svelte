@@ -2,8 +2,6 @@
 	import Meta from '@/components/Meta.svelte';
 	import type { PageProps } from './$types';
 	import * as Accordion from '@/components/ui/accordion';
-	import UserCard from '@/components/UserCard.svelte';
-	import { ApplicationFormQuestionType } from '@/types/applicationForm';
 	import UserAvatar from '@/components/UserAvatar.svelte';
 	import dayjs from '@/util/dayjs';
 	import { page } from '$app/state';
@@ -13,6 +11,8 @@
 	import { Separator } from '@/components/ui/separator';
 	import PostDropdownMenu from '@/components/PostDropdownMenu.svelte';
 	import Ellipsis from '@lucide/svelte/icons/ellipsis';
+	import type { UserProfile } from '@/types/user';
+	import UserApplications from './UserApplications.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -26,6 +26,18 @@
 			open = [];
 		}
 	});
+
+	let groupedApps = $derived(
+		data.applications.reduce(
+			(users, app) => {
+				const existing = users.find((user) => user.user.id == app.user.id);
+				if (existing) existing.applications.push(app);
+				else users.push({ user: app.user, applications: [app] });
+				return users;
+			},
+			[] as { user: UserProfile; applications: typeof data.applications }[]
+		)
+	);
 </script>
 
 <Meta title="Responses" />
@@ -48,56 +60,35 @@
 	</div>
 	<Separator class="mt-1 mb-4" />
 
-	<Accordion.Root type="multiple" class="mx-auto mt-8 mb-4 max-w-6xl px-4" bind:value={open}>
-		{#each data.applications as app (app.id)}
-			<Accordion.Item value={`app:${app.id}`} class="@container">
+	<Accordion.Root type="multiple" class="mx-auto mt-8 mb-4 max-w-6xl" bind:value={open}>
+		{#each groupedApps as { user, applications } (user.id)}
+			<Accordion.Item value={user.id} class="@container group">
 				<Accordion.Trigger
-					id={app.id}
-					class="bg-accent/50 hover:bg-accent data-[state=open]:bg-accent/70 items-center gap-2 px-4 py-4 hover:no-underline"
+					id={user.id}
+					class="bg-accent/50 hover:bg-accent data-[state=open]:bg-accent/70 items-center gap-2 px-4 py-4 hover:no-underline rounded-none group-first:rounded-t-md group-last:rounded-b-md"
 				>
 					<div class="flex items-center gap-2">
-						<UserAvatar user={app.user} class="size-8" />
+						<UserAvatar {user} class="size-8" />
 						<span class="font-medium"
-							>{app.user.name} (<a
-								href={`mailto:${app.user.email}`}
-								class="text-muted-foreground underline">{app.user.email}</a
+							>{user.name} (<a href={`mailto:${user.email}`} class="text-muted-foreground underline"
+								>{user.email}</a
 							>)</span
 						>
-						<span
-							title={dayjs(app.createdAt).format('LLLL')}
-							class="text-muted-foreground ml-2 text-xs"
-						>
-							Applied {dayjs(app.createdAt).fromNow()}
+						<span class="text-muted-foreground ml-2 text-xs">
+							Applied <span
+								title={dayjs(applications[applications.length - 1].createdAt).format('LLLL')}
+								class="underline"
+								>{dayjs(applications[applications.length - 1].createdAt).fromNow()}</span
+							>{#if applications.length > 1}, then {#if applications.length == 2}again{:else}recently{/if}
+								<span title={dayjs(applications[0].createdAt).format('LLLL')} class="underline"
+									>{dayjs(applications[0].createdAt).fromNow()}</span
+								>{/if}
+							{#if applications.length > 2}({applications.length} total applications){/if}
 						</span>
 					</div>
 				</Accordion.Trigger>
-				<Accordion.Content class="flex flex-col gap-4 p-2 @2xl:flex-row">
-					<UserCard user={app.user} isAdmin={data.isAdmin} />
-					<ol>
-						{#each app.answers as answer, i (i)}
-							<li>
-								<b class="mb-2">{answer.label}:</b>
-								<p class="indent-4 mb-4">
-									{#if answer.type === ApplicationFormQuestionType.FILE && typeof answer.answer === 'string'}
-										{@const filename = new URL(answer.answer as string).pathname.split('/').pop()}
-										<a
-											target="_blank"
-											href={answer.answer as string}
-											rel="external"
-											class="text-blue-500 underline">{filename || 'View File'}</a
-										>
-									{:else if Array.isArray(answer.answer)}
-										{answer.answer.join(', ')}
-									{:else}
-										{answer.answer}
-									{/if}
-								</p>
-							</li>
-						{/each}
-						<p class="text-muted-foreground text-sm italic mt-4">
-							Submitted on {dayjs(app.createdAt).format('LLLL')}
-						</p>
-					</ol>
+				<Accordion.Content class="w-full flex flex-col items-start gap-4 p-2 @2xl:flex-row">
+					<UserApplications {user} {applications} isAdmin={data.isAdmin} />
 				</Accordion.Content>
 			</Accordion.Item>
 		{:else}

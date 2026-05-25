@@ -80,17 +80,32 @@
 											{#if page.url.pathname.startsWith(`/dashboard/post/${post.id}`)}
 												<Sidebar.MenuSub class="ml-2 border-0">
 													<Sidebar.MenuSubItem>
-														<Sidebar.MenuSubButton href={`/dashboard/post/${post.id}/edit`}>
+														<Sidebar.MenuSubButton
+															href={`/dashboard/post/${post.id}/edit`}
+															isActive={page.url.pathname.startsWith(
+																`/dashboard/post/${post.id}/edit`
+															)}
+														>
 															Edit
 														</Sidebar.MenuSubButton>
 													</Sidebar.MenuSubItem>
 													<Sidebar.MenuSubItem>
-														<Sidebar.MenuSubButton href={`/dashboard/post/${post.id}/preview`}>
+														<Sidebar.MenuSubButton
+															href={`/dashboard/post/${post.id}/preview`}
+															isActive={page.url.pathname.startsWith(
+																`/dashboard/post/${post.id}/preview`
+															)}
+														>
 															Preview
 														</Sidebar.MenuSubButton>
 													</Sidebar.MenuSubItem>
 													<Sidebar.MenuSubItem>
-														<Sidebar.MenuSubButton href={`/dashboard/post/${post.id}/responses`}>
+														<Sidebar.MenuSubButton
+															href={`/dashboard/post/${post.id}/responses`}
+															isActive={page.url.pathname.startsWith(
+																`/dashboard/post/${post.id}/responses`
+															)}
+														>
 															Responses
 														</Sidebar.MenuSubButton>
 													</Sidebar.MenuSubItem>
